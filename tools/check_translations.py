@@ -22,7 +22,7 @@ from typing import Literal
 import anthropic
 from pydantic import BaseModel, Field
 
-from build import BASE, load_locales
+from build import BASE, fallback_lang, load_locales
 
 ROOT = Path(__file__).resolve().parent.parent
 REPORT = ROOT / 'translation-report.md'
@@ -84,10 +84,12 @@ def width(s):
 
 
 def used_keys(tables, lang):
-    """その言語の画面で実際に使う、日本語側のキー。"""
-    notes = tables['NOTES']
+    """その言語で実際に使う、日本語側のキー。二十四節気の文字は solarTerms を持つ言語だけ、
+    fallbackOnly の文字（リンクのプレビューなど）は代替言語だけで使う。"""
+    notes, fallback = tables['NOTES'], fallback_lang()
     return [k for k in tables['DICT'][BASE]
-            if lang in tables['SEKKI'] or not notes.get(k, {}).get('onlyWithSolarTerms')]
+            if (lang in tables['SEKKI'] or not notes.get(k, {}).get('onlyWithSolarTerms'))
+            and (lang == fallback or not notes.get(k, {}).get('fallbackOnly'))]
 
 
 def mechanical_checks(tables, lang):

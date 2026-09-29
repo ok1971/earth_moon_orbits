@@ -1,3 +1,24 @@
+# Earth and Moon Orbits
+
+![The Moon's path weaving across Earth's orbit near the Sun](images/preview.png)
+
+An interactive astronomy teaching page. The Moon seems to circle the Earth, but seen from far above the Sun it travels in a gentle wave across Earth's orbit, and never loops back.
+
+**[Open the page](https://ok1971.github.io/earth_moon_orbits/)** in any modern browser; there is nothing to install.
+
+- Top view of the Earth and Moon going around the Sun, with the Moon's trail weaving across Earth's orbit
+- Edge-on view showing the tilt of the Moon's orbit and the eclipse seasons
+- Straightened-orbit view that shows why the Moon's path waves but does not loop
+- The Moon's phase and place in the sky from 15 cities, or from any latitude and longitude
+- 12 languages; the page follows the browser's language, and `#ja`, `#en` and so on at the end of the address choose one
+- A single HTML file: download `earth-moon-orbits.html` and it also works offline (with the computer's own fonts)
+
+Positions are computed from JPL mean orbital elements and the main terms of Meeus's lunar theory. Released under the [MIT License](LICENSE).
+
+The rest of this README, in Japanese, explains how the page is built and how to add a language.
+
+---
+
 # 地球と月の公転軌道
 
 太陽のまわりを回る地球と月を、北黄極の側から見下ろして示す理科（天文）教材です。
@@ -13,13 +34,18 @@ src/
     ja.json         基準の言語（原文）。訳者向けの注記（notes）もここに書く
     en.json など     言語ごとに 1 ファイル
 tools/
-  build.py              src から earth-moon-orbits.html を組み立てる
+  build.py              src から earth-moon-orbits.html と index.html を組み立てる
   check_translations.py 訳文のチェック（機械的なチェックと、Claude による内容の確認）
   snapshot.py           全言語の画面を撮影して、変更の前後を比べる
+images/
+  preview.png           リンクを共有したときのプレビュー画像（1200×630）
 earth-moon-orbits.html  組み立て後の完成品。公開するのはこのファイル
+index.html              GitHub Pages の入口。earth-moon-orbits.html へ移動する（#ja などの指定も引き継ぐ）
 ```
 
-`earth-moon-orbits.html` は直接編集しないでください。組み立てるたびに上書きされます。
+`earth-moon-orbits.html` と `index.html` は直接編集しないでください。組み立てるたびに上書きされます。
+
+検索結果や、SNS・メッセージでリンクを送ったときのプレビューには、題名（`title`）と紹介文（`shareDescription`）とプレビュー画像が使われます。プレビューはページのプログラムを動かさずに読み取られるので、代替言語（英語）のものが使われます。公開先の URL は `tools/build.py` の `SITE_URL` です。
 
 ## ふだんの作業の流れ
 
@@ -91,6 +117,7 @@ earth-moon-orbits.html  組み立て後の完成品。公開するのはこの�
 - `note`: 表示される場所や、訳すときの注意。Claude による確認にも一緒に渡されます。
 - `maxWidth`: 表示幅の上限（半角換算。全角文字は 2、結合文字は 0 と数える）。図の中の文字など、長すぎるとはみ出す文字に付けます。超えるとチェックで指摘されます。
 - `onlyWithSolarTerms`: 二十四節気を使う言語でだけ表示する文字なら `true`。
+- `fallbackOnly`: 代替言語（英語）のものだけが使われる文字なら `true`（リンクのプレビューの紹介文など）。ほかの言語には書かなくてよい。
 
 ## 新しい言語を追加する
 
