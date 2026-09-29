@@ -46,30 +46,7 @@
     --font-num: "IBM Plex Mono", ui-monospace, Consolas, "Courier New";
     --font-title: "IBM Plex Serif", Georgia, serif;
   }
-  :root[lang="ja"] {
-    --font-ui: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
-    --font-title: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  }
-  :root[lang="zh-Hans"] {
-    --font-ui: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-    --font-title: "Noto Serif SC", "Songti SC", SimSun, serif;
-  }
-  :root[lang="zh-Hant"] {
-    --font-ui: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-    --font-title: "Noto Serif TC", "Songti TC", PMingLiU, serif;
-  }
-  :root[lang="ko"] {
-    --font-ui: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    --font-title: "Noto Serif KR", AppleMyungjo, Batang, serif;
-  }
-  :root[lang="hi"] {
-    --font-ui: "IBM Plex Sans Devanagari", "Nirmala UI", Mangal, sans-serif;
-    --font-title: "Noto Serif Devanagari", "Nirmala UI", serif;
-  }
-  :root[lang="ar"] {
-    --font-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
-    --font-title: "Noto Naskh Arabic", "Traditional Arabic", serif;
-  }
+  /*@LOCALE_CSS@*/
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
@@ -147,8 +124,6 @@
 
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  /* Letter-spacing breaks the joined letterforms of Arabic and Devanagari scripts */
-  :root[lang="ar"] *, :root[lang="hi"] * { letter-spacing: 0 !important; }
   body {
     margin: 0;
     background: var(--bg);
@@ -184,7 +159,6 @@
     margin: 0;
     text-wrap: balance;
   }
-  :root[lang="ja"] h1, :root[lang="zh-Hans"] h1, :root[lang="zh-Hant"] h1 { letter-spacing: .06em; }
   .titles p { margin: 0; color: var(--muted); max-width: 70ch; }
   .settings { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
   .setting { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
@@ -676,12 +650,13 @@
   const localeMeta = code => LOCALE_DATA[code].meta;
   const LANG_NAMES = Object.fromEntries(LANGS.map(c => [c, localeMeta(c).name]));
   const LOCALES = Object.fromEntries(LANGS.map(c => [c, localeMeta(c).locale]));
-  const CJK = new Set(['ja', 'zh-Hans', 'zh-Hant', 'ko']);
   // Extra fonts loaded per language (Latin and Cyrillic text uses IBM Plex, which is loaded up
   // front)
   const LANG_FONTS = Object.fromEntries(LANGS.filter(c => localeMeta(c).googleFonts).map(c => [c, localeMeta(c).googleFonts]));
-  const SEKKI = Object.fromEntries(LANGS.filter(c => LOCALE_DATA[c].solarTerms).map(c => [c, LOCALE_DATA[c].solarTerms]));
   const DICT = Object.fromEntries(LANGS.map(c => [c, LOCALE_DATA[c].strings]));
+  const FALLBACK_LANG = 'en';          // for strings a language lacks, and when no language is chosen
+  const langData = () => LOCALE_DATA[state.lang];
+  const hasSolarTerms = () => Boolean(langData().solarTerms);
 
   // Preset observing locations; their names are in each locale file under "places"
   const PLACES = [
@@ -822,7 +797,7 @@
     trueAspect: false,
     stripDays: 60,
     tilt: 6,                  // factor exaggerating the Moon's orbital inclination in the edge-on view
-    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : 'en',
+    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : FALLBACK_LANG,
     custom: validCustom(saved.custom) ? saved.custom : null,
     placeId: 'london',
     show: { moon: true, orbit: true, trail: true, months: true, sekki: false, sectors: false, velocity: false, rings: false },
@@ -839,11 +814,10 @@
 
   // ---- Translation and formatting --------------------------------------------
   function t(key, vars) {
-    let s = DICT[state.lang][key] ?? DICT.en[key];
+    let s = DICT[state.lang][key] ?? DICT[FALLBACK_LANG][key];
     if (typeof s === 'string' && vars) s = s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
     return s;
   }
-  const isCJK = () => CJK.has(state.lang);
   const nfCache = new Map();
   function nf(x, digits = 0) {
     const key = state.lang + ':' + digits;
@@ -857,10 +831,12 @@
   const signed = (x, digits) => `${x >= 0 ? '+' : '−'}${nf(Math.abs(x), digits)}`;
   const auDigits = L => Number.isInteger(L) ? 0 : Number.isInteger(Math.round(L * 1e6) / 1e5) ? 1 : 2;
 
+  // How a language writes large distances comes from meta.largeNumbers in its language file:
+  // "myriad" groups by 10^4 (億・万), "indian" uses lakh and crore, anything else millions
   function fmtKm(km) {
-    const L = state.lang;
-    if (isCJK()) {
-      const [oku, man, sep] = { ja: ['億', '万', ''], 'zh-Hans': ['亿', '万', ''], 'zh-Hant': ['億', '萬', ''], ko: ['억', '만', ' '] }[L];
+    const big = langData().meta.largeNumbers || {};
+    if (big.style === 'myriad') {
+      const [oku, man] = big.units, sep = big.separator || '';
       const m = Math.round(km / 1e4);
       if (m >= 10000) {
         const o = Math.floor(m / 10000), r = m % 10000;
@@ -868,7 +844,7 @@
       }
       return `${m}${man} km`;
     }
-    if (L === 'hi') return km >= 1e7 ? `${nf(km / 1e7, 2)} करोड़ किमी` : `${nf(km / 1e5, 1)} लाख किमी`;
+    if (big.style === 'indian') return km >= 1e7 ? t('kmCrore', { n: nf(km / 1e7, 2) }) : t('kmLakh', { n: nf(km / 1e5, 1) });
     return t('kmMillion', { n: nf(km / 1e6, 1) });
   }
 
@@ -940,7 +916,7 @@
   const shifted = t => { const ms = msFromDays(t); return new Date(ms + tzOffsetMin(ms) * 60000); };
   const dateLong = t => fmtLong.format(shifted(t));
   function dateShort(t) {
-    if (isCJK()) { const j = local(t); return `${j.m}/${j.d}`; }
+    if (langData().meta.shortDate === 'month/day') { const j = local(t); return `${j.m}/${j.d}`; }
     return fmtShort.format(shifted(t));
   }
   function monthName(m) {
@@ -1514,7 +1490,7 @@
     }
 
     // 24 solar terms (outside the orbit; East Asian languages only)
-    if (state.show.sekki && isCJK()) {
+    if (state.show.sekki && hasSolarTerms()) {
       const T = cent(o.t);
       ctx.strokeStyle = C.label;
       ctx.fillStyle = C.label;
@@ -1530,7 +1506,7 @@
         ctx.moveTo(x, y);
         ctx.lineTo(x + ux * 5, y + uy * 5);
         ctx.stroke();
-        placeText(ctx, SEKKI[state.lang][k], x, y, ux, uy, 12);
+        placeText(ctx, langData().solarTerms[k], x, y, ux, uy, 12);
       }
     }
 
@@ -2270,9 +2246,9 @@
     const si = place.lat >= 0 ? k : (k + 2) % 4;
     setText('ro-season', t('seasonNames')[si]);
     $('ro-season').dataset.season = ['spring', 'summer', 'autumn', 'winter'][si];
-    if (isCJK()) {
+    if (hasSolarTerms()) {
       const s = Math.floor(sl / 15);
-      setText('ro-sekki', SEKKI[state.lang][s]);
+      setText('ro-sekki', langData().solarTerms[s]);
       setText('ro-sekki-range', t('sekkiRange', { a: s * 15, b: s * 15 + 15 }));
     } else {
       setText('ro-sekki', t(place.lat >= 0 ? 'hemiNorth' : 'hemiSouth'));
@@ -2435,10 +2411,10 @@
   }
 
   function setLang(lang) {
-    state.lang = DICT[lang] ? lang : 'en';
+    state.lang = DICT[lang] ? lang : FALLBACK_LANG;
     const root = document.documentElement;
     root.lang = state.lang;
-    root.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+    root.dir = langData().meta.dir || 'ltr';
     loadFonts(state.lang);
     buildFormatters();
     textCache.clear();
@@ -2446,7 +2422,7 @@
     for (const el of document.querySelectorAll('[data-i18n-aria]')) el.setAttribute('aria-label', t(el.dataset.i18nAria));
     document.title = t('title');
     selLang.value = state.lang;
-    $('toggle-sekki').hidden = !isCJK();
+    $('toggle-sekki').hidden = !hasSolarTerms();
     refreshPlace();
     buildPlaceOptions();
     readTheme();

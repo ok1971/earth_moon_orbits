@@ -3,7 +3,19 @@
     "name": "繁體中文",
     "order": 4,
     "locale": "zh-TW",
-    "googleFonts": "Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700"
+    "googleFonts": "Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700",
+    "fontUI": "\"Noto Sans TC\", \"PingFang TC\", \"Microsoft JhengHei\", sans-serif",
+    "fontTitle": "\"Noto Serif TC\", \"Songti TC\", PMingLiU, serif",
+    "titleLetterSpacing": ".06em",
+    "largeNumbers": {
+      "style": "myriad",
+      "units": [
+        "億",
+        "萬"
+      ],
+      "separator": ""
+    },
+    "shortDate": "month/day"
   },
   "strings": {
     "title": "地球與月球的公轉軌道",

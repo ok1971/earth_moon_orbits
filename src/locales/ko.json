@@ -3,7 +3,18 @@
     "name": "한국어",
     "order": 5,
     "locale": "ko-KR",
-    "googleFonts": "IBM+Plex+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@700"
+    "googleFonts": "IBM+Plex+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@700",
+    "fontUI": "\"IBM Plex Sans KR\", \"Apple SD Gothic Neo\", \"Malgun Gothic\", sans-serif",
+    "fontTitle": "\"Noto Serif KR\", AppleMyungjo, Batang, serif",
+    "largeNumbers": {
+      "style": "myriad",
+      "units": [
+        "억",
+        "만"
+      ],
+      "separator": " "
+    },
+    "shortDate": "month/day"
   },
   "strings": {
     "title": "지구와 달의 공전 궤도",

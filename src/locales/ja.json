@@ -3,7 +3,19 @@
     "name": "日本語",
     "order": 2,
     "locale": "ja-JP",
-    "googleFonts": "BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@700"
+    "googleFonts": "BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@700",
+    "fontUI": "\"BIZ UDPGothic\", \"Hiragino Sans\", \"Yu Gothic UI\", Meiryo, sans-serif",
+    "fontTitle": "\"Shippori Mincho B1\", \"Hiragino Mincho ProN\", \"Yu Mincho\", serif",
+    "titleLetterSpacing": ".06em",
+    "largeNumbers": {
+      "style": "myriad",
+      "units": [
+        "億",
+        "万"
+      ],
+      "separator": ""
+    },
+    "shortDate": "month/day"
   },
   "strings": {
     "title": "地球と月の公転軌道",

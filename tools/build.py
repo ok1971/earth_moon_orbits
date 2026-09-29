@@ -17,8 +17,10 @@ TEMPLATE = ROOT / 'src' / 'app.html'
 LOCALES = ROOT / 'src' / 'locales'
 OUTPUT = ROOT / 'earth-moon-orbits.html'
 MARKER = '/*@LOCALE_DATA@*/ {}'
+CSS_MARKER = '  /*@LOCALE_CSS@*/\n'
 BASE = 'ja'                     # the source language every other file is translated from
 REQUIRED_META = ('name', 'locale')
+LARGE_NUMBER_STYLES = ('myriad', 'indian')
 
 
 def load_locales():
@@ -32,6 +34,13 @@ def load_locales():
             continue
         meta = data.get('meta', {})
         errors += [f'{path.name}: meta.{k} is missing' for k in REQUIRED_META if not meta.get(k)]
+        if meta.get('dir', 'ltr') not in ('ltr', 'rtl'):
+            errors.append(f'{path.name}: meta.dir must be "ltr" or "rtl"')
+        big = meta.get('largeNumbers')
+        if big and big.get('style') not in LARGE_NUMBER_STYLES:
+            errors.append(f'{path.name}: meta.largeNumbers.style must be one of {", ".join(LARGE_NUMBER_STYLES)}')
+        if big and big.get('style') == 'myriad' and len(big.get('units', [])) != 2:
+            errors.append(f'{path.name}: meta.largeNumbers.units needs the words for 10^8 and 10^4')
         errors += [f'{path.name}: "{k}" is missing' for k in ('strings', 'places') if not data.get(k)]
         found[path.stem] = data
     if BASE not in found:
@@ -47,14 +56,32 @@ def load_locales():
     return {code: found[code] for code in sorted(found, key=order)}
 
 
+def locale_css(locales):
+    """CSS rules for the typographic settings in each language's meta."""
+    rules = []
+    for code, data in locales.items():
+        meta, sel = data['meta'], f':root[lang="{code}"]'
+        props = [f'--{var}: {meta[key]};' for key, var in (('fontUI', 'font-ui'), ('fontTitle', 'font-title')) if meta.get(key)]
+        if props:
+            rules.append(f'{sel} {{ {" ".join(props)} }}')
+        if meta.get('titleLetterSpacing'):
+            rules.append(f'{sel} h1 {{ letter-spacing: {meta["titleLetterSpacing"]}; }}')
+        if meta.get('joinedScript'):
+            # letter-spacing breaks the joined letterforms of scripts such as Arabic and Devanagari
+            rules.append(f'{sel} * {{ letter-spacing: 0 !important; }}')
+    return ''.join(f'  {r}\n' for r in rules)
+
+
 def build():
     template = TEMPLATE.read_text(encoding='utf-8')
-    if template.count(MARKER) != 1:
-        sys.exit(f'{TEMPLATE.name} must contain {MARKER} exactly once')
+    for marker in (MARKER, CSS_MARKER):
+        if template.count(marker) != 1:
+            sys.exit(f'{TEMPLATE.name} must contain {marker.strip()} exactly once')
     locales = load_locales()
     # "</" would end the <script> element early if a translation ever contained "</script>"
     data = json.dumps(locales, ensure_ascii=False, indent=2).replace('</', '<\\/').replace('\n', '\n  ')
-    OUTPUT.write_text(template.replace(MARKER, data), encoding='utf-8', newline='\n')
+    page = template.replace(MARKER, data).replace(CSS_MARKER, locale_css(locales))
+    OUTPUT.write_text(page, encoding='utf-8', newline='\n')
     print(f'{OUTPUT.name}: {len(locales)} languages ({", ".join(locales)})')
 
 

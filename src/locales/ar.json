@@ -3,7 +3,11 @@
     "name": "العربية",
     "order": 12,
     "locale": "ar-u-nu-latn",
-    "googleFonts": "IBM+Plex+Sans+Arabic:wght@400;700&family=Noto+Naskh+Arabic:wght@700"
+    "dir": "rtl",
+    "googleFonts": "IBM+Plex+Sans+Arabic:wght@400;700&family=Noto+Naskh+Arabic:wght@700",
+    "fontUI": "\"IBM Plex Sans Arabic\", \"Segoe UI\", Tahoma, sans-serif",
+    "fontTitle": "\"Noto Naskh Arabic\", \"Traditional Arabic\", serif",
+    "joinedScript": true
   },
   "strings": {
     "title": "مدارا الأرض والقمر",

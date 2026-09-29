@@ -3,7 +3,13 @@
     "name": "हिन्दी",
     "order": 11,
     "locale": "hi-IN",
-    "googleFonts": "IBM+Plex+Sans+Devanagari:wght@400;700&family=Noto+Serif+Devanagari:wght@700"
+    "googleFonts": "IBM+Plex+Sans+Devanagari:wght@400;700&family=Noto+Serif+Devanagari:wght@700",
+    "fontUI": "\"IBM Plex Sans Devanagari\", \"Nirmala UI\", Mangal, sans-serif",
+    "fontTitle": "\"Noto Serif Devanagari\", \"Nirmala UI\", serif",
+    "joinedScript": true,
+    "largeNumbers": {
+      "style": "indian"
+    }
   },
   "strings": {
     "title": "पृथ्वी और चंद्रमा की कक्षाएँ",
@@ -182,7 +188,9 @@
     "note3": "चलाने या रोकने के लिए स्पेस बार दबाएँ।",
     "km": "किमी",
     "kms": "किमी/से",
-    "au": "AU"
+    "au": "AU",
+    "kmCrore": "{n} करोड़ किमी",
+    "kmLakh": "{n} लाख किमी"
   },
   "places": {
     "tokyo": "टोक्यो",
