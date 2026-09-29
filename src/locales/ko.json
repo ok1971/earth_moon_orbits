@@ -132,7 +132,7 @@
       "보름",
       "하현"
     ],
-    "moonAge": "월령 {age}일 · 밝게 보이는 부분 {illum}%",
+    "moonAge": "월령 {n}일 · 밝게 보이는 부분 {illum}%",
     "moonAlt": "고도 {alt}° · {dir}쪽 하늘",
     "moonBelow": "지평선 아래 ({dir}쪽)",
     "moonTransit": "가장 높을 때 고도 {alt}° ({dir}쪽 하늘)",

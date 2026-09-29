@@ -100,7 +100,10 @@
     "sunLonLabel": "Longitud eclíptica del Sol",
     "sunLonNote": "Dirección del Sol vista desde la Tierra",
     "periLabel": "Desde el perihelio",
-    "daysUnit": "días",
+    "daysUnit": {
+      "one": "día",
+      "other": "días"
+    },
     "anomNote": "Año anomalístico = 365,26 días",
     "moonTitle": "La Luna vista desde {place}",
     "phases": [
@@ -119,7 +122,7 @@
       "Luna llena",
       "Cuarto menguante"
     ],
-    "moonAge": "Edad {age} días · {illum}% iluminada",
+    "moonAge": "Edad {n} días · {illum}% iluminada",
     "moonAlt": "Altura {alt}° · hacia el {dir}",
     "moonBelow": "Bajo el horizonte · hacia el {dir}",
     "moonTransit": "En su punto más alto: {alt}° · hacia el {dir}",

@@ -555,7 +555,7 @@
         </div>
         <div>
           <dt data-i18n="periLabel"></dt>
-          <dd><span id="ro-peri">—</span><span class="unit" data-i18n="daysUnit"></span><small data-i18n="anomNote"></small></dd>
+          <dd><span id="ro-peri">—</span><span class="unit" id="ro-peri-unit"></span><small data-i18n="anomNote"></small></dd>
         </div>
       </dl>
     </section>
@@ -759,7 +759,10 @@
         "sunLonLabel": "Sun's ecliptic longitude",
         "sunLonNote": "Direction of the Sun seen from Earth",
         "periLabel": "Since perihelion",
-        "daysUnit": "days",
+        "daysUnit": {
+          "one": "day",
+          "other": "days"
+        },
         "anomNote": "Anomalistic year = 365.26 days",
         "moonTitle": "Moon as seen from {place}",
         "phases": [
@@ -778,7 +781,7 @@
           "Full moon",
           "Last quarter"
         ],
-        "moonAge": "Age {age} days · {illum}% lit",
+        "moonAge": "Age {n} days · {illum}% lit",
         "moonAlt": "Altitude {alt}° · in the {dir}",
         "moonBelow": "Below the horizon · {dir}",
         "moonTransit": "At its highest: {alt}° · in the {dir}",
@@ -996,7 +999,7 @@
           "満月",
           "下弦"
         ],
-        "moonAge": "月齢 {age} ・ 光って見える部分 {illum}%",
+        "moonAge": "月齢 {n} ・ 光って見える部分 {illum}%",
         "moonAlt": "高度 {alt}° ・ {dir}の空",
         "moonBelow": "地平線の下（{dir}）",
         "moonTransit": "最も高いとき {alt}°（{dir}の空）",
@@ -1239,7 +1242,7 @@
           "满月",
           "下弦"
         ],
-        "moonAge": "月龄 {age} 天 · 被照亮部分 {illum}%",
+        "moonAge": "月龄 {n} 天 · 被照亮部分 {illum}%",
         "moonAlt": "高度 {alt}° · {dir}方天空",
         "moonBelow": "在地平线以下（{dir}方）",
         "moonTransit": "最高时高度 {alt}°（{dir}方天空）",
@@ -1482,7 +1485,7 @@
           "滿月",
           "下弦"
         ],
-        "moonAge": "月齡 {age} 天 · 被照亮部分 {illum}%",
+        "moonAge": "月齡 {n} 天 · 被照亮部分 {illum}%",
         "moonAlt": "高度 {alt}° · {dir}方天空",
         "moonBelow": "在地平線以下（{dir}方）",
         "moonTransit": "最高時高度 {alt}°（{dir}方天空）",
@@ -1724,7 +1727,7 @@
           "보름",
           "하현"
         ],
-        "moonAge": "월령 {age}일 · 밝게 보이는 부분 {illum}%",
+        "moonAge": "월령 {n}일 · 밝게 보이는 부분 {illum}%",
         "moonAlt": "고도 {alt}° · {dir}쪽 하늘",
         "moonBelow": "지평선 아래 ({dir}쪽)",
         "moonTransit": "가장 높을 때 고도 {alt}° ({dir}쪽 하늘)",
@@ -1934,7 +1937,10 @@
         "sunLonLabel": "Longitud eclíptica del Sol",
         "sunLonNote": "Dirección del Sol vista desde la Tierra",
         "periLabel": "Desde el perihelio",
-        "daysUnit": "días",
+        "daysUnit": {
+          "one": "día",
+          "other": "días"
+        },
         "anomNote": "Año anomalístico = 365,26 días",
         "moonTitle": "La Luna vista desde {place}",
         "phases": [
@@ -1953,7 +1959,7 @@
           "Luna llena",
           "Cuarto menguante"
         ],
-        "moonAge": "Edad {age} días · {illum}% iluminada",
+        "moonAge": "Edad {n} días · {illum}% iluminada",
         "moonAlt": "Altura {alt}° · hacia el {dir}",
         "moonBelow": "Bajo el horizonte · hacia el {dir}",
         "moonTransit": "En su punto más alto: {alt}° · hacia el {dir}",
@@ -2138,7 +2144,10 @@
         "sunLonLabel": "Longitude eclíptica do Sol",
         "sunLonNote": "Direção do Sol vista da Terra",
         "periLabel": "Desde o periélio",
-        "daysUnit": "dias",
+        "daysUnit": {
+          "one": "dia",
+          "other": "dias"
+        },
         "anomNote": "Ano anomalístico = 365,26 dias",
         "moonTitle": "A Lua vista de {place}",
         "phases": [
@@ -2157,7 +2166,7 @@
           "Lua cheia",
           "Quarto minguante"
         ],
-        "moonAge": "Idade {age} dias · {illum}% iluminada",
+        "moonAge": "Idade {n} dias · {illum}% iluminada",
         "moonAlt": "Altura {alt}° · direção {dir}",
         "moonBelow": "Abaixo do horizonte · direção {dir}",
         "moonTransit": "No ponto mais alto: {alt}° · direção {dir}",
@@ -2342,7 +2351,10 @@
         "sunLonLabel": "Longitude écliptique du Soleil",
         "sunLonNote": "Direction du Soleil vue depuis la Terre",
         "periLabel": "Depuis le périhélie",
-        "daysUnit": "jours",
+        "daysUnit": {
+          "one": "jour",
+          "other": "jours"
+        },
         "anomNote": "Année anomalistique = 365,26 jours",
         "moonTitle": "La Lune vue depuis {place}",
         "phases": [
@@ -2361,7 +2373,10 @@
           "Pleine lune",
           "Dernier quartier"
         ],
-        "moonAge": "Âge {age} jours · {illum} % éclairée",
+        "moonAge": {
+          "one": "Âge {n} jour · {illum} % éclairée",
+          "other": "Âge {n} jours · {illum} % éclairée"
+        },
         "moonAlt": "Hauteur {alt}° · direction {dir}",
         "moonBelow": "Sous l'horizon · direction {dir}",
         "moonTransit": "Au plus haut : {alt}° · direction {dir}",
@@ -2396,7 +2411,10 @@
         "dateAria": "Date à afficher",
         "speedLabel2": "Vitesse de lecture",
         "speedHours": "{n} h/s",
-        "speedDays": "{n} jours/s",
+        "speedDays": {
+          "one": "{n} jour/s",
+          "other": "{n} jours/s"
+        },
         "yearSec": "1 an ≈ {n} s",
         "yearMin": "1 an ≈ {n} min",
         "eccLabel": "Excentricité de l'orbite terrestre, e",
@@ -2565,7 +2583,7 @@
           "Полнолуние",
           "Последняя четверть"
         ],
-        "moonAge": "Возраст {age} сут · освещено {illum}%",
+        "moonAge": "Возраст {n} сут · освещено {illum}%",
         "moonAlt": "Высота {alt}° · {dir}",
         "moonBelow": "Под горизонтом · {dir}",
         "moonTransit": "В верхней кульминации: {alt}° · {dir}",
@@ -2769,7 +2787,7 @@
           "Purnama",
           "Kuartal terakhir"
         ],
-        "moonAge": "Umur {age} hari · {illum}% tersinari",
+        "moonAge": "Umur {n} hari · {illum}% tersinari",
         "moonAlt": "Ketinggian {alt}° · arah {dir}",
         "moonBelow": "Di bawah ufuk · arah {dir}",
         "moonTransit": "Saat tertinggi: {alt}° · arah {dir}",
@@ -2980,7 +2998,7 @@
           "पूर्णिमा",
           "अंतिम चतुर्थांश"
         ],
-        "moonAge": "आयु {age} दिन · {illum}% प्रकाशित",
+        "moonAge": "आयु {n} दिन · {illum}% प्रकाशित",
         "moonAlt": "ऊँचाई {alt}° · {dir}",
         "moonBelow": "क्षितिज के नीचे · {dir}",
         "moonTransit": "सबसे ऊँचाई पर: {alt}° · {dir}",
@@ -3171,7 +3189,14 @@
         "sunLonLabel": "الطول البروجي للشمس",
         "sunLonNote": "اتجاه الشمس كما يُرى من الأرض",
         "periLabel": "منذ الحضيض",
-        "daysUnit": "يوم",
+        "daysUnit": {
+          "zero": "يوم",
+          "one": "يوم",
+          "two": "يوم",
+          "few": "أيام",
+          "many": "يومًا",
+          "other": "يوم"
+        },
         "anomNote": "السنة الحضيضية = 365.26 يوم",
         "moonTitle": "القمر كما يُرى من {place}",
         "phases": [
@@ -3190,7 +3215,7 @@
           "البدر",
           "التربيع الأخير"
         ],
-        "moonAge": "العمر {age} يومًا · المضاء {illum}%",
+        "moonAge": "العمر {n} يومًا · المضاء {illum}%",
         "moonAlt": "الارتفاع {alt}° · جهة {dir}",
         "moonBelow": "تحت الأفق · جهة {dir}",
         "moonTransit": "عند أعلى ارتفاع: {alt}° · جهة {dir}",
@@ -3441,8 +3466,11 @@
   }
 
   // ---- Translation and formatting --------------------------------------------
-  function t(key, vars) {
+  // Look up a string. A string that varies with a count gives one form per plural category of the
+  // language ("zero", "one", "two", "few", "many", "other"); `category` picks the form.
+  function t(key, vars, category = 'other') {
     let s = DICT[state.lang][key] ?? DICT[FALLBACK_LANG][key];
+    if (s && typeof s === 'object' && !Array.isArray(s)) s = s[category] ?? s.other;
     if (typeof s === 'string' && vars) s = s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
     return s;
   }
@@ -3455,6 +3483,18 @@
       nfCache.set(key, f);
     }
     return f.format(x);
+  }
+  // A string containing a count: {n} is `value` formatted with `digits` decimals, and the plural
+  // form is the one the language uses for that formatted number
+  const pluralRules = new Map();
+  function tc(key, value, digits = 0, vars = {}) {
+    const id = state.lang + ':' + digits;
+    let rules = pluralRules.get(id);
+    if (!rules) {
+      rules = new Intl.PluralRules(LOCALES[state.lang], { minimumFractionDigits: digits, maximumFractionDigits: digits });
+      pluralRules.set(id, rules);
+    }
+    return t(key, { ...vars, n: nf(value, digits) }, rules.select(value));
   }
   const signed = (x, digits) => `${x >= 0 ? '+' : '−'}${nf(Math.abs(x), digits)}`;
   const auDigits = L => Number.isInteger(L) ? 0 : Number.isInteger(Math.round(L * 1e6) / 1e5) ? 1 : 2;
@@ -3472,8 +3512,8 @@
       }
       return `${m}${man} km`;
     }
-    if (big.style === 'indian') return km >= 1e7 ? t('kmCrore', { n: nf(km / 1e7, 2) }) : t('kmLakh', { n: nf(km / 1e5, 1) });
-    return t('kmMillion', { n: nf(km / 1e6, 1) });
+    if (big.style === 'indian') return km >= 1e7 ? tc('kmCrore', km / 1e7, 2) : tc('kmLakh', km / 1e5, 1);
+    return tc('kmMillion', km / 1e6, 1);
   }
 
   // ---- Observing location and time zone --------------------------------------
@@ -4888,7 +4928,9 @@
     setText('ro-v', nf(o.speed, 2));
     setText('ro-vkmh', t('speedNote', { kmh: nf(Math.round(o.speed * 3600 / 100) * 100) }));
     setText('ro-lon', nf(sl, 1));
-    setText('ro-peri', String(Math.floor(o.m / N_ANOM)));
+    const days = Math.floor(o.m / N_ANOM);
+    setText('ro-peri', String(days));
+    setText('ro-peri-unit', tc('daysUnit', days));
 
     setText('ro-place', showRotation()
       ? t('placeLine', { place: place.name, time: `${pad(j.h)}:${pad(j.mi)}`, dn: t(placeAlt > 0 ? 'day' : 'night'), alt: signed(placeAlt, 1) })
@@ -4908,7 +4950,7 @@
     const illum = (1 - Math.cos(psi * DEG)) / 2 * 100;
     setText('mo-title', t('moonTitle', { place: place.name }));
     setText('mo-name', t('phases')[phaseIndex(psi)]);
-    setText('mo-age', t('moonAge', { age: nf(age, 1), illum: Math.round(illum) }));
+    setText('mo-age', tc('moonAge', age, 1, { illum: Math.round(illum) }));
 
     // During fast playback the orientation changes too quickly to follow, so show the Moon at
     // meridian transit (its highest point) instead
@@ -4924,7 +4966,7 @@
     drawPhase(psi, sky.limb, sky.alt >= 0);
 
     setText('mo-dist', nf(Math.round(mo.dist)));
-    setText('mo-dist-note', t('moonDistNote', { n: nf(mo.dist / EARTH_RADIUS_KM, 1) }));
+    setText('mo-dist-note', tc('moonDistNote', mo.dist / EARTH_RADIUS_KM, 1));
     setText('mo-elong', nf(psi, 1));
     setText('mo-next-new', whenText(nextPhase(0, o.t, psi)));
     setText('mo-next-full', whenText(nextPhase(180, o.t, psi)));
@@ -4947,9 +4989,9 @@
   const posFromSpeed = s => 1000 * Math.log(s / SPEED_MIN) / Math.log(SPEED_MAX / SPEED_MIN);
   function updateSpeedUI() {
     const s = state.speed;
-    const rate = s < 1 ? t('speedHours', { n: Math.max(1, Math.round(s * 24)) }) : t('speedDays', { n: nf(s, s < 10 ? 1 : 0) });
+    const rate = s < 1 ? tc('speedHours', Math.max(1, Math.round(s * 24))) : tc('speedDays', s, s < 10 ? 1 : 0);
     const yearSec = 365.25 / s;
-    const year = yearSec < 120 ? t('yearSec', { n: Math.round(yearSec) }) : t('yearMin', { n: Math.round(yearSec / 60) });
+    const year = yearSec < 120 ? tc('yearSec', Math.round(yearSec)) : tc('yearMin', Math.round(yearSec / 60));
     $('out-speed').textContent = `${rate} · ${year}`;
   }
 

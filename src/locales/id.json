@@ -119,7 +119,7 @@
       "Purnama",
       "Kuartal terakhir"
     ],
-    "moonAge": "Umur {age} hari · {illum}% tersinari",
+    "moonAge": "Umur {n} hari · {illum}% tersinari",
     "moonAlt": "Ketinggian {alt}° · arah {dir}",
     "moonBelow": "Di bawah ufuk · arah {dir}",
     "moonTransit": "Saat tertinggi: {alt}° · arah {dir}",

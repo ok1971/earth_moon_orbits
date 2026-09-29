@@ -126,7 +126,7 @@
       "पूर्णिमा",
       "अंतिम चतुर्थांश"
     ],
-    "moonAge": "आयु {age} दिन · {illum}% प्रकाशित",
+    "moonAge": "आयु {n} दिन · {illum}% प्रकाशित",
     "moonAlt": "ऊँचाई {alt}° · {dir}",
     "moonBelow": "क्षितिज के नीचे · {dir}",
     "moonTransit": "सबसे ऊँचाई पर: {alt}° · {dir}",

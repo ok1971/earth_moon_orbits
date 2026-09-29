@@ -545,7 +545,7 @@
         </div>
         <div>
           <dt data-i18n="periLabel"></dt>
-          <dd><span id="ro-peri">—</span><span class="unit" data-i18n="daysUnit"></span><small data-i18n="anomNote"></small></dd>
+          <dd><span id="ro-peri">—</span><span class="unit" id="ro-peri-unit"></span><small data-i18n="anomNote"></small></dd>
         </div>
       </dl>
     </section>
@@ -813,8 +813,11 @@
   }
 
   // ---- Translation and formatting --------------------------------------------
-  function t(key, vars) {
+  // Look up a string. A string that varies with a count gives one form per plural category of the
+  // language ("zero", "one", "two", "few", "many", "other"); `category` picks the form.
+  function t(key, vars, category = 'other') {
     let s = DICT[state.lang][key] ?? DICT[FALLBACK_LANG][key];
+    if (s && typeof s === 'object' && !Array.isArray(s)) s = s[category] ?? s.other;
     if (typeof s === 'string' && vars) s = s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
     return s;
   }
@@ -827,6 +830,18 @@
       nfCache.set(key, f);
     }
     return f.format(x);
+  }
+  // A string containing a count: {n} is `value` formatted with `digits` decimals, and the plural
+  // form is the one the language uses for that formatted number
+  const pluralRules = new Map();
+  function tc(key, value, digits = 0, vars = {}) {
+    const id = state.lang + ':' + digits;
+    let rules = pluralRules.get(id);
+    if (!rules) {
+      rules = new Intl.PluralRules(LOCALES[state.lang], { minimumFractionDigits: digits, maximumFractionDigits: digits });
+      pluralRules.set(id, rules);
+    }
+    return t(key, { ...vars, n: nf(value, digits) }, rules.select(value));
   }
   const signed = (x, digits) => `${x >= 0 ? '+' : '−'}${nf(Math.abs(x), digits)}`;
   const auDigits = L => Number.isInteger(L) ? 0 : Number.isInteger(Math.round(L * 1e6) / 1e5) ? 1 : 2;
@@ -844,8 +859,8 @@
       }
       return `${m}${man} km`;
     }
-    if (big.style === 'indian') return km >= 1e7 ? t('kmCrore', { n: nf(km / 1e7, 2) }) : t('kmLakh', { n: nf(km / 1e5, 1) });
-    return t('kmMillion', { n: nf(km / 1e6, 1) });
+    if (big.style === 'indian') return km >= 1e7 ? tc('kmCrore', km / 1e7, 2) : tc('kmLakh', km / 1e5, 1);
+    return tc('kmMillion', km / 1e6, 1);
   }
 
   // ---- Observing location and time zone --------------------------------------
@@ -2260,7 +2275,9 @@
     setText('ro-v', nf(o.speed, 2));
     setText('ro-vkmh', t('speedNote', { kmh: nf(Math.round(o.speed * 3600 / 100) * 100) }));
     setText('ro-lon', nf(sl, 1));
-    setText('ro-peri', String(Math.floor(o.m / N_ANOM)));
+    const days = Math.floor(o.m / N_ANOM);
+    setText('ro-peri', String(days));
+    setText('ro-peri-unit', tc('daysUnit', days));
 
     setText('ro-place', showRotation()
       ? t('placeLine', { place: place.name, time: `${pad(j.h)}:${pad(j.mi)}`, dn: t(placeAlt > 0 ? 'day' : 'night'), alt: signed(placeAlt, 1) })
@@ -2280,7 +2297,7 @@
     const illum = (1 - Math.cos(psi * DEG)) / 2 * 100;
     setText('mo-title', t('moonTitle', { place: place.name }));
     setText('mo-name', t('phases')[phaseIndex(psi)]);
-    setText('mo-age', t('moonAge', { age: nf(age, 1), illum: Math.round(illum) }));
+    setText('mo-age', tc('moonAge', age, 1, { illum: Math.round(illum) }));
 
     // During fast playback the orientation changes too quickly to follow, so show the Moon at
     // meridian transit (its highest point) instead
@@ -2296,7 +2313,7 @@
     drawPhase(psi, sky.limb, sky.alt >= 0);
 
     setText('mo-dist', nf(Math.round(mo.dist)));
-    setText('mo-dist-note', t('moonDistNote', { n: nf(mo.dist / EARTH_RADIUS_KM, 1) }));
+    setText('mo-dist-note', tc('moonDistNote', mo.dist / EARTH_RADIUS_KM, 1));
     setText('mo-elong', nf(psi, 1));
     setText('mo-next-new', whenText(nextPhase(0, o.t, psi)));
     setText('mo-next-full', whenText(nextPhase(180, o.t, psi)));
@@ -2319,9 +2336,9 @@
   const posFromSpeed = s => 1000 * Math.log(s / SPEED_MIN) / Math.log(SPEED_MAX / SPEED_MIN);
   function updateSpeedUI() {
     const s = state.speed;
-    const rate = s < 1 ? t('speedHours', { n: Math.max(1, Math.round(s * 24)) }) : t('speedDays', { n: nf(s, s < 10 ? 1 : 0) });
+    const rate = s < 1 ? tc('speedHours', Math.max(1, Math.round(s * 24))) : tc('speedDays', s, s < 10 ? 1 : 0);
     const yearSec = 365.25 / s;
-    const year = yearSec < 120 ? t('yearSec', { n: Math.round(yearSec) }) : t('yearMin', { n: Math.round(yearSec / 60) });
+    const year = yearSec < 120 ? tc('yearSec', Math.round(yearSec)) : tc('yearMin', Math.round(yearSec / 60));
     $('out-speed').textContent = `${rate} · ${year}`;
   }
 

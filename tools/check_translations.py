@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import threading
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
@@ -35,8 +36,6 @@ LANG_NAMES_JA = {
 }
 SEVERITY_JA = {'error': '誤り', 'warning': '要確認'}
 PLACEHOLDER = re.compile(r'\{(\w+)\}')
-# 二十四節気は日本語・中国語・韓国語（SEKKI がある言語）でしか表示しない
-SEKKI_ONLY_KEYS = {'tgSekki', 'sekkiRange'}
 
 
 # ---- .env ------------------------------------------------------------------
@@ -65,18 +64,30 @@ def read_tables():
         'SEKKI': {c: d['solarTerms'] for c, d in data.items() if 'solarTerms' in d},
         'DICT': {c: d['strings'] for c, d in data.items()},
         'PLACES': {c: d['places'] for c, d in data.items()},
+        'NOTES': data[BASE].get('notes', {}),
     }
 
 
 # ---- 機械的なチェック ----------------------------------------------------------
+def texts(v):
+    """訳文に含まれる文字列の一覧（配列は各要素、複数形のオブジェクトは各形）。"""
+    return list(v.values()) if isinstance(v, dict) else list(v) if isinstance(v, list) else [v]
+
+
 def placeholders(v):
-    text = ' '.join(map(str, v)) if isinstance(v, list) else str(v)
-    return sorted(PLACEHOLDER.findall(text))
+    return sorted({p for s in texts(v) for p in PLACEHOLDER.findall(str(s))})
+
+
+def width(s):
+    """表示幅（半角換算。全角は 2、結合文字は 0）。"""
+    return sum(0 if unicodedata.combining(c) else 2 if unicodedata.east_asian_width(c) in 'WF' else 1 for c in s)
 
 
 def used_keys(tables, lang):
     """その言語の画面で実際に使う、日本語側のキー。"""
-    return [k for k in tables['DICT'][BASE] if lang in tables['SEKKI'] or k not in SEKKI_ONLY_KEYS]
+    notes = tables['NOTES']
+    return [k for k in tables['DICT'][BASE]
+            if lang in tables['SEKKI'] or not notes.get(k, {}).get('onlyWithSolarTerms')]
 
 
 def mechanical_checks(tables, lang):
@@ -94,6 +105,11 @@ def mechanical_checks(tables, lang):
                 continue
         if placeholders(ja) != placeholders(tr):
             notes.append(f'`{key}`: プレースホルダが違います（日本語 {placeholders(ja)}、訳 {placeholders(tr)}）')
+        if isinstance(tr, dict) and 'other' not in tr:
+            notes.append(f'`{key}`: 複数形に other がありません')
+        limit = tables['NOTES'].get(key, {}).get('maxWidth')
+        if limit and (wide := [s for s in texts(tr) if width(s) > limit]):
+            notes.append(f'`{key}`: 表示幅 {limit} を超えています（{", ".join(f"{s}: {width(s)}" for s in wide)}）')
     return notes
 
 
@@ -101,6 +117,9 @@ def build_items(tables, lang):
     """LLM に渡す「キー・原文・訳文」の組を作る。"""
     base, target = tables['DICT'][BASE], tables['DICT'][lang]
     items = [{'key': k, 'ja': base[k], 'target': target[k]} for k in used_keys(tables, lang) if k in target]
+    for item in items:
+        if note := tables['NOTES'].get(item['key'], {}).get('note'):
+            item['note'] = note
     if lang in tables['SEKKI']:
         items.append({'key': 'SEKKI', 'ja': tables['SEKKI'][BASE], 'target': tables['SEKKI'][lang]})
     for pid, ja in tables['PLACES'][BASE].items():
@@ -146,9 +165,8 @@ Web アプリ「地球と月の公転軌道」は、太陽のまわりを回る�
 
 図と表示についての前提:
 - 真上から見た図と真横から見た図では、右が春分点（黄経0°）の方向、上が黄経90°の方向です。そのため地球は、春分のころ左端、秋分のころ右端にいます。「春分」「秋分」（その時期、またはそのときの地球の位置）と「春分点」「秋分点」（天球上の方向）を取り違えた訳は誤りです
-- seasons4 は図の上で日付と並べて表示されます（例: "Equinox 20 Mar"）。月名が無くても区別できるので、問題にしないでください
-- dirRight・dirLeft の括弧内「（秋分側）」「（春分側）」は、日本語・中国語・韓国語以外の言語では秋分点・春分点の方向と誤解されやすいため、意図的に省いています。問題にしないでください
-- 二十四節気は日本語・中国語・韓国語でしか表示しません
+- 項目に note があるときは、その文字の表示場所や意図を説明した原文側の注記です。note で認められている訳し方は問題にしないでください
+- target が one・few・other などをキーに持つオブジェクトのときは、数によって語の形を変える言語のための複数形です。各形が正しいかを確認してください
 
 出力について:
 - issues には問題のある項目だけを入れます。問題が無ければ空の配列にしてください
@@ -179,6 +197,8 @@ def review(client, lang, locale, items):
 
 # ---- レポート ----------------------------------------------------------------
 def show(v):
+    if isinstance(v, dict):
+        return ' / '.join(f'{k}: {s}' for k, s in v.items())
     return ' / '.join(map(str, v)) if isinstance(v, list) else str(v)
 
 

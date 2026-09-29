@@ -133,7 +133,7 @@
       "满月",
       "下弦"
     ],
-    "moonAge": "月龄 {age} 天 · 被照亮部分 {illum}%",
+    "moonAge": "月龄 {n} 天 · 被照亮部分 {illum}%",
     "moonAlt": "高度 {alt}° · {dir}方天空",
     "moonBelow": "在地平线以下（{dir}方）",
     "moonTransit": "最高时高度 {alt}°（{dir}方天空）",

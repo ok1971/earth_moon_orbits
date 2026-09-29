@@ -101,7 +101,10 @@
     "sunLonLabel": "Sun's ecliptic longitude",
     "sunLonNote": "Direction of the Sun seen from Earth",
     "periLabel": "Since perihelion",
-    "daysUnit": "days",
+    "daysUnit": {
+      "one": "day",
+      "other": "days"
+    },
     "anomNote": "Anomalistic year = 365.26 days",
     "moonTitle": "Moon as seen from {place}",
     "phases": [
@@ -120,7 +123,7 @@
       "Full moon",
       "Last quarter"
     ],
-    "moonAge": "Age {age} days · {illum}% lit",
+    "moonAge": "Age {n} days · {illum}% lit",
     "moonAlt": "Altitude {alt}° · in the {dir}",
     "moonBelow": "Below the horizon · {dir}",
     "moonTransit": "At its highest: {alt}° · in the {dir}",

@@ -21,6 +21,24 @@ CSS_MARKER = '  /*@LOCALE_CSS@*/\n'
 BASE = 'ja'                     # the source language every other file is translated from
 REQUIRED_META = ('name', 'locale')
 LARGE_NUMBER_STYLES = ('myriad', 'indian')
+PLURAL_CATEGORIES = {'zero', 'one', 'two', 'few', 'many', 'other'}   # as returned by Intl.PluralRules
+NOTE_FIELDS = {'note', 'maxWidth', 'onlyWithSolarTerms'}
+
+
+def string_errors(name, strings):
+    """A string is text, a list of texts, or plural forms {"one": ..., "other": ...}."""
+    errors = []
+    for key, value in strings.items():
+        if isinstance(value, list):
+            ok = all(isinstance(s, str) for s in value)
+        elif isinstance(value, dict):
+            ok = set(value) <= PLURAL_CATEGORIES and 'other' in value and all(isinstance(s, str) for s in value.values())
+        else:
+            ok = isinstance(value, str)
+        if not ok:
+            errors.append(f'{name}: strings.{key} must be text, a list of texts, or plural forms '
+                          f'using {", ".join(sorted(PLURAL_CATEGORIES))} and including "other"')
+    return errors
 
 
 def load_locales():
@@ -42,6 +60,9 @@ def load_locales():
         if big and big.get('style') == 'myriad' and len(big.get('units', [])) != 2:
             errors.append(f'{path.name}: meta.largeNumbers.units needs the words for 10^8 and 10^4')
         errors += [f'{path.name}: "{k}" is missing' for k in ('strings', 'places') if not data.get(k)]
+        errors += string_errors(path.name, data.get('strings', {}))
+        if 'notes' in data and path.stem != BASE:
+            errors.append(f'{path.name}: notes for translators belong in {BASE}.json only')
         found[path.stem] = data
     if BASE not in found:
         errors.append(f'the base language file {BASE}.json is missing')
@@ -50,6 +71,12 @@ def load_locales():
         for code, data in found.items():
             if missing := base_places - set(data.get('places', {})):
                 errors.append(f'{code}.json: places missing {", ".join(sorted(missing))}')
+        base_strings = found[BASE].get('strings', {})
+        for key, note in found[BASE].get('notes', {}).items():
+            if key not in base_strings:
+                errors.append(f'{BASE}.json: notes.{key} has no string with that key')
+            if extra := set(note) - NOTE_FIELDS:
+                errors.append(f'{BASE}.json: notes.{key} has unknown fields {", ".join(sorted(extra))}')
     if errors:
         sys.exit('Cannot build:\n  ' + '\n  '.join(errors))
     order = lambda code: (found[code]['meta'].get('order', float('inf')), code)
@@ -78,8 +105,10 @@ def build():
         if template.count(marker) != 1:
             sys.exit(f'{TEMPLATE.name} must contain {marker.strip()} exactly once')
     locales = load_locales()
+    # The page needs everything except the notes for translators
+    shipped = {code: {k: v for k, v in data.items() if k != 'notes'} for code, data in locales.items()}
     # "</" would end the <script> element early if a translation ever contained "</script>"
-    data = json.dumps(locales, ensure_ascii=False, indent=2).replace('</', '<\\/').replace('\n', '\n  ')
+    data = json.dumps(shipped, ensure_ascii=False, indent=2).replace('</', '<\\/').replace('\n', '\n  ')
     page = template.replace(MARKER, data).replace(CSS_MARKER, locale_css(locales))
     OUTPUT.write_text(page, encoding='utf-8', newline='\n')
     print(f'{OUTPUT.name}: {len(locales)} languages ({", ".join(locales)})')

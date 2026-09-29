@@ -133,7 +133,7 @@
       "満月",
       "下弦"
     ],
-    "moonAge": "月齢 {age} ・ 光って見える部分 {illum}%",
+    "moonAge": "月齢 {n} ・ 光って見える部分 {illum}%",
     "moonAlt": "高度 {alt}° ・ {dir}の空",
     "moonBelow": "地平線の下（{dir}）",
     "moonTransit": "最も高いとき {alt}°（{dir}の空）",
@@ -239,5 +239,89 @@
     "立春",
     "雨水",
     "啓蟄"
-  ]
+  ],
+  "notes": {
+    "vernalDir": {
+      "note": "上の図の右端に右寄せで描く矢印の文字。春分点（天球上の方向、黄経0°）を指す。春分の日（時期）や、そのときの地球の位置と取り違えないこと。",
+      "maxWidth": 56
+    },
+    "elevTitle": {
+      "note": "真横から見た図の左上に描く題名。右上の elevUpper と同じ行に並ぶ。「下側から」は上の図の下端の側から見るという意味で、公転面の下（南側）からではない。",
+      "maxWidth": 62
+    },
+    "elevUpper": {
+      "note": "真横から見た図の右上に右寄せで描く。上の目盛りが、地球が太陽の奥側を通る日付であることを示す。",
+      "maxWidth": 56
+    },
+    "elevLower": {
+      "note": "真横から見た図の右下に右寄せで描く。下の目盛りが、地球が太陽の手前側を通る日付であることを示す。",
+      "maxWidth": 56
+    },
+    "stripRange": {
+      "note": "上の図で、直線近似の範囲を示す紫の帯の端に描く。",
+      "maxWidth": 44
+    },
+    "towardSun": {
+      "note": "直線近似の図の左上に描く。",
+      "maxWidth": 22
+    },
+    "northPole": {
+      "note": "地球の拡大図で、北極の横に描く。",
+      "maxWidth": 14
+    },
+    "farSide": {
+      "note": "地球の拡大図で、観測地が地球の向こう側にあるときに地名の後ろに付ける。",
+      "maxWidth": 20
+    },
+    "seasons4": {
+      "note": "図の上で日付と並べて描く（例: Equinox 20 Mar）。日付で区別できるので、月名や春・秋を付けなくてよい。",
+      "maxWidth": 16
+    },
+    "phaseShort": {
+      "note": "直線近似の図で、新月・上弦・満月・下弦の印の横に日付と並べて描く。",
+      "maxWidth": 20
+    },
+    "perihelion": {
+      "note": "上の図で日付と並べて描く。",
+      "maxWidth": 14
+    },
+    "aphelion": {
+      "note": "上の図で日付と並べて描く。",
+      "maxWidth": 14
+    },
+    "presetCusp": {
+      "note": "小さなボタンの文字。",
+      "maxWidth": 24
+    },
+    "presetLoop": {
+      "note": "小さなボタンの文字。",
+      "maxWidth": 24
+    },
+    "dirRight": {
+      "note": "whereFront・whereBehind の {dir} に入る。「秋分側」は、秋分のときに地球がいる側という意味で、天球上の秋分点の方向ではない。日本語・中国語・韓国語以外では秋分点の方向と誤解されやすいため、括弧内の補足は省いてよい。"
+    },
+    "dirLeft": {
+      "note": "dirRight と同じ。「春分側」の補足は省いてよい。"
+    },
+    "sideSub": {
+      "note": "左端・右端は、春分・秋分のときの地球の位置。天球上の春分点・秋分点（春分点は右の方向）と取り違えないこと。"
+    },
+    "tgSekki": {
+      "note": "二十四節気の表示の切り替え。solarTerms を持つ言語でだけ表示する。",
+      "onlyWithSolarTerms": true
+    },
+    "sekkiRange": {
+      "note": "二十四節気の名前の横に表示する太陽黄経の範囲。solarTerms を持つ言語でだけ表示する。",
+      "onlyWithSolarTerms": true
+    },
+    "daysUnit": {
+      "note": "近日点通過からの日数（整数）の後ろに付く単位。数によって形が変わる言語は、複数形（one・few・other など）で書く。"
+    },
+    "moonAge": {
+      "note": "{n} は月齢（小数1桁）、{illum} は光って見える割合（%）。"
+    },
+    "speedDays": {
+      "note": "{n} は1秒あたりの日数（10未満は小数1桁）。"
+    }
+  }
 }

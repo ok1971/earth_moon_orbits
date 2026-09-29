@@ -100,7 +100,10 @@
     "sunLonLabel": "Longitude écliptique du Soleil",
     "sunLonNote": "Direction du Soleil vue depuis la Terre",
     "periLabel": "Depuis le périhélie",
-    "daysUnit": "jours",
+    "daysUnit": {
+      "one": "jour",
+      "other": "jours"
+    },
     "anomNote": "Année anomalistique = 365,26 jours",
     "moonTitle": "La Lune vue depuis {place}",
     "phases": [
@@ -119,7 +122,10 @@
       "Pleine lune",
       "Dernier quartier"
     ],
-    "moonAge": "Âge {age} jours · {illum} % éclairée",
+    "moonAge": {
+      "one": "Âge {n} jour · {illum} % éclairée",
+      "other": "Âge {n} jours · {illum} % éclairée"
+    },
     "moonAlt": "Hauteur {alt}° · direction {dir}",
     "moonBelow": "Sous l'horizon · direction {dir}",
     "moonTransit": "Au plus haut : {alt}° · direction {dir}",
@@ -154,7 +160,10 @@
     "dateAria": "Date à afficher",
     "speedLabel2": "Vitesse de lecture",
     "speedHours": "{n} h/s",
-    "speedDays": "{n} jours/s",
+    "speedDays": {
+      "one": "{n} jour/s",
+      "other": "{n} jours/s"
+    },
     "yearSec": "1 an ≈ {n} s",
     "yearMin": "1 an ≈ {n} min",
     "eccLabel": "Excentricité de l'orbite terrestre, e",
