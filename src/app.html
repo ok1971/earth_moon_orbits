@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Earth and Moon Orbits</title>
+<title></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif:wght@700&display=swap">
@@ -423,26 +423,26 @@
 <div class="app">
   <header class="masthead">
     <div class="titles">
-      <h1 data-i18n="title">Earth and Moon Orbits</h1>
-      <p data-i18n="subtitle">The Earth and Moon travelling around the Sun, seen from above the north side of Earth's orbital plane (the north ecliptic pole).</p>
+      <h1 data-i18n="title"></h1>
+      <p data-i18n="subtitle"></p>
     </div>
     <div class="settings">
-      <label class="setting"><span data-i18n="lang">Language</span>
+      <label class="setting"><span data-i18n="lang"></span>
         <select id="sel-lang"></select>
       </label>
-      <label class="setting"><span data-i18n="place">Viewing from</span>
+      <label class="setting"><span data-i18n="place"></span>
         <select id="sel-place"></select>
       </label>
     </div>
   </header>
 
   <section class="custom-place" id="custom-place" hidden>
-    <label><span data-i18n="lat">Latitude (°)</span><input type="number" id="in-lat" min="-90" max="90" step="0.0001" inputmode="decimal"></label>
-    <label><span data-i18n="lon">Longitude (°)</span><input type="number" id="in-lon" min="-180" max="180" step="0.0001" inputmode="decimal"></label>
-    <label><span data-i18n="tz">Time zone</span><select id="sel-tz"></select></label>
-    <button type="button" id="btn-apply-place" class="primary" data-i18n="apply">Apply</button>
-    <p class="hint" data-i18n="latlonHint">North and east are positive; south and west are negative.</p>
-    <p class="error" id="place-error" data-i18n="latlonError" hidden>Enter a latitude from −90 to 90 and a longitude from −180 to 180.</p>
+    <label><span data-i18n="lat"></span><input type="number" id="in-lat" min="-90" max="90" step="0.0001" inputmode="decimal"></label>
+    <label><span data-i18n="lon"></span><input type="number" id="in-lon" min="-180" max="180" step="0.0001" inputmode="decimal"></label>
+    <label><span data-i18n="tz"></span><select id="sel-tz"></select></label>
+    <button type="button" id="btn-apply-place" class="primary" data-i18n="apply"></button>
+    <p class="hint" data-i18n="latlonHint"></p>
+    <p class="error" id="place-error" data-i18n="latlonError" hidden></p>
   </section>
 
   <main class="main-col">
@@ -450,12 +450,12 @@
       <div class="plan">
         <canvas id="orbit-canvas" role="img" data-i18n-aria="ariaPlan"></canvas>
         <div class="stage-note">
-          <span data-i18n="planNote">Seen from above the north ecliptic pole · Earth and Moon both orbit anticlockwise</span>
+          <span data-i18n="planNote"></span>
           <span class="badge" id="ecc-badge"></span>
           <span id="moon-note"></span>
           <span id="sector-note" data-i18n="sectorNote" hidden></span>
         </div>
-        <div class="stage-foot" data-i18n="sizesNote">Sun and Earth not to scale</div>
+        <div class="stage-foot" data-i18n="sizesNote"></div>
       </div>
       <div class="elev">
         <canvas id="side-canvas" role="img" data-i18n-aria="ariaElev"></canvas>
@@ -464,7 +464,7 @@
 
     <section class="view-card" aria-labelledby="side-title">
       <div class="view-head">
-        <h2 id="side-title" data-i18n="sideTitle">Earth and Moon seen edge-on</h2>
+        <h2 id="side-title" data-i18n="sideTitle"></h2>
         <span class="badge" id="side-scale"></span>
         <span class="badge is-alert" id="side-eclipse" data-i18n="eclipseSeason" hidden></span>
       </div>
@@ -472,7 +472,7 @@
       <div class="side-foot">
         <dl class="side-stats">
           <div><dt data-i18n="whereLabel"></dt><dd id="sd-where">—</dd></div>
-          <div><dt data-i18n="vxLabel"></dt><dd><span id="sd-vx">—</span> <span data-i18n="kms">km/s</span><small data-i18n="vxNote"></small></dd></div>
+          <div><dt data-i18n="vxLabel"></dt><dd><span id="sd-vx">—</span> <span data-i18n="kms"></span><small data-i18n="vxNote"></small></dd></div>
           <div><dt data-i18n="betaLabel"></dt><dd><span id="sd-beta">—</span><small id="sd-beta-side"></small></dd></div>
           <div><dt data-i18n="nodeLabel"></dt><dd><span id="sd-node">—</span>°<small data-i18n="nodeNote"></small></dd></div>
         </dl>
@@ -486,7 +486,7 @@
 
     <section class="view-card" aria-labelledby="strip-title">
       <div class="view-head">
-        <h2 id="strip-title" data-i18n="stripTitle">The Moon's path with Earth's orbit straightened</h2>
+        <h2 id="strip-title" data-i18n="stripTitle"></h2>
         <span class="badge" id="strip-scale"></span>
         <span class="badge is-exaggerated" id="strip-mu" hidden></span>
       </div>
@@ -533,11 +533,11 @@
       <dl class="stats">
         <div>
           <dt data-i18n="distLabel"></dt>
-          <dd><span id="ro-r">—</span><span class="unit" data-i18n="au">AU</span><small id="ro-rkm"></small></dd>
+          <dd><span id="ro-r">—</span><span class="unit" data-i18n="au"></span><small id="ro-rkm"></small></dd>
         </div>
         <div>
           <dt data-i18n="speedLabel"></dt>
-          <dd><span id="ro-v">—</span><span class="unit" data-i18n="kms">km/s</span><small id="ro-vkmh"></small></dd>
+          <dd><span id="ro-v">—</span><span class="unit" data-i18n="kms"></span><small id="ro-vkmh"></small></dd>
         </div>
         <div>
           <dt data-i18n="sunLonLabel"></dt>
@@ -563,7 +563,7 @@
       <dl class="stats">
         <div>
           <dt data-i18n="moonDistLabel"></dt>
-          <dd><span id="mo-dist">—</span><span class="unit" data-i18n="km">km</span><small id="mo-dist-note"></small></dd>
+          <dd><span id="mo-dist">—</span><span class="unit" data-i18n="km"></span><small id="mo-dist-note"></small></dd>
         </div>
         <div>
           <dt data-i18n="elongLabel"></dt>
@@ -776,6 +776,20 @@
   const hashLang = (() => {
     try { return decodeURIComponent(location.hash.slice(1)); } catch { return ''; }
   })();
+  // The first of the browser's preferred languages that has a language file. Tags are compared by
+  // language and script after filling in the likely script, so zh-TW finds zh-Hant, zh-CN finds
+  // zh-Hans and pt-PT finds pt.
+  function browserLang() {
+    const key = tag => {
+      try { const l = new Intl.Locale(tag).maximize(); return `${l.language}-${l.script}`; } catch { return ''; }
+    };
+    const ours = new Map(LANGS.map(code => [key(code), code]));
+    for (const tag of navigator.languages?.length ? navigator.languages : [navigator.language]) {
+      const code = ours.get(key(tag));
+      if (code) return code;
+    }
+    return null;
+  }
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const mod = (a, n) => ((a % n) + n) % n;
@@ -797,7 +811,7 @@
     trueAspect: false,
     stripDays: 60,
     tilt: 6,                  // factor exaggerating the Moon's orbital inclination in the edge-on view
-    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : FALLBACK_LANG,
+    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : browserLang() || FALLBACK_LANG,
     custom: validCustom(saved.custom) ? saved.custom : null,
     placeId: 'london',
     show: { moon: true, orbit: true, trail: true, months: true, sekki: false, sectors: false, velocity: false, rings: false },

@@ -154,7 +154,9 @@ def compare(dir_a, dir_b):
                     box = (min(box[0], x), min(box[1], y), max(box[2], x), max(box[3], y)) if box else (x, y, x, y)
         if count:
             same = False
-            print(f'{name}: {count} pixels differ, within x {box[0]}-{box[2]}, y {box[1]}-{box[3]}')
+            hint = ('  (one pixel row only: usually rendering noise at a canvas edge; retake to confirm)'
+                    if box[1] == box[3] else '')
+            print(f'{name}: {count} pixels differ, within x {box[0]}-{box[2]}, y {box[1]}-{box[3]}{hint}')
         else:
             print(f'{name}: identical pixels')
     return same

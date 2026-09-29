@@ -463,7 +463,7 @@
           <span data-i18n="planNote">Seen from above the north ecliptic pole · Earth and Moon both orbit anticlockwise</span>
           <span class="badge" id="ecc-badge"></span>
           <span id="moon-note"></span>
-          <span id="sector-note" data-i18n="sectorNote" hidden></span>
+          <span id="sector-note" data-i18n="sectorNote" hidden>Each shaded sector covers 1/12 of a year; all have the same area</span>
         </div>
         <div class="stage-foot" data-i18n="sizesNote">Sun and Earth not to scale</div>
       </div>
@@ -476,20 +476,20 @@
       <div class="view-head">
         <h2 id="side-title" data-i18n="sideTitle">Earth and Moon seen edge-on</h2>
         <span class="badge" id="side-scale"></span>
-        <span class="badge is-alert" id="side-eclipse" data-i18n="eclipseSeason" hidden></span>
+        <span class="badge is-alert" id="side-eclipse" data-i18n="eclipseSeason" hidden>Eclipse season</span>
       </div>
-      <p class="view-sub" data-i18n="sideSub"></p>
+      <p class="view-sub" data-i18n="sideSub">The band under the top view shows the same scene edge-on, seen from the June-solstice side with the same horizontal scale. Dotted lines link the Earth, Moon and Sun in both views. Earth swings between its March equinox position (left) and its September equinox position (right), passing in front of the Sun around the June solstice and behind it around the December solstice. Only the sunlit sides of the Earth and Moon are bright.</p>
       <div class="side-foot">
         <dl class="side-stats">
-          <div><dt data-i18n="whereLabel"></dt><dd id="sd-where">—</dd></div>
-          <div><dt data-i18n="vxLabel"></dt><dd><span id="sd-vx">—</span> <span data-i18n="kms">km/s</span><small data-i18n="vxNote"></small></dd></div>
-          <div><dt data-i18n="betaLabel"></dt><dd><span id="sd-beta">—</span><small id="sd-beta-side"></small></dd></div>
-          <div><dt data-i18n="nodeLabel"></dt><dd><span id="sd-node">—</span>°<small data-i18n="nodeNote"></small></dd></div>
+          <div><dt data-i18n="whereLabel">Earth's position</dt><dd id="sd-where">—</dd></div>
+          <div><dt data-i18n="vxLabel">Sideways speed</dt><dd><span id="sd-vx">—</span> <span data-i18n="kms">km/s</span><small data-i18n="vxNote">Fastest when passing in front of or behind the Sun</small></dd></div>
+          <div><dt data-i18n="betaLabel">Moon's ecliptic latitude</dt><dd><span id="sd-beta">—</span><small id="sd-beta-side"></small></dd></div>
+          <div><dt data-i18n="nodeLabel">Angle between the Sun and the Moon's nodes</dt><dd><span id="sd-node">—</span>°<small data-i18n="nodeNote">Below about 17°, eclipses can happen at new or full moon</small></dd></div>
         </dl>
         <div class="field">
-          <div class="field-head"><label for="in-tilt" data-i18n="tiltLabel"></label><output id="out-tilt" for="in-tilt"></output></div>
+          <div class="field-head"><label for="in-tilt" data-i18n="tiltLabel">Exaggerate the Moon's orbital tilt</label><output id="out-tilt" for="in-tilt"></output></div>
           <input type="range" id="in-tilt" min="1" max="10" step="1">
-          <p class="hint" data-i18n="tiltHint"></p>
+          <p class="hint" data-i18n="tiltHint">The Moon's orbit is tilted only 5.1° to Earth's orbital plane, so only the vertical direction is stretched.</p>
         </div>
       </div>
     </section>
@@ -500,33 +500,33 @@
         <span class="badge" id="strip-scale"></span>
         <span class="badge is-exaggerated" id="strip-mu" hidden></span>
       </div>
-      <p class="view-sub" data-i18n="stripSub"></p>
+      <p class="view-sub" data-i18n="stripSub">Earth's orbit is straightened into a line: Earth moves right and the Sun is toward the top. The solid line is the path so far and the dotted line is still to come. The purple band in the top view marks this stretch. Drag sideways to move through time.</p>
       <canvas id="strip-canvas" role="img" data-i18n-aria="ariaStrip"></canvas>
       <div class="strip-controls">
         <div class="field">
-          <div class="field-head"><label for="in-mu" data-i18n="muLabel"></label><output id="out-mu" for="in-mu"></output></div>
+          <div class="field-head"><label for="in-mu" data-i18n="muLabel">Earth's orbital speed (hypothetical)</label><output id="out-mu" for="in-mu"></output></div>
           <input type="range" id="in-mu" min="0" max="1000" step="1">
           <div class="presets" id="mu-presets">
-            <button type="button" data-mu="1" data-i18n="presetReal"></button>
-            <button type="button" data-mu="0.1" data-i18n="presetTenth"></button>
-            <button type="button" data-mu="cusp" data-i18n="presetCusp"></button>
-            <button type="button" data-mu="0.015" data-i18n="presetLoop"></button>
+            <button type="button" data-mu="1" data-i18n="presetReal">Actual speed</button>
+            <button type="button" data-mu="0.1" data-i18n="presetTenth">1/10</button>
+            <button type="button" data-mu="cusp" data-i18n="presetCusp">Cusp threshold</button>
+            <button type="button" data-mu="0.015" data-i18n="presetLoop">Loops</button>
           </div>
           <div class="field-foot"><span id="strip-k"></span></div>
         </div>
         <div class="strip-options">
-          <label class="check"><input type="checkbox" id="tg-aspect"><span data-i18n="aspectLabel"></span></label>
+          <label class="check"><input type="checkbox" id="tg-aspect"><span data-i18n="aspectLabel">Keep true proportions (no exaggeration)</span></label>
           <div class="field-row">
-            <label for="sel-span" data-i18n="spanLabel"></label>
+            <label for="sel-span" data-i18n="spanLabel">Time span</label>
             <select id="sel-span">
-              <option value="30" data-i18n="span1"></option>
-              <option value="60" data-i18n="span2" selected></option>
-              <option value="120" data-i18n="span4"></option>
+              <option value="30" data-i18n="span1">About 1 month</option>
+              <option value="60" data-i18n="span2" selected>About 2 months</option>
+              <option value="120" data-i18n="span4">About 4 months</option>
             </select>
           </div>
         </div>
       </div>
-      <p class="strip-note" data-i18n="stripNote"></p>
+      <p class="strip-note" data-i18n="stripNote">The Moon passes on the Sun side (top) around new moon and on the far side (bottom) around full moon. At the real speeds its path only waves and never loops. In this straightened view the path bends away from the Sun near new moon, but Earth's real orbit curves toward the Sun, so the Moon's true path always curves toward the Sun. The Sun pulls on the Moon about 2.2 times as hard as Earth does.</p>
     </section>
   </main>
 
@@ -542,20 +542,20 @@
       </div>
       <dl class="stats">
         <div>
-          <dt data-i18n="distLabel"></dt>
+          <dt data-i18n="distLabel">Distance from the Sun</dt>
           <dd><span id="ro-r">—</span><span class="unit" data-i18n="au">AU</span><small id="ro-rkm"></small></dd>
         </div>
         <div>
-          <dt data-i18n="speedLabel"></dt>
+          <dt data-i18n="speedLabel">Orbital speed</dt>
           <dd><span id="ro-v">—</span><span class="unit" data-i18n="kms">km/s</span><small id="ro-vkmh"></small></dd>
         </div>
         <div>
-          <dt data-i18n="sunLonLabel"></dt>
-          <dd><span id="ro-lon">—</span><span class="unit">°</span><small data-i18n="sunLonNote"></small></dd>
+          <dt data-i18n="sunLonLabel">Sun's ecliptic longitude</dt>
+          <dd><span id="ro-lon">—</span><span class="unit">°</span><small data-i18n="sunLonNote">Direction of the Sun seen from Earth</small></dd>
         </div>
         <div>
-          <dt data-i18n="periLabel"></dt>
-          <dd><span id="ro-peri">—</span><span class="unit" id="ro-peri-unit"></span><small data-i18n="anomNote"></small></dd>
+          <dt data-i18n="periLabel">Since perihelion</dt>
+          <dd><span id="ro-peri">—</span><span class="unit" id="ro-peri-unit"></span><small data-i18n="anomNote">Anomalistic year = 365.26 days</small></dd>
         </div>
       </dl>
     </section>
@@ -572,78 +572,78 @@
       </div>
       <dl class="stats">
         <div>
-          <dt data-i18n="moonDistLabel"></dt>
+          <dt data-i18n="moonDistLabel">Distance from Earth</dt>
           <dd><span id="mo-dist">—</span><span class="unit" data-i18n="km">km</span><small id="mo-dist-note"></small></dd>
         </div>
         <div>
-          <dt data-i18n="elongLabel"></dt>
-          <dd><span id="mo-elong">—</span><span class="unit">°</span><small data-i18n="elongNote"></small></dd>
+          <dt data-i18n="elongLabel">Elongation from the Sun</dt>
+          <dd><span id="mo-elong">—</span><span class="unit">°</span><small data-i18n="elongNote">0° = new moon · 180° = full moon</small></dd>
         </div>
         <div>
-          <dt data-i18n="nextNew"></dt>
+          <dt data-i18n="nextNew">Next new moon</dt>
           <dd class="when" id="mo-next-new">—</dd>
         </div>
         <div>
-          <dt data-i18n="nextFull"></dt>
+          <dt data-i18n="nextFull">Next full moon</dt>
           <dd class="when" id="mo-next-full">—</dd>
         </div>
       </dl>
     </section>
 
     <section class="card inset">
-      <h2 data-i18n="insetTitle"></h2>
+      <h2 data-i18n="insetTitle">Close-up of Earth (rotation, day and night)</h2>
       <canvas id="earth-canvas" role="img" data-i18n-aria="ariaInset"></canvas>
       <p class="caption" id="ro-place">—</p>
-      <p class="caption muted" data-i18n="axisNote"></p>
+      <p class="caption muted" data-i18n="axisNote">Earth's axis stays tilted 23.4° toward the top of the view (ecliptic longitude 90°) all year. Around the June solstice the North Pole leans toward the Sun.</p>
     </section>
 
     <section class="card controls">
       <div class="transport">
         <button type="button" id="btn-play" class="primary"></button>
-        <button type="button" id="btn-now" data-i18n="now"></button>
+        <button type="button" id="btn-now" data-i18n="now">Now</button>
         <input type="date" id="in-date" data-i18n-aria="dateAria">
       </div>
 
       <div class="field">
-        <div class="field-head"><label for="in-speed" data-i18n="speedLabel2"></label><output id="out-speed" for="in-speed"></output></div>
+        <div class="field-head"><label for="in-speed" data-i18n="speedLabel2">Playback speed</label><output id="out-speed" for="in-speed"></output></div>
         <input type="range" id="in-speed" min="0" max="1000" step="1">
       </div>
 
       <div class="field">
-        <div class="field-head"><label for="in-ecc" data-i18n="eccLabel"></label><output id="out-ecc" for="in-ecc"></output></div>
+        <div class="field-head"><label for="in-ecc" data-i18n="eccLabel">Eccentricity of Earth's orbit, e</label><output id="out-ecc" for="in-ecc"></output></div>
         <input type="range" id="in-ecc" min="0" max="1000" step="1">
-        <div class="field-foot"><span id="ecc-meta"></span><button type="button" id="btn-ecc-real" class="link" data-i18n="eccReset"></button></div>
-        <p class="hint" data-i18n="eccHint"></p>
+        <div class="field-foot"><span id="ecc-meta"></span><button type="button" id="btn-ecc-real" class="link" data-i18n="eccReset">Reset to actual value</button></div>
+        <p class="hint" data-i18n="eccHint">A larger eccentricity makes it easier to see Earth speed up near perihelion and slow down near aphelion.</p>
       </div>
 
       <fieldset class="toggles">
-        <legend data-i18n="showLegend"></legend>
-        <label class="toggle"><input type="checkbox" id="tg-moon"><span data-i18n="tgMoon"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-orbit"><span data-i18n="tgOrbit"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-trail"><span data-i18n="tgTrail"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-months"><span data-i18n="tgMonths"></span></label>
-        <label class="toggle" id="toggle-sekki"><input type="checkbox" id="tg-sekki"><span data-i18n="tgSekki"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-sectors"><span data-i18n="tgSectors"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-velocity"><span data-i18n="tgVelocity"></span></label>
-        <label class="toggle"><input type="checkbox" id="tg-rings"><span data-i18n="tgRings"></span></label>
+        <legend data-i18n="showLegend">Show</legend>
+        <label class="toggle"><input type="checkbox" id="tg-moon"><span data-i18n="tgMoon">Moon</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-orbit"><span data-i18n="tgOrbit">Full orbit</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-trail"><span data-i18n="tgTrail">Trail</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-months"><span data-i18n="tgMonths">1st of each month</span></label>
+        <label class="toggle" id="toggle-sekki"><input type="checkbox" id="tg-sekki"><span data-i18n="tgSekki">24 solar terms</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-sectors"><span data-i18n="tgSectors">Equal-time sectors (2nd law)</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-velocity"><span data-i18n="tgVelocity">Velocity vector</span></label>
+        <label class="toggle"><input type="checkbox" id="tg-rings"><span data-i18n="tgRings">Distance rings</span></label>
       </fieldset>
 
       <div class="field-row">
-        <label for="sel-trail" data-i18n="trailLabel"></label>
+        <label for="sel-trail" data-i18n="trailLabel">Trail length</label>
         <select id="sel-trail">
-          <option value="91.31" data-i18n="trail3"></option>
-          <option value="182.63" data-i18n="trail6"></option>
-          <option value="365.25" data-i18n="trail12" selected></option>
+          <option value="91.31" data-i18n="trail3">3 months</option>
+          <option value="182.63" data-i18n="trail6">6 months</option>
+          <option value="365.25" data-i18n="trail12" selected>1 year</option>
         </select>
-        <button type="button" id="btn-clear" data-i18n="clearTrail"></button>
+        <button type="button" id="btn-clear" data-i18n="clearTrail">Clear trail</button>
       </div>
     </section>
 
     <section class="notes">
-      <h2 data-i18n="notesTitle"></h2>
-      <p data-i18n="note1"></p>
-      <p data-i18n="note2"></p>
-      <p data-i18n="note3"></p>
+      <h2 data-i18n="notesTitle">About the calculations</h2>
+      <p data-i18n="note1">Earth's position comes from solving Kepler's equation with JPL mean orbital elements (J2000, Earth–Moon barycentre). The Moon's position uses the main terms of the lunar theory in J. Meeus, Astronomical Algorithms. Equinox and new/full moon times are accurate to within about half an hour; perihelion and aphelion dates can be off by 1–2 days because of the Moon.</p>
+      <p data-i18n="note2">Earth's orbit is nearly a circle (eccentricity 0.0167). The Earth–Moon distance is only about 1/390 of the distance to the Sun, so the Moon's distance is enlarged in the figures.</p>
+      <p data-i18n="note3">Press the space bar to play or pause.</p>
     </section>
   </aside>
 </div>
@@ -3429,6 +3429,20 @@
   const hashLang = (() => {
     try { return decodeURIComponent(location.hash.slice(1)); } catch { return ''; }
   })();
+  // The first of the browser's preferred languages that has a language file. Tags are compared by
+  // language and script after filling in the likely script, so zh-TW finds zh-Hant, zh-CN finds
+  // zh-Hans and pt-PT finds pt.
+  function browserLang() {
+    const key = tag => {
+      try { const l = new Intl.Locale(tag).maximize(); return `${l.language}-${l.script}`; } catch { return ''; }
+    };
+    const ours = new Map(LANGS.map(code => [key(code), code]));
+    for (const tag of navigator.languages?.length ? navigator.languages : [navigator.language]) {
+      const code = ours.get(key(tag));
+      if (code) return code;
+    }
+    return null;
+  }
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const mod = (a, n) => ((a % n) + n) % n;
@@ -3450,7 +3464,7 @@
     trueAspect: false,
     stripDays: 60,
     tilt: 6,                  // factor exaggerating the Moon's orbital inclination in the edge-on view
-    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : FALLBACK_LANG,
+    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : browserLang() || FALLBACK_LANG,
     custom: validCustom(saved.custom) ? saved.custom : null,
     placeId: 'london',
     show: { moon: true, orbit: true, trail: true, months: true, sekki: false, sectors: false, velocity: false, rings: false },

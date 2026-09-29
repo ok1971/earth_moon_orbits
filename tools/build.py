@@ -8,7 +8,9 @@ ordered in the language menu by meta.order (languages without one come last, by 
 is a single self-contained HTML file, like the original, that opens by double-clicking and can be
 published as it is.
 """
+import html
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -99,12 +101,36 @@ def locale_css(locales):
     return ''.join(f'  {r}\n' for r in rules)
 
 
+def fill_static_text(template, strings):
+    """Put the fallback language's text into the elements marked data-i18n, and into <title>, so the
+    page reads sensibly before its script runs. The script replaces it with the chosen language."""
+    missing = []
+
+    def fill(m):
+        value = strings.get(m.group(2))
+        if not isinstance(value, str):
+            missing.append(m.group(2))
+            return m.group(0)
+        return m.group(1) + html.escape(value, quote=False) + m.group(3)
+
+    page = re.sub(r'(<[^>]*\bdata-i18n="(\w+)"[^>]*>)(</)', fill, template)
+    if missing:
+        sys.exit(f'{TEMPLATE.name}: data-i18n keys without text in the fallback language: {", ".join(missing)}')
+    return page.replace('<title></title>', f'<title>{html.escape(strings["title"], quote=False)}</title>', 1)
+
+
 def build():
     template = TEMPLATE.read_text(encoding='utf-8')
     for marker in (MARKER, CSS_MARKER):
         if template.count(marker) != 1:
             sys.exit(f'{TEMPLATE.name} must contain {marker.strip()} exactly once')
+    fallback = re.search(r"const FALLBACK_LANG = '([\w-]+)'", template)
+    if not fallback:
+        sys.exit(f'{TEMPLATE.name} must define FALLBACK_LANG')
     locales = load_locales()
+    if fallback.group(1) not in locales:
+        sys.exit(f'the fallback language {fallback.group(1)} has no language file')
+    template = fill_static_text(template, locales[fallback.group(1)]['strings'])
     # The page needs everything except the notes for translators
     shipped = {code: {k: v for k, v in data.items() if k != 'notes'} for code, data in locales.items()}
     # "</" would end the <script> element early if a translation ever contained "</script>"
