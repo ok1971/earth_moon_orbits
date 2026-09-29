@@ -1,0 +1,2619 @@
+<meta charset="utf-8">
+<title>Earth and Moon Orbits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif:wght@700&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #E8ECF1;
+    --surface: #F8FAFC;
+    --ink: #131B25;
+    --muted: #566376;
+    --line: #C8D1DC;
+    --accent: #1D5FC0;
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(29, 95, 192, .12);
+    --warn: #A84F06;
+    --spring: #2E7A47;
+    --summer: #BF3F0B;
+    --autumn: #9A5A06;
+    --winter: #2B5C9C;
+    /* canvas */
+    --space: #F4F6F9;
+    --star: transparent;
+    --ring: rgba(38, 58, 88, .16);
+    --orbit: rgba(38, 58, 88, .42);
+    --trail: #1D5FC0;
+    --sun: #E0900A;
+    --sun-glow: rgba(240, 160, 20, .38);
+    --earth-day: #3A83E6;
+    --earth-night: #172E4D;
+    --moon: #7B4FD0;
+    --moon-lit: #F3EEDF;
+    --moon-dark: #4A4F5C;
+    --grat: rgba(255, 255, 255, .38);
+    --pole: #FFFFFF;
+    --label: #5A677A;
+    --label-strong: #17212D;
+    --sector-a: rgba(29, 95, 192, .11);
+    --sector-b: rgba(224, 144, 10, .14);
+    --vel: #C2410C;
+    --place: #E03558;
+
+    --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    /* For numerals. No generic family at the end: each use appends var(--font-ui) or monospace */
+    --font-num: "IBM Plex Mono", ui-monospace, Consolas, "Courier New";
+    --font-title: "IBM Plex Serif", Georgia, serif;
+  }
+  :root[lang="ja"] {
+    --font-ui: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
+    --font-title: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  }
+  :root[lang="zh-Hans"] {
+    --font-ui: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-title: "Noto Serif SC", "Songti SC", SimSun, serif;
+  }
+  :root[lang="zh-Hant"] {
+    --font-ui: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --font-title: "Noto Serif TC", "Songti TC", PMingLiU, serif;
+  }
+  :root[lang="ko"] {
+    --font-ui: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-title: "Noto Serif KR", AppleMyungjo, Batang, serif;
+  }
+  :root[lang="hi"] {
+    --font-ui: "IBM Plex Sans Devanagari", "Nirmala UI", Mangal, sans-serif;
+    --font-title: "Noto Serif Devanagari", "Nirmala UI", serif;
+  }
+  :root[lang="ar"] {
+    --font-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+    --font-title: "Noto Naskh Arabic", "Traditional Arabic", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #070B11;
+      --surface: #0E151F;
+      --ink: #E2E8F0;
+      --muted: #8995A8;
+      --line: #213043;
+      --accent: #5C9BFF;
+      --accent-ink: #061020;
+      --accent-soft: rgba(92, 155, 255, .16);
+      --warn: #F5A524;
+      --spring: #6CCB8C;
+      --summer: #FF8A4C;
+      --autumn: #F0B04E;
+      --winter: #7FAEFF;
+      --space: #03060B;
+      --star: rgba(205, 222, 255, .9);
+      --ring: rgba(150, 175, 210, .15);
+      --orbit: rgba(150, 175, 210, .42);
+      --trail: #5C9BFF;
+      --sun: #FFC23A;
+      --sun-glow: rgba(255, 185, 50, .32);
+      --earth-day: #5AA0FF;
+      --earth-night: #122038;
+      --moon: #BCA0FF;
+      --moon-lit: #F1EAD6;
+      --moon-dark: #2E3440;
+      --grat: rgba(255, 255, 255, .32);
+      --pole: #FFFFFF;
+      --label: #8A97AA;
+      --label-strong: #DDE5EF;
+      --sector-a: rgba(92, 155, 255, .13);
+      --sector-b: rgba(255, 194, 58, .11);
+      --vel: #FF8A4C;
+      --place: #FF5C7C;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #070B11;
+    --surface: #0E151F;
+    --ink: #E2E8F0;
+    --muted: #8995A8;
+    --line: #213043;
+    --accent: #5C9BFF;
+    --accent-ink: #061020;
+    --accent-soft: rgba(92, 155, 255, .16);
+    --warn: #F5A524;
+    --spring: #6CCB8C;
+    --summer: #FF8A4C;
+    --autumn: #F0B04E;
+    --winter: #7FAEFF;
+    --space: #03060B;
+    --star: rgba(205, 222, 255, .9);
+    --ring: rgba(150, 175, 210, .15);
+    --orbit: rgba(150, 175, 210, .42);
+    --trail: #5C9BFF;
+    --sun: #FFC23A;
+    --sun-glow: rgba(255, 185, 50, .32);
+    --earth-day: #5AA0FF;
+    --earth-night: #122038;
+    --moon: #BCA0FF;
+    --moon-lit: #F1EAD6;
+    --moon-dark: #2E3440;
+    --grat: rgba(255, 255, 255, .32);
+    --pole: #FFFFFF;
+    --label: #8A97AA;
+    --label-strong: #DDE5EF;
+    --sector-a: rgba(92, 155, 255, .13);
+    --sector-b: rgba(255, 194, 58, .11);
+    --vel: #FF8A4C;
+    --place: #FF5C7C;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  /* Letter-spacing breaks the joined letterforms of Arabic and Devanagari scripts */
+  :root[lang="ar"] *, :root[lang="hi"] * { letter-spacing: 0 !important; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: 18px 32px;
+  }
+  .app {
+    max-width: 1320px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 348px;
+    gap: 14px 20px;
+    align-items: start;
+  }
+  .masthead {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 24px;
+  }
+  .titles { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; min-width: 0; }
+  h1 {
+    font-family: var(--font-title);
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: .01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  :root[lang="ja"] h1, :root[lang="zh-Hans"] h1, :root[lang="zh-Hant"] h1 { letter-spacing: .06em; }
+  .titles p { margin: 0; color: var(--muted); max-width: 70ch; }
+  .settings { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .setting { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
+  .setting select { max-width: 16em; }
+  .custom-place {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .custom-place label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+  .custom-place input { width: 9em; }
+  .custom-place .hint, .custom-place .error { flex-basis: 100%; margin: 0; }
+  .error { color: var(--warn); font-size: 12.5px; }
+  h2 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .muted { color: var(--muted); }
+
+  .main-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  /* stage: top = view from above; bottom = edge-on view sharing the same horizontal axis */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    height: clamp(620px, calc(100vh - 110px), 1080px);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--space);
+  }
+  .plan { position: relative; flex: 1 1 auto; min-height: 0; }
+  .plan canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .elev { position: relative; flex: none; height: 200px; border-top: 1px dashed var(--line); }
+  #side-canvas { display: block; width: 100%; height: 100%; }
+  .stage-note {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    max-width: calc(100% - 24px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    padding: 1px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-num), var(--font-ui);
+    font-size: 12px;
+  }
+  .badge.is-exaggerated, .badge.is-alert { color: var(--warn); border-color: var(--warn); }
+  .stage-foot {
+    position: absolute;
+    right: 12px;
+    bottom: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* Edge-on view and straightened-orbit view */
+  .view-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .view-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+  .view-head h2 { font-size: 15px; color: var(--ink); letter-spacing: .02em; margin: 0; margin-inline-end: auto; }
+  .view-sub { margin: -4px 0 0; font-size: 12px; color: var(--muted); max-width: 88ch; }
+  .side-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 12px 22px;
+    align-items: start;
+  }
+  .side-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin: 0; }
+  .side-stats dt { font-size: 11.5px; color: var(--muted); }
+  .side-stats dd { margin: 0; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .side-stats small { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); }
+  #strip-canvas {
+    display: block;
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--space);
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  #strip-canvas:active { cursor: grabbing; }
+  .strip-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 12px 22px;
+    align-items: start;
+  }
+  .strip-options { display: flex; flex-direction: column; gap: 10px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+  .presets button { font-size: 12px; padding: 2px 10px; border-radius: 999px; }
+  .presets button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+  .check { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+  .check input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+  .strip-note { margin: 0; font-size: 12.5px; color: var(--muted); max-width: 88ch; }
+
+  /* panel */
+  .panel { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .clock { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; }
+  .clock-date { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .clock-time { font-family: var(--font-num), monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .sekki { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 11px;
+    border-radius: 999px;
+    border: 1.5px solid currentColor;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .chip[data-season="spring"] { color: var(--spring); }
+  .chip[data-season="summer"] { color: var(--summer); }
+  .chip[data-season="autumn"] { color: var(--autumn); }
+  .chip[data-season="winter"] { color: var(--winter); }
+  .sekki b { font-size: 15px; }
+  .sekki .muted { font-size: 12px; }
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .stats dt { font-size: 11.5px; color: var(--muted); }
+  .stats dd {
+    margin: 0;
+    font-family: var(--font-num), var(--font-ui);
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+  }
+  .stats dd.when { font-size: 15px; }
+  .stats .unit { font-size: 12px; color: var(--muted); margin-inline-start: 3px; font-weight: 400; font-family: var(--font-ui); }
+  .stats small { display: block; font-family: var(--font-ui); font-size: 11.5px; color: var(--muted); font-weight: 400; }
+
+  .moon-row { display: flex; align-items: center; gap: 12px; }
+  #phase-canvas { width: 56px; height: 56px; flex: none; display: block; }
+  .moon-name { font-size: 17px; font-weight: 700; }
+  .moon-sub { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .inset canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .caption { margin: 8px 0 0; font-size: 12.5px; line-height: 1.55; }
+  #ro-place { font-variant-numeric: tabular-nums; }
+
+  .controls { display: flex; flex-direction: column; gap: 14px; }
+  .transport { display: flex; flex-wrap: wrap; gap: 8px; }
+  button, select, input[type="date"], input[type="number"] {
+    font: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 5px 11px;
+  }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
+    min-width: 6.5em;
+  }
+  button.link {
+    border: 0;
+    background: none;
+    padding: 0;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 12px;
+  }
+  input[type="date"], input[type="number"] { font-family: var(--font-num), monospace; font-size: 13px; }
+  input[type="date"] { flex: 1 1 9.5em; min-width: 0; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 8px; }
+  .field-head label { font-weight: 700; }
+  .field-head output { font-family: var(--font-num), var(--font-ui); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .field-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; margin: 0; accent-color: var(--accent); }
+  .hint { margin: 0; font-size: 12px; color: var(--muted); }
+
+  .toggles { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .toggles legend { font-weight: 700; padding: 0; margin-bottom: 6px; }
+  .toggle { position: relative; cursor: pointer; }
+  .toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .toggle span {
+    display: inline-block;
+    padding: 3px 11px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--muted);
+    user-select: none;
+  }
+  .toggle input:checked + span { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+  .toggle input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .field-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .field-row label { font-weight: 700; margin-inline-end: auto; }
+
+  .notes { padding-inline: 4px; }
+  .notes p { margin: 0 0 8px; font-size: 12.5px; color: var(--muted); max-width: 65ch; }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: minmax(0, 1fr); }
+    .stage { height: auto; }
+    .plan { flex: none; aspect-ratio: 1 / 1; max-height: 80vh; }
+    h1 { font-size: 24px; }
+  }
+  @media (max-width: 640px) {
+    .strip-controls, .side-foot { grid-template-columns: minmax(0, 1fr); }
+    #strip-canvas { height: 220px; }
+    .elev { height: 170px; }
+  }
+</style>
+
+<div class="app">
+  <header class="masthead">
+    <div class="titles">
+      <h1 data-i18n="title">Earth and Moon Orbits</h1>
+      <p data-i18n="subtitle">The Earth and Moon travelling around the Sun, seen from above the north side of Earth's orbital plane (the north ecliptic pole).</p>
+    </div>
+    <div class="settings">
+      <label class="setting"><span data-i18n="lang">Language</span>
+        <select id="sel-lang"></select>
+      </label>
+      <label class="setting"><span data-i18n="place">Viewing from</span>
+        <select id="sel-place"></select>
+      </label>
+    </div>
+  </header>
+
+  <section class="custom-place" id="custom-place" hidden>
+    <label><span data-i18n="lat">Latitude (°)</span><input type="number" id="in-lat" min="-90" max="90" step="0.0001" inputmode="decimal"></label>
+    <label><span data-i18n="lon">Longitude (°)</span><input type="number" id="in-lon" min="-180" max="180" step="0.0001" inputmode="decimal"></label>
+    <label><span data-i18n="tz">Time zone</span><select id="sel-tz"></select></label>
+    <button type="button" id="btn-apply-place" class="primary" data-i18n="apply">Apply</button>
+    <p class="hint" data-i18n="latlonHint">North and east are positive; south and west are negative.</p>
+    <p class="error" id="place-error" data-i18n="latlonError" hidden>Enter a latitude from −90 to 90 and a longitude from −180 to 180.</p>
+  </section>
+
+  <main class="main-col">
+    <div class="stage">
+      <div class="plan">
+        <canvas id="orbit-canvas" role="img" data-i18n-aria="ariaPlan"></canvas>
+        <div class="stage-note">
+          <span data-i18n="planNote">Seen from above the north ecliptic pole · Earth and Moon both orbit anticlockwise</span>
+          <span class="badge" id="ecc-badge"></span>
+          <span id="moon-note"></span>
+          <span id="sector-note" data-i18n="sectorNote" hidden></span>
+        </div>
+        <div class="stage-foot" data-i18n="sizesNote">Sun and Earth not to scale</div>
+      </div>
+      <div class="elev">
+        <canvas id="side-canvas" role="img" data-i18n-aria="ariaElev"></canvas>
+      </div>
+    </div>
+
+    <section class="view-card" aria-labelledby="side-title">
+      <div class="view-head">
+        <h2 id="side-title" data-i18n="sideTitle">Earth and Moon seen edge-on</h2>
+        <span class="badge" id="side-scale"></span>
+        <span class="badge is-alert" id="side-eclipse" data-i18n="eclipseSeason" hidden></span>
+      </div>
+      <p class="view-sub" data-i18n="sideSub"></p>
+      <div class="side-foot">
+        <dl class="side-stats">
+          <div><dt data-i18n="whereLabel"></dt><dd id="sd-where">—</dd></div>
+          <div><dt data-i18n="vxLabel"></dt><dd><span id="sd-vx">—</span> <span data-i18n="kms">km/s</span><small data-i18n="vxNote"></small></dd></div>
+          <div><dt data-i18n="betaLabel"></dt><dd><span id="sd-beta">—</span><small id="sd-beta-side"></small></dd></div>
+          <div><dt data-i18n="nodeLabel"></dt><dd><span id="sd-node">—</span>°<small data-i18n="nodeNote"></small></dd></div>
+        </dl>
+        <div class="field">
+          <div class="field-head"><label for="in-tilt" data-i18n="tiltLabel"></label><output id="out-tilt" for="in-tilt"></output></div>
+          <input type="range" id="in-tilt" min="1" max="10" step="1">
+          <p class="hint" data-i18n="tiltHint"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-card" aria-labelledby="strip-title">
+      <div class="view-head">
+        <h2 id="strip-title" data-i18n="stripTitle">The Moon's path with Earth's orbit straightened</h2>
+        <span class="badge" id="strip-scale"></span>
+        <span class="badge is-exaggerated" id="strip-mu" hidden></span>
+      </div>
+      <p class="view-sub" data-i18n="stripSub"></p>
+      <canvas id="strip-canvas" role="img" data-i18n-aria="ariaStrip"></canvas>
+      <div class="strip-controls">
+        <div class="field">
+          <div class="field-head"><label for="in-mu" data-i18n="muLabel"></label><output id="out-mu" for="in-mu"></output></div>
+          <input type="range" id="in-mu" min="0" max="1000" step="1">
+          <div class="presets" id="mu-presets">
+            <button type="button" data-mu="1" data-i18n="presetReal"></button>
+            <button type="button" data-mu="0.1" data-i18n="presetTenth"></button>
+            <button type="button" data-mu="cusp" data-i18n="presetCusp"></button>
+            <button type="button" data-mu="0.015" data-i18n="presetLoop"></button>
+          </div>
+          <div class="field-foot"><span id="strip-k"></span></div>
+        </div>
+        <div class="strip-options">
+          <label class="check"><input type="checkbox" id="tg-aspect"><span data-i18n="aspectLabel"></span></label>
+          <div class="field-row">
+            <label for="sel-span" data-i18n="spanLabel"></label>
+            <select id="sel-span">
+              <option value="30" data-i18n="span1"></option>
+              <option value="60" data-i18n="span2" selected></option>
+              <option value="120" data-i18n="span4"></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <p class="strip-note" data-i18n="stripNote"></p>
+    </section>
+  </main>
+
+  <aside class="panel">
+    <section class="card readout">
+      <div class="clock">
+        <span class="clock-date" id="ro-date">—</span>
+        <span class="clock-time" id="ro-time">—</span>
+      </div>
+      <div class="sekki">
+        <span class="chip" id="ro-season" data-season="autumn">—</span>
+        <span><b id="ro-sekki"></b> <span class="muted" id="ro-sekki-range"></span></span>
+      </div>
+      <dl class="stats">
+        <div>
+          <dt data-i18n="distLabel"></dt>
+          <dd><span id="ro-r">—</span><span class="unit" data-i18n="au">AU</span><small id="ro-rkm"></small></dd>
+        </div>
+        <div>
+          <dt data-i18n="speedLabel"></dt>
+          <dd><span id="ro-v">—</span><span class="unit" data-i18n="kms">km/s</span><small id="ro-vkmh"></small></dd>
+        </div>
+        <div>
+          <dt data-i18n="sunLonLabel"></dt>
+          <dd><span id="ro-lon">—</span><span class="unit">°</span><small data-i18n="sunLonNote"></small></dd>
+        </div>
+        <div>
+          <dt data-i18n="periLabel"></dt>
+          <dd><span id="ro-peri">—</span><span class="unit" data-i18n="daysUnit"></span><small data-i18n="anomNote"></small></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card moon">
+      <h2 id="mo-title">—</h2>
+      <div class="moon-row">
+        <canvas id="phase-canvas" role="img" data-i18n-aria="ariaPhase"></canvas>
+        <div>
+          <div class="moon-name" id="mo-name">—</div>
+          <div class="moon-sub" id="mo-age">—</div>
+          <div class="moon-sub" id="mo-sky">—</div>
+        </div>
+      </div>
+      <dl class="stats">
+        <div>
+          <dt data-i18n="moonDistLabel"></dt>
+          <dd><span id="mo-dist">—</span><span class="unit" data-i18n="km">km</span><small id="mo-dist-note"></small></dd>
+        </div>
+        <div>
+          <dt data-i18n="elongLabel"></dt>
+          <dd><span id="mo-elong">—</span><span class="unit">°</span><small data-i18n="elongNote"></small></dd>
+        </div>
+        <div>
+          <dt data-i18n="nextNew"></dt>
+          <dd class="when" id="mo-next-new">—</dd>
+        </div>
+        <div>
+          <dt data-i18n="nextFull"></dt>
+          <dd class="when" id="mo-next-full">—</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card inset">
+      <h2 data-i18n="insetTitle"></h2>
+      <canvas id="earth-canvas" role="img" data-i18n-aria="ariaInset"></canvas>
+      <p class="caption" id="ro-place">—</p>
+      <p class="caption muted" data-i18n="axisNote"></p>
+    </section>
+
+    <section class="card controls">
+      <div class="transport">
+        <button type="button" id="btn-play" class="primary"></button>
+        <button type="button" id="btn-now" data-i18n="now"></button>
+        <input type="date" id="in-date" data-i18n-aria="dateAria">
+      </div>
+
+      <div class="field">
+        <div class="field-head"><label for="in-speed" data-i18n="speedLabel2"></label><output id="out-speed" for="in-speed"></output></div>
+        <input type="range" id="in-speed" min="0" max="1000" step="1">
+      </div>
+
+      <div class="field">
+        <div class="field-head"><label for="in-ecc" data-i18n="eccLabel"></label><output id="out-ecc" for="in-ecc"></output></div>
+        <input type="range" id="in-ecc" min="0" max="1000" step="1">
+        <div class="field-foot"><span id="ecc-meta"></span><button type="button" id="btn-ecc-real" class="link" data-i18n="eccReset"></button></div>
+        <p class="hint" data-i18n="eccHint"></p>
+      </div>
+
+      <fieldset class="toggles">
+        <legend data-i18n="showLegend"></legend>
+        <label class="toggle"><input type="checkbox" id="tg-moon"><span data-i18n="tgMoon"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-orbit"><span data-i18n="tgOrbit"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-trail"><span data-i18n="tgTrail"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-months"><span data-i18n="tgMonths"></span></label>
+        <label class="toggle" id="toggle-sekki"><input type="checkbox" id="tg-sekki"><span data-i18n="tgSekki"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-sectors"><span data-i18n="tgSectors"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-velocity"><span data-i18n="tgVelocity"></span></label>
+        <label class="toggle"><input type="checkbox" id="tg-rings"><span data-i18n="tgRings"></span></label>
+      </fieldset>
+
+      <div class="field-row">
+        <label for="sel-trail" data-i18n="trailLabel"></label>
+        <select id="sel-trail">
+          <option value="91.31" data-i18n="trail3"></option>
+          <option value="182.63" data-i18n="trail6"></option>
+          <option value="365.25" data-i18n="trail12" selected></option>
+        </select>
+        <button type="button" id="btn-clear" data-i18n="clearTrail"></button>
+      </div>
+    </section>
+
+    <section class="notes">
+      <h2 data-i18n="notesTitle"></h2>
+      <p data-i18n="note1"></p>
+      <p data-i18n="note2"></p>
+      <p data-i18n="note3"></p>
+    </section>
+  </aside>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  // ---- Languages -------------------------------------------------------------
+  // Everything that differs between languages lives in src/locales/<code>.json. tools/build.py
+  // inserts them all here, in language-menu order.
+  const LOCALE_DATA = /*@LOCALE_DATA@*/ {};
+  const LANGS = Object.keys(LOCALE_DATA);
+  const localeMeta = code => LOCALE_DATA[code].meta;
+  const LANG_NAMES = Object.fromEntries(LANGS.map(c => [c, localeMeta(c).name]));
+  const LOCALES = Object.fromEntries(LANGS.map(c => [c, localeMeta(c).locale]));
+  const CJK = new Set(['ja', 'zh-Hans', 'zh-Hant', 'ko']);
+  // Extra fonts loaded per language (Latin and Cyrillic text uses IBM Plex, which is loaded up
+  // front)
+  const LANG_FONTS = Object.fromEntries(LANGS.filter(c => localeMeta(c).googleFonts).map(c => [c, localeMeta(c).googleFonts]));
+  const SEKKI = Object.fromEntries(LANGS.filter(c => LOCALE_DATA[c].solarTerms).map(c => [c, LOCALE_DATA[c].solarTerms]));
+  const DICT = Object.fromEntries(LANGS.map(c => [c, LOCALE_DATA[c].strings]));
+
+  // Preset observing locations; their names are in each locale file under "places"
+  const PLACES = [
+    { id: 'tokyo', lat: 35.6895, lon: 139.6917, tz: 'Asia/Tokyo' },
+    { id: 'newyork', lat: 40.7128, lon: -74.0060, tz: 'America/New_York' },
+    { id: 'london', lat: 51.5074, lon: -0.1278, tz: 'Europe/London' },
+    { id: 'newdelhi', lat: 28.6139, lon: 77.2090, tz: 'Asia/Kolkata' },
+    { id: 'beijing', lat: 39.9042, lon: 116.4074, tz: 'Asia/Shanghai' },
+    { id: 'paris', lat: 48.8566, lon: 2.3522, tz: 'Europe/Paris' },
+    { id: 'brasilia', lat: -15.7939, lon: -47.8828, tz: 'America/Sao_Paulo' },
+    { id: 'dubai', lat: 25.2048, lon: 55.2708, tz: 'Asia/Dubai' },
+    { id: 'sydney', lat: -33.8688, lon: 151.2093, tz: 'Australia/Sydney' },
+    { id: 'nairobi', lat: -1.2921, lon: 36.8219, tz: 'Africa/Nairobi' },
+    { id: 'reykjavik', lat: 64.1466, lon: -21.9426, tz: 'Atlantic/Reykjavik' },
+    { id: 'capetown', lat: -33.9249, lon: 18.4241, tz: 'Africa/Johannesburg' },
+    { id: 'mecca', lat: 21.3891, lon: 39.8579, tz: 'Asia/Riyadh' },
+    { id: 'mexicocity', lat: 19.4326, lon: -99.1332, tz: 'America/Mexico_City' },
+    { id: 'jakarta', lat: -6.2088, lon: 106.8456, tz: 'Asia/Jakarta' },
+  ];
+  const placeName = p => LOCALE_DATA[state.lang].places[p.id];
+  // Time zones offered for a custom latitude/longitude (offset from UTC, in minutes)
+  const TZ_OFFSETS = [-720, -660, -600, -570, -540, -480, -420, -360, -300, -240, -210, -180, -120, -60, 0,
+    60, 120, 180, 210, 240, 270, 300, 330, 345, 360, 390, 420, 480, 525, 540, 570, 600, 630, 660, 720, 765, 780, 840];
+
+  // ---- Constants -----------------------------------------------------------
+  const DEG = Math.PI / 180;
+  const TAU = Math.PI * 2;
+  const DAY_MS = 86400000;
+  const J2000_MS = Date.UTC(2000, 0, 1, 12);   // JD 2451545.0
+  const AU_KM = 149597870.7;
+  const GM_SUN = 1.32712440018e11;             // km^3 / s^2
+  const OBLIQUITY = 23.4393 * DEG;             // obliquity of the ecliptic
+  const PRECESSION = 1.39689;                  // general precession in longitude [deg / Julian century]
+  const EARTH_RADIUS_KM = 6371;
+  const MOON_MEAN_KM = 384400;
+  const MOON_MAX_KM = 406800;
+  const SYNODIC = 29.530589;                   // synodic month [days]
+  const ELONG_RATE = 360 / SYNODIC;            // mean rate of change of the Moon's elongation [deg/day]
+  const V_EARTH_MEAN = 29.78;                  // Earth's mean orbital speed [km/s]
+  // Moon's mean speed in a frame that keeps the Sun's direction fixed (synodic frame) [km/s]
+  const V_MOON_SYN = TAU * MOON_MEAN_KM / (SYNODIC * 86400);
+  const MU_CUSP = V_MOON_SYN / V_EARTH_MEAN;
+  // Largest enlargement of the Moon's distance in the top view. Enlarged by more than about 27×,
+  // the Moon would move faster than Earth near new moon and its path around the Sun would loop.
+  const MOON_ZOOM = 20;
+
+  // JPL "Keplerian Elements for Approximate Positions of the Major Planets" EM Bary
+  const EL = {
+    a: 1.00000261,
+    e: 0.01671123, eRate: -0.00004392,
+    L: 100.46457166, LRate: 35999.37244981,    // mean longitude [deg], [deg/century]
+    w: 102.93768193, wRate: 0.32327364,        // longitude of perihelion [deg], [deg/century]
+  };
+  const N_ANOM = (EL.LRate - EL.wRate) / 36525 * DEG;   // mean anomalistic motion (rate of the mean anomaly) [rad/day]
+  const PERIOD = TAU / N_ANOM;                           // anomalistic year [days]
+
+  // Main terms of Table 47.A in Meeus, Astronomical Algorithms
+  // [D, M, M', F, ecliptic longitude (1e-6 deg), distance (1e-3 km)]
+  const MOON_TERMS = [
+    [0, 0, 1, 0, 6288774, -20905355],
+    [2, 0, -1, 0, 1274027, -3699111],
+    [2, 0, 0, 0, 658314, -2955968],
+    [0, 0, 2, 0, 213618, -569925],
+    [0, 1, 0, 0, -185116, 48888],
+    [0, 0, 0, 2, -114332, -3149],
+    [2, 0, -2, 0, 58793, 246158],
+    [2, -1, -1, 0, 57066, -152138],
+    [2, 0, 1, 0, 53322, -170733],
+    [2, -1, 0, 0, 45758, -204586],
+    [0, 1, -1, 0, -40923, -129620],
+    [1, 0, 0, 0, -34720, 108743],
+    [0, 1, 1, 0, -30383, 104755],
+    [2, 0, 0, -2, 15327, 10321],
+    [0, 0, 1, 2, -12528, 0],
+    [0, 0, 1, -2, 10980, 79661],
+    [4, 0, -1, 0, 10675, -34782],
+    [0, 0, 3, 0, 10034, -23210],
+    [4, 0, -2, 0, 8548, -21636],
+    [2, 1, -1, 0, -7888, 24208],
+    [2, 1, 0, 0, -6766, 30824],
+    [1, 0, -1, 0, -5163, -8379],
+    [1, 1, 0, 0, 4987, -16675],
+    [2, -1, 1, 0, 4036, -12831],
+    [2, 0, 2, 0, 3994, -10445],
+    [4, 0, 0, 0, 3861, -11650],
+    [2, 0, -3, 0, 3665, 14403],
+    [0, 1, -2, 0, -2689, -7003],
+  ];
+  // Main terms of Table 47.B [D, M, M', F, ecliptic latitude (1e-6 deg)]
+  const MOON_LAT_TERMS = [
+    [0, 0, 0, 1, 5128122],
+    [0, 0, 1, 1, 280602],
+    [0, 0, 1, -1, 277693],
+    [2, 0, 0, -1, 173237],
+    [2, 0, -1, 1, 55413],
+    [2, 0, -1, -1, 46271],
+    [2, 0, 0, 1, 32573],
+    [0, 0, 2, 1, 17198],
+    [2, 0, 1, -1, 9266],
+    [0, 0, 2, -1, 8822],
+    [2, -1, 0, -1, 8216],
+    [2, 0, -2, -1, 4324],
+    [2, 0, 1, 1, 4200],
+    [2, 1, 0, -1, -3359],
+  ];
+  const ECLIPSE_LIMIT = 17;                    // eclipse season: Sun within this angle of a lunar node [deg]
+
+  const E_MAX = 0.9;
+  const SPEED_MIN = 1 / 24, SPEED_MAX = 60;    // [days/s]
+  const MU_MIN = 0.01;
+
+  // ---- State -----------------------------------------------------------------
+  const STORE_KEY = 'earth-moon-orbits:settings';
+  const saved = (() => {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; }
+  })();
+  const hashLang = (() => {
+    try { return decodeURIComponent(location.hash.slice(1)); } catch { return ''; }
+  })();
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const mod = (a, n) => ((a % n) + n) % n;
+  const cent = t => t / 36525;
+  const daysFromMs = ms => (ms - J2000_MS) / DAY_MS;
+  const msFromDays = t => J2000_MS + t * DAY_MS;
+  const pad = n => String(n).padStart(2, '0');
+
+  const validCustom = c => c && Number.isFinite(c.lat) && Number.isFinite(c.lon) && Number.isFinite(c.tz)
+    && Math.abs(c.lat) <= 90 && Math.abs(c.lon) <= 180;
+  const state = {
+    t: daysFromMs(Date.now()),
+    playing: !reduceMotion,
+    speed: 0.5,               // days per second (12 h/s): slow enough to follow the Moon across the sky
+    eOverride: null,          // null = use the actual eccentricity
+    trailStart: 0,
+    trailLen: 365.25,
+    mu: 1,                    // factor applied to Earth's orbital speed in the straightened-orbit view
+    trueAspect: false,
+    stripDays: 60,
+    tilt: 6,                  // factor exaggerating the Moon's orbital inclination in the edge-on view
+    lang: LANGS.includes(hashLang) ? hashLang : LANGS.includes(saved.lang) ? saved.lang : 'en',
+    custom: validCustom(saved.custom) ? saved.custom : null,
+    placeId: 'london',
+    show: { moon: true, orbit: true, trail: true, months: true, sekki: false, sectors: false, velocity: false, rings: false },
+  };
+  if (saved.placeId === 'custom' ? state.custom : PLACES.some(p => p.id === saved.placeId)) state.placeId = saved.placeId;
+  state.trailStart = state.t - 90;
+  let dirty = true;
+
+  function saveSettings() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({ lang: state.lang, placeId: state.placeId, custom: state.custom }));
+    } catch { /* storage unavailable: carry on without saving */ }
+  }
+
+  // ---- Translation and formatting --------------------------------------------
+  function t(key, vars) {
+    let s = DICT[state.lang][key] ?? DICT.en[key];
+    if (typeof s === 'string' && vars) s = s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+    return s;
+  }
+  const isCJK = () => CJK.has(state.lang);
+  const nfCache = new Map();
+  function nf(x, digits = 0) {
+    const key = state.lang + ':' + digits;
+    let f = nfCache.get(key);
+    if (!f) {
+      f = new Intl.NumberFormat(LOCALES[state.lang], { minimumFractionDigits: digits, maximumFractionDigits: digits });
+      nfCache.set(key, f);
+    }
+    return f.format(x);
+  }
+  const signed = (x, digits) => `${x >= 0 ? '+' : '−'}${nf(Math.abs(x), digits)}`;
+  const auDigits = L => Number.isInteger(L) ? 0 : Number.isInteger(Math.round(L * 1e6) / 1e5) ? 1 : 2;
+
+  function fmtKm(km) {
+    const L = state.lang;
+    if (isCJK()) {
+      const [oku, man, sep] = { ja: ['億', '万', ''], 'zh-Hans': ['亿', '万', ''], 'zh-Hant': ['億', '萬', ''], ko: ['억', '만', ' '] }[L];
+      const m = Math.round(km / 1e4);
+      if (m >= 10000) {
+        const o = Math.floor(m / 10000), r = m % 10000;
+        return `${o}${oku}${r ? sep + r + man : ''} km`;
+      }
+      return `${m}${man} km`;
+    }
+    if (L === 'hi') return km >= 1e7 ? `${nf(km / 1e7, 2)} करोड़ किमी` : `${nf(km / 1e5, 1)} लाख किमी`;
+    return t('kmMillion', { n: nf(km / 1e6, 1) });
+  }
+
+  // ---- Observing location and time zone --------------------------------------
+  let place = null;
+  function refreshPlace() {
+    if (state.placeId === 'custom' && state.custom) {
+      const c = state.custom;
+      place = { lat: c.lat, lon: c.lon, tz: c.tz, name: `${nf(c.lat, 2)}°, ${nf(c.lon, 2)}°` };
+    } else {
+      const p = PLACES.find(x => x.id === state.placeId) || PLACES.find(x => x.id === 'london');
+      place = { lat: p.lat, lon: p.lon, tz: p.tz, name: placeName(p) };
+    }
+    place.short = place.name.replace(/\s*[（(].*$/, '');
+    yearCache = { key: '' };
+  }
+
+  // Offset from UTC [min]. Daylight-saving changes happen on the hour, so the result is cached per
+  // hour
+  const offsetCache = new Map();
+  const tzFormatters = new Map();
+  function tzOffsetMin(ms) {
+    const tz = place.tz;
+    if (typeof tz === 'number') return tz;
+    const key = tz + '|' + Math.floor(ms / 3600000);
+    const hit = offsetCache.get(key);
+    if (hit !== undefined) return hit;
+    let f = tzFormatters.get(tz);
+    if (!f) {
+      f = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+      tzFormatters.set(tz, f);
+    }
+    const base = Math.floor(ms / 60000) * 60000;
+    const p = {};
+    for (const x of f.formatToParts(new Date(base))) p[x.type] = x.value;
+    const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute);
+    const v = Math.round((asUtc - base) / 60000);
+    if (offsetCache.size > 20000) offsetCache.clear();
+    offsetCache.set(key, v);
+    return v;
+  }
+  function local(t) {
+    const ms = msFromDays(t);
+    const off = tzOffsetMin(ms);
+    const d = new Date(ms + off * 60000);
+    return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate(), h: d.getUTCHours(), mi: d.getUTCMinutes(), off };
+  }
+  function daysFromLocal(y, m, d, h = 0) {
+    const wall = Date.UTC(y, m - 1, d, h);
+    const guess = wall - tzOffsetMin(wall) * 60000;
+    return daysFromMs(wall - tzOffsetMin(guess) * 60000);
+  }
+  function tzLabel(off) {
+    if (!off) return 'UTC';
+    const a = Math.abs(off), h = Math.floor(a / 60), m = a % 60;
+    return `UTC${off > 0 ? '+' : '−'}${h}${m ? ':' + pad(m) : ''}`;
+  }
+
+  let fmtLong, fmtShort, fmtMonth;
+  const monthCache = new Map();
+  function buildFormatters() {
+    const loc = LOCALES[state.lang];
+    fmtLong = new Intl.DateTimeFormat(loc, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+    fmtShort = new Intl.DateTimeFormat(loc, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    fmtMonth = new Intl.DateTimeFormat(loc, { month: 'short', timeZone: 'UTC' });
+    nfCache.clear();
+    monthCache.clear();
+  }
+  const shifted = t => { const ms = msFromDays(t); return new Date(ms + tzOffsetMin(ms) * 60000); };
+  const dateLong = t => fmtLong.format(shifted(t));
+  function dateShort(t) {
+    if (isCJK()) { const j = local(t); return `${j.m}/${j.d}`; }
+    return fmtShort.format(shifted(t));
+  }
+  function monthName(m) {
+    let s = monthCache.get(m);
+    if (!s) { s = fmtMonth.format(new Date(Date.UTC(2001, m - 1, 15))); monthCache.set(m, s); }
+    return s;
+  }
+  const whenText = t => { const j = local(t); return `${dateShort(t)} ${pad(j.h)}:${pad(j.mi)}`; };
+  const gmstDeg = t => 280.46061837 + 360.98564736629 * t;
+
+  // ---- Earth's orbit ---------------------------------------------------------
+  const eccAt = t => state.eOverride ?? (EL.e + EL.eRate * cent(t));
+  const periAt = t => (EL.w + EL.wRate * cent(t)) * DEG;
+  const meanAnomAt = t => ((EL.L - EL.w) + (EL.LRate - EL.wRate) * cent(t)) * DEG;
+
+  function solveKepler(m, e) {
+    let E = e < 0.8 ? m : Math.PI;
+    for (let i = 0; i < 50; i++) {
+      const d = (E - e * Math.sin(E) - m) / (1 - e * Math.cos(E));
+      E -= d;
+      if (Math.abs(d) < 1e-13) break;
+    }
+    return E;
+  }
+
+  function orbitPointE(E, e, w) {
+    const xp = EL.a * (Math.cos(E) - e);
+    const yp = EL.a * Math.sqrt(1 - e * e) * Math.sin(E);
+    const c = Math.cos(w), s = Math.sin(w);
+    return [xp * c - yp * s, xp * s + yp * c];
+  }
+
+  function orbitAt(t) {
+    const e = eccAt(t), w = periAt(t), a = EL.a;
+    const Mu = meanAnomAt(t);
+    const rev = Math.floor(Mu / TAU);
+    const m = Mu - rev * TAU;
+    const E = solveKepler(m, e);
+    const [x, y] = orbitPointE(E, e, w);
+    const r = a * (1 - e * Math.cos(E));
+    const nu = 2 * Math.atan2(Math.sqrt(1 + e) * Math.sin(E / 2), Math.sqrt(1 - e) * Math.cos(E / 2));
+    const sq = Math.sqrt(1 - e * e);
+    const vxp = -Math.sin(E), vyp = sq * Math.cos(E);
+    const c = Math.cos(w), s = Math.sin(w);
+    const vx = vxp * c - vyp * s, vy = vxp * s + vyp * c, vl = Math.hypot(vx, vy);
+    const speed = Math.sqrt(GM_SUN * (2 / (r * AU_KM) - 1 / (a * AU_KM)));
+    return { t, e, w, m, x, y, r, lonU: w + nu + rev * TAU, vdx: vx / vl, vdy: vy / vl, speed };
+  }
+
+  // Sun's ecliptic longitude referred to the equinox of date (includes precession; not wrapped to
+  // 0–360) [deg]
+  const sunLonU = o => o.lonU / DEG + 180 + PRECESSION * cent(o.t);
+
+  function timeOfSunLon(target, t0) {
+    const g0 = sunLonU(orbitAt(t0));
+    const goal = g0 + mod(target - g0, 360);
+    let lo = t0, hi = t0 + PERIOD + 2;
+    for (let i = 0; i < 48; i++) {
+      const mid = (lo + hi) / 2;
+      if (sunLonU(orbitAt(mid)) < goal) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+
+  // Key dates of the displayed year (observer's local time). Recomputed only when the year,
+  // eccentricity or time zone changes
+  let yearCache = { key: '' };
+  function yearData(t) {
+    const y = local(t).y;
+    const key = `${y}|${state.eOverride}|${place.tz}`;
+    if (yearCache.key === key) return yearCache;
+    const t0 = daysFromLocal(y, 1, 1);
+    const m0 = mod(meanAnomAt(t0), TAU);
+    yearCache = {
+      key,
+      seasons: [0, 90, 180, 270].map((lon, i) => ({ i, t: timeOfSunLon(lon, t0) })),
+      tPeri: t0 + mod(-m0, TAU) / N_ANOM,
+      tAph: t0 + mod(Math.PI - m0, TAU) / N_ANOM,
+      months: Array.from({ length: 12 }, (_, i) => ({ m: i + 1, t: daysFromLocal(y, i + 1, 1) })),
+    };
+    return yearCache;
+  }
+
+  // ---- Moon --------------------------------------------------------------------
+  // Geocentric position of the Moon. dx, dy: projection onto the J2000 ecliptic plane; dz: height
+  // above the ecliptic [km]
+  function moonAt(t) {
+    const T = cent(t);
+    const Lp = 218.3164477 + 481267.88123421 * T;
+    const D = (297.8501921 + 445267.1114034 * T) * DEG;
+    const M = (357.5291092 + 35999.0502909 * T) * DEG;
+    const Mp = (134.9633964 + 477198.8675055 * T) * DEG;
+    const F = (93.2720950 + 483202.0175233 * T) * DEG;
+    const E = 1 - 0.002516 * T;
+    let sl = 0, sr = 0;
+    for (const [d, m, mp, f, l, r] of MOON_TERMS) {
+      const arg = d * D + m * M + mp * Mp + f * F;
+      const ef = m === 0 ? 1 : E;
+      sl += l * ef * Math.sin(arg);
+      sr += r * ef * Math.cos(arg);
+    }
+    let sb = 0;
+    for (const [d, m, mp, f, b] of MOON_LAT_TERMS) {
+      sb += b * (m === 0 ? 1 : E) * Math.sin(d * D + m * M + mp * Mp + f * F);
+    }
+    const lonDate = Lp + sl / 1e6;
+    const dist = 385000.56 + sr / 1000;
+    const beta = sb / 1e6 * DEG;
+    const lon = (lonDate - PRECESSION * T) * DEG;
+    const rp = dist * Math.cos(beta);
+    return {
+      lonDate: mod(lonDate, 360), beta: beta / DEG, dist,
+      dx: rp * Math.cos(lon), dy: rp * Math.sin(lon), dz: dist * Math.sin(beta),
+    };
+  }
+
+  // Mean longitude of the Moon's ascending node, referred to the equinox of date [deg]
+  const moonNodeAt = t => mod(125.0445479 - 1934.1362891 * cent(t), 360);
+
+  const elongOf = (o, mo) => mod(mo.lonDate - sunLonU(o), 360);
+  const elongAt = t => elongOf(orbitAt(t), moonAt(t));
+
+  // Find the time near guess at which the Moon's elongation equals target
+  function phaseTimeNear(target, guess) {
+    let t = guess;
+    for (let i = 0; i < 10; i++) {
+      const d = mod(elongAt(t) - target + 180, 360) - 180;
+      t -= d / ELONG_RATE;
+      if (Math.abs(d) < 1e-6) break;
+    }
+    return t;
+  }
+  function nextPhase(target, t0, psi) {
+    let t = phaseTimeNear(target, t0 + mod(target - psi, 360) / ELONG_RATE);
+    if (t < t0 - 1e-5) t = phaseTimeNear(target, t + SYNODIC);
+    return t;
+  }
+
+  function phaseIndex(psi) {
+    const bounds = [12, 80, 100, 168, 192, 260, 280, 348];
+    if (psi < bounds[0] || psi >= bounds[7]) return 0;
+    for (let i = 1; i < 8; i++) if (psi < bounds[i]) return i;
+    return 0;
+  }
+
+  // Ecliptic → equatorial coordinates [rad]
+  function eclToEq(lamDeg, betaDeg) {
+    const l = lamDeg * DEG, b = betaDeg * DEG;
+    const ra = Math.atan2(Math.sin(l) * Math.cos(OBLIQUITY) - Math.tan(b) * Math.sin(OBLIQUITY), Math.cos(l));
+    const dec = Math.asin(Math.sin(b) * Math.cos(OBLIQUITY) + Math.cos(b) * Math.sin(OBLIQUITY) * Math.sin(l));
+    return { ra, dec };
+  }
+  // Moon's altitude and azimuth seen from the observing location, and the direction of its bright
+  // limb (screen angle with the zenith up). At transit the view always faces the equator (south in
+  // the Northern Hemisphere, north in the Southern). Otherwise, at latitudes within the Moon's
+  // declination range, the view would flip by 180° whenever the Moon crosses to the other side of
+  // the zenith. The real-time view keeps facing the Moon, so the image turns quickly when the Moon
+  // passes near the zenith, just as it does for an observer who turns around to follow it.
+  function moonSky(o, mo, atTransit) {
+    const lat = place.lat * DEG;
+    const m = eclToEq(mo.lonDate, mo.beta);
+    const s = eclToEq(mod(sunLonU(o), 360), 0);
+    const H = atTransit ? 0 : (gmstDeg(o.t) + place.lon) * DEG - m.ra;
+    const alt = Math.asin(Math.sin(lat) * Math.sin(m.dec) + Math.cos(lat) * Math.cos(m.dec) * Math.cos(H));
+    const azS = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(lat) - Math.tan(m.dec) * Math.cos(lat));
+    const az = mod(azS / DEG + 180, 360);
+    const q = atTransit
+      ? (place.lat >= 0 ? 0 : Math.PI)
+      : Math.atan2(Math.sin(H), Math.tan(lat) * Math.cos(m.dec) - Math.sin(m.dec) * Math.cos(H));
+    const chi = Math.atan2(Math.cos(s.dec) * Math.sin(s.ra - m.ra),
+      Math.sin(s.dec) * Math.cos(m.dec) - Math.cos(s.dec) * Math.sin(m.dec) * Math.cos(s.ra - m.ra));
+    return { alt: alt / DEG, az, limb: -Math.PI / 2 - (chi - q) };
+  }
+  const compassOf = az => t('compass')[Math.round(az / 45) % 8];
+
+  // ---- Colors and fonts ------------------------------------------------------
+  const C = {};
+  const COLOR_KEYS = ['space', 'star', 'ring', 'orbit', 'trail', 'sun', 'sun-glow', 'earth-day', 'earth-night',
+    'moon', 'moon-lit', 'moon-dark', 'grat', 'pole', 'label', 'label-strong', 'sector-a', 'sector-b', 'vel', 'place'];
+  let FONT_UI = '"IBM Plex Sans", sans-serif';
+  const FONT_NUM = '"IBM Plex Mono", Consolas, "Courier New", monospace';
+  function readTheme() {
+    const cs = getComputedStyle(document.documentElement);
+    for (const k of COLOR_KEYS) C[k] = cs.getPropertyValue('--' + k).trim();
+    FONT_UI = cs.getPropertyValue('--font-ui').trim() || FONT_UI;
+    dirty = true;
+  }
+
+  // ---- Canvas ----------------------------------------------------------------
+  function makeSurface(canvas) {
+    const s = { canvas, ctx: canvas.getContext('2d'), W: 0, H: 0, dpr: 1 };
+    new ResizeObserver(() => {
+      const r = canvas.getBoundingClientRect();
+      s.dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      s.W = r.width;
+      s.H = r.height;
+      canvas.width = Math.max(1, Math.round(r.width * s.dpr));
+      canvas.height = Math.max(1, Math.round(r.height * s.dpr));
+      dirty = true;
+    }).observe(canvas);
+    return s;
+  }
+  const main = makeSurface(document.getElementById('orbit-canvas'));
+  const side = makeSurface(document.getElementById('side-canvas'));
+  const strip = makeSurface(document.getElementById('strip-canvas'));
+  const inset = makeSurface(document.getElementById('earth-canvas'));
+  const phase = makeSurface(document.getElementById('phase-canvas'));
+
+  // Reset the transform and text direction before drawing (diagrams are not mirrored for Arabic)
+  function begin(s) {
+    const { ctx, W, H, dpr } = s;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.direction = 'ltr';
+    ctx.globalAlpha = 1;
+    ctx.setLineDash([]);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = C.space;
+    ctx.fillRect(0, 0, W, H);
+    return ctx;
+  }
+
+  const STARS = (() => {
+    let seed = 20260928;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    return Array.from({ length: 260 }, () => ({ x: rnd(), y: rnd(), r: 0.3 + rnd() * 0.85, a: 0.2 + rnd() * 0.8 }));
+  })();
+
+  function drawStars(ctx, W, H, k = 1) {
+    if (!C.star || C.star === 'transparent') return;
+    ctx.fillStyle = C.star;
+    for (const s of STARS) {
+      ctx.globalAlpha = s.a * k;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, TAU);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function haloText(ctx, text, x, y) {
+    ctx.save();
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = C.space;
+    ctx.setLineDash([]);
+    ctx.strokeText(text, x, y);
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  // Place text dist away in direction (ux, uy), extending outward in that direction
+  function placeText(ctx, text, x, y, ux, uy, dist) {
+    ctx.textAlign = ux > 0.38 ? 'left' : ux < -0.38 ? 'right' : 'center';
+    ctx.textBaseline = uy > 0.38 ? 'top' : uy < -0.38 ? 'bottom' : 'middle';
+    haloText(ctx, text, x + ux * dist, y + uy * dist);
+  }
+
+  function arrow(ctx, x0, y0, x1, y1, head) {
+    const dx = x1 - x0, dy = y1 - y0, l = Math.hypot(dx, dy) || 1;
+    const ux = dx / l, uy = dy / l;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1 - ux * head * 0.6, y1 - uy * head * 0.6);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - ux * head - uy * head * 0.55, y1 - uy * head + ux * head * 0.55);
+    ctx.lineTo(x1 - ux * head + uy * head * 0.55, y1 - uy * head - ux * head * 0.55);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // A body seen from directly above; the half facing sunAngle is the day side
+  function drawBody(ctx, x, y, r, sunAngle, night, day, stroke) {
+    ctx.fillStyle = night;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TAU);
+    ctx.fill();
+    ctx.fillStyle = day;
+    ctx.beginPath();
+    ctx.arc(x, y, r, sunAngle - Math.PI / 2, sunAngle + Math.PI / 2);
+    ctx.closePath();
+    ctx.fill();
+    if (stroke) {
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, TAU);
+      ctx.stroke();
+    }
+  }
+
+  // Phase of a body seen from a given direction. cosA = cos(Sun–body–viewer angle, i.e. the phase
+  // angle); dir = direction the sunlight comes from (screen angle)
+  function drawLitBody(ctx, x, y, r, cosA, dir, night, day, stroke) {
+    ctx.fillStyle = night;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, TAU);
+    ctx.fill();
+    const c = -cosA;                               // 1: night side only visible; -1: day side only visible
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(dir);
+    ctx.beginPath();
+    ctx.arc(0, 0, r, -Math.PI / 2, Math.PI / 2);
+    ctx.ellipse(0, 0, Math.abs(c) * r, r, 0, Math.PI / 2, c > 0 ? -Math.PI / 2 : Math.PI * 1.5, c > 0);
+    ctx.closePath();
+    ctx.fillStyle = day;
+    ctx.fill();
+    ctx.restore();
+    if (stroke) {
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, TAU);
+      ctx.stroke();
+    }
+  }
+
+  // Values shared between panels (updated as each panel is drawn)
+  let planView = null;          // horizontal axis of the top view (shared with the edge-on view)
+  let stripRange = null;        // time span shown in the straightened-orbit view
+  let stripPxPerDay = 1;        // pixels Earth advances per day in the straightened-orbit view
+
+  // Center the ellipse (not the Sun) on the canvas so that the whole orbit and the Sun fit
+  function view(e, w, W, H, small) {
+    const a = EL.a, b = a * Math.sqrt(1 - e * e);
+    const c = Math.cos(w), s = Math.sin(w);
+    const ecx = -a * e * c, ecy = -a * e * s;
+    const hx = Math.sqrt(a * a * c * c + b * b * s * s);
+    const hy = Math.sqrt(a * a * s * s + b * b * c * c);
+    const m = small ? 50 : 82;
+    const scale = Math.max(8, Math.min((W - 2 * m) / (2 * hx), (H - 2 * m) / (2 * hy)));
+    return { s: scale, ox: W / 2 - ecx * scale, oy: H / 2 + ecy * scale };
+  }
+
+  // ---- Orbit view (from above the north ecliptic pole) ------------------------
+  function drawMain(o, yd, mo) {
+    const { W, H } = main;
+    if (!W || !H) return 0;
+    const ctx = begin(main);
+    drawStars(ctx, W, H);
+
+    const e = o.e, w = o.w, a = EL.a;
+    const small = Math.min(W, H) < 520;
+    const v = view(e, w, W, H, small);
+    const P = (x, y) => [v.ox + x * v.s, v.oy - y * v.s];
+    const [sx, sy] = P(0, 0);
+    const radial = (x, y) => {
+      const dx = x - sx, dy = y - sy, l = Math.hypot(dx, dy) || 1;
+      return [dx / l, dy / l];
+    };
+
+    // The Moon is drawn around Earth with its distance enlarged by the same factor in every
+    // direction (the edge-on view uses the same factor), at most MOON_ZOOM so that its path around
+    // the Sun stays a wave. Earth and the Moon shrink with the ring when it is small.
+    const [ex, ey] = P(o.x, o.y);
+    const ringR = Math.min(small ? 20 : 28, MOON_ZOOM * MOON_MEAN_KM / AU_KM * v.s);
+    const kMoon = ringR / MOON_MEAN_KM;
+    const er = Math.min(small ? 6 : 8, Math.max(2.5, ringR * 0.45)), sr = small ? 8 : 11;
+    const moonR = Math.min(small ? 3.5 : 4.5, Math.max(1.5, ringR * 0.28));
+    const mx = ex + mo.dx * kMoon, my = ey - mo.dy * kMoon;
+    planView = { s: v.s, ox: v.ox, small, ringR, kMoon, sr, er };
+
+    // Projection lines down to the edge-on view below
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 4]);
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = C.sun;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy + sr);
+    ctx.lineTo(sx, H);
+    ctx.stroke();
+    ctx.globalAlpha = 0.45;
+    ctx.strokeStyle = C.trail;
+    ctx.beginPath();
+    ctx.moveTo(ex, ey + er);
+    ctx.lineTo(ex, H);
+    ctx.stroke();
+    if (state.show.moon) {
+      ctx.strokeStyle = C.moon;
+      ctx.beginPath();
+      ctx.moveTo(mx, my);
+      ctx.lineTo(mx, H);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.setLineDash([]);
+
+    // Distance rings
+    if (state.show.rings) {
+      ctx.strokeStyle = C.ring;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 5]);
+      ctx.font = `11px ${FONT_NUM}`;
+      ctx.fillStyle = C.label;
+      const maxR = Math.hypot(W, H);
+      for (let k = 1; k * 0.5 * v.s < maxR; k++) {
+        const R = k * 0.5 * v.s;
+        ctx.beginPath();
+        ctx.arc(sx, sy, R, 0, TAU);
+        ctx.stroke();
+        const lx = sx + R * Math.cos(0.62), ly = sy + R * Math.sin(0.62);
+        if (lx > 8 && lx < W - 50 && ly > 8 && ly < H - 30) {
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          haloText(ctx, `${nf(k * 0.5, auDigits(k * 0.5))} ${t('au')}`, lx + 4, ly);
+        }
+      }
+      ctx.setLineDash([]);
+    }
+
+    // Direction of the March equinox point (vernal point, ecliptic longitude 0°)
+    ctx.strokeStyle = C.ring;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(W, sy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = `11px ${FONT_UI}`;
+    ctx.fillStyle = C.label;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    haloText(ctx, t('vernalDir'), W - 10, sy + 16);
+
+    // Major axis (perihelion–aphelion)
+    const q = a * (1 - e), Q = a * (1 + e);
+    const [px, py] = P(q * Math.cos(w), q * Math.sin(w));
+    const [qx, qy] = P(-Q * Math.cos(w), -Q * Math.sin(w));
+    ctx.strokeStyle = C.ring;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(qx, qy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Kepler's second law: sectors swept out in each 1/12 of a year
+    if (state.show.sectors) {
+      for (let k = 0; k < 12; k++) {
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        for (let j = 0; j <= 30; j++) {
+          const [x, y] = orbitPointE(solveKepler((k + j / 30) * TAU / 12, e), e, w);
+          const [X, Y] = P(x, y);
+          ctx.lineTo(X, Y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = k % 2 ? C['sector-b'] : C['sector-a'];
+        ctx.fill();
+      }
+    }
+
+    // Full orbit
+    if (state.show.orbit) {
+      ctx.strokeStyle = C.orbit;
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 5]);
+      ctx.beginPath();
+      for (let i = 0; i <= 360; i++) {
+        const [x, y] = orbitPointE(i / 360 * TAU, e, w);
+        const [X, Y] = P(x, y);
+        i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Stretch of orbit shown in the straightened-orbit view
+    if (stripRange) {
+      const { from, to } = stripRange;
+      const n = Math.min(500, Math.max(16, Math.ceil((to - from) / 0.5)));
+      ctx.strokeStyle = C.moon;
+      ctx.globalAlpha = 0.2;
+      ctx.lineWidth = small ? 9 : 13;
+      ctx.lineCap = 'butt';
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const p = orbitAt(from + (to - from) * i / n);
+        const [X, Y] = P(p.x, p.y);
+        i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineCap = 'round';
+      const pe = orbitAt(to);
+      const [X, Y] = P(pe.x, pe.y);
+      const [ux, uy] = radial(X, Y);
+      ctx.font = `11px ${FONT_UI}`;
+      ctx.fillStyle = C.moon;
+      placeText(ctx, t('stripRange'), X, Y, ux, uy, small ? 10 : 12);
+    }
+
+    // Trail (older points fade out)
+    if (state.show.trail) {
+      const tFrom = Math.max(o.t - state.trailLen, state.trailStart);
+      const span = o.t - tFrom;
+      if (span > 1e-6) {
+        const n = Math.min(900, Math.max(12, Math.ceil(span / 0.4)));
+        const xs = new Float64Array(n + 1), ys = new Float64Array(n + 1);
+        for (let i = 0; i <= n; i++) {
+          const p = i === n ? o : orbitAt(tFrom + span * i / n);
+          [xs[i], ys[i]] = P(p.x, p.y);
+        }
+        const CH = 40;
+        ctx.strokeStyle = C.trail;
+        ctx.lineWidth = small ? 2.2 : 2.8;
+        ctx.lineCap = 'butt';
+        for (let c = 0; c < CH; c++) {
+          const i0 = Math.floor(c * n / CH), i1 = Math.floor((c + 1) * n / CH);
+          if (i1 <= i0) continue;
+          const age = o.t - (tFrom + span * ((i0 + i1) / 2) / n);
+          ctx.globalAlpha = Math.max(0.08, 1 - age / state.trailLen);
+          ctx.beginPath();
+          ctx.moveTo(xs[i0], ys[i0]);
+          for (let i = i0 + 1; i <= i1; i++) ctx.lineTo(xs[i], ys[i]);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        ctx.lineCap = 'round';
+      }
+    }
+
+    // The Moon's trail over the part of the straightened-orbit view's span up to now, drawn with the
+    // same enlargement as the Moon on its ring around Earth, so it ends at the Moon: circling Earth
+    // while Earth moves on, the Moon weaves back and forth across Earth's orbit. Older parts fade out.
+    if (stripRange && state.show.moon && stripRange.from < o.t) {
+      const span = o.t - stripRange.from;
+      const n = Math.min(400, Math.max(8, Math.ceil(span / 0.2)));
+      const pts = Array.from({ length: n + 1 }, (_, i) => {
+        const eo = i ? orbitAt(o.t - span * i / n) : o, mm = i ? moonAt(o.t - span * i / n) : mo;
+        const [X, Y] = P(eo.x, eo.y);
+        return [X + mm.dx * kMoon, Y - mm.dy * kMoon];
+      });
+      const CH = 30;
+      ctx.strokeStyle = C.moon;
+      ctx.lineWidth = small ? 2.2 : 2.8;
+      ctx.lineCap = 'butt';
+      for (let c = 0; c < CH; c++) {
+        const i0 = Math.floor(c * n / CH), i1 = Math.floor((c + 1) * n / CH);
+        if (i1 <= i0) continue;
+        ctx.globalAlpha = 1 - (i0 + i1) / 2 / n;
+        ctx.beginPath();
+        ctx.moveTo(pts[i0][0], pts[i0][1]);
+        for (let i = i0 + 1; i <= i1; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      ctx.lineCap = 'round';
+    }
+
+    // Position on the 1st of each month (inside the orbit)
+    if (state.show.months) {
+      ctx.strokeStyle = C.label;
+      ctx.fillStyle = C.label;
+      ctx.lineWidth = 1;
+      ctx.font = `11px ${FONT_UI}`;
+      for (const m of yd.months) {
+        const p = orbitAt(m.t);
+        const [x, y] = P(p.x, p.y);
+        const [ux, uy] = radial(x, y);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - ux * 6, y - uy * 6);
+        ctx.stroke();
+        placeText(ctx, monthName(m.m), x, y, -ux, -uy, 16);
+      }
+    }
+
+    // 24 solar terms (outside the orbit; East Asian languages only)
+    if (state.show.sekki && isCJK()) {
+      const T = cent(o.t);
+      ctx.strokeStyle = C.label;
+      ctx.fillStyle = C.label;
+      ctx.lineWidth = 1;
+      ctx.font = `11px ${FONT_UI}`;
+      for (let k = 0; k < 24; k++) {
+        if (k % 6 === 0) continue;
+        const lam = (k * 15 + 180 - PRECESSION * T) * DEG;   // Earth's heliocentric ecliptic longitude
+        const rr = a * (1 - e * e) / (1 + e * Math.cos(lam - w));
+        const [x, y] = P(rr * Math.cos(lam), rr * Math.sin(lam));
+        const [ux, uy] = radial(x, y);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + ux * 5, y + uy * 5);
+        ctx.stroke();
+        placeText(ctx, SEKKI[state.lang][k], x, y, ux, uy, 12);
+      }
+    }
+
+    // March equinox, June solstice, September equinox, December solstice
+    const S4 = t('seasons4');
+    ctx.font = `bold 12px ${FONT_UI}`;
+    for (const s of yd.seasons) {
+      const p = orbitAt(s.t);
+      const [x, y] = P(p.x, p.y);
+      const [ux, uy] = radial(x, y);
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, TAU);
+      ctx.fillStyle = C.space;
+      ctx.fill();
+      ctx.strokeStyle = C['label-strong'];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = C['label-strong'];
+      placeText(ctx, `${S4[s.i]} ${dateShort(s.t)}`, x, y, ux, uy, 13);
+    }
+
+    // Perihelion and aphelion
+    for (const [x, y, name, tt] of [[px, py, t('perihelion'), yd.tPeri], [qx, qy, t('aphelion'), yd.tAph]]) {
+      const [ux, uy] = radial(x, y);
+      ctx.fillStyle = C.sun;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 5);
+      ctx.lineTo(x + 5, y);
+      ctx.lineTo(x, y + 5);
+      ctx.lineTo(x - 5, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = `bold 12px ${FONT_UI}`;
+      ctx.fillStyle = C['label-strong'];
+      placeText(ctx, `${name} ${dateShort(tt)}`, x, y, ux, uy, 32);
+    }
+
+    // Earth's radius vector (Sun–Earth line)
+    ctx.strokeStyle = C.orbit;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(ex, ey);
+    ctx.stroke();
+
+    // Sun
+    const g = ctx.createRadialGradient(sx, sy, sr * 0.4, sx, sy, sr * 3.8);
+    g.addColorStop(0, C['sun-glow']);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(sx, sy, sr * 3.8, 0, TAU);
+    ctx.fill();
+    ctx.fillStyle = C.sun;
+    ctx.beginPath();
+    ctx.arc(sx, sy, sr, 0, TAU);
+    ctx.fill();
+    ctx.font = `bold 12px ${FONT_UI}`;
+    ctx.fillStyle = C['label-strong'];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    haloText(ctx, t('sun'), sx, sy + sr + 6);
+
+    // Velocity vector
+    if (state.show.velocity) {
+      const L = o.speed * Math.min(W, H) * 0.0042;
+      const vx = o.vdx, vy = -o.vdy;
+      ctx.strokeStyle = C.vel;
+      ctx.fillStyle = C.vel;
+      ctx.lineWidth = 2;
+      arrow(ctx, ex, ey, ex + vx * L, ey + vy * L, 9);
+      ctx.font = `12px ${FONT_NUM}`;
+      placeText(ctx, `${nf(o.speed, 2)} ${t('kms')}`, ex + vx * L, ey + vy * L, vx, vy, 6);
+    }
+
+    // Earth (the side facing the Sun is day)
+    const phi = Math.atan2(sy - ey, sx - ex);
+    drawBody(ctx, ex, ey, er, phi, C['earth-night'], C['earth-day']);
+
+    // Moon (drawn around Earth with its distance enlarged)
+    let moonScale = 0;
+    let labelDist = er + 7;
+    if (state.show.moon) {
+      ctx.strokeStyle = C.moon;
+      ctx.globalAlpha = 0.5;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath();
+      ctx.arc(ex, ey, ringR, 0, TAU);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+      // Moon positions at new moon, first quarter, full moon and last quarter (matching the marks
+      // in the straightened-orbit view): every 90° counterclockwise, starting from the Sun's
+      // direction
+      const sunAng = Math.atan2(-o.y, -o.x);
+      for (let kind = 0; kind < 4; kind++) {
+        const ang = sunAng + kind * Math.PI / 2;
+        ctx.fillStyle = kind === 0 ? C['moon-dark'] : kind === 2 ? C['moon-lit'] : C.space;
+        ctx.strokeStyle = C.moon;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(ex + Math.cos(ang) * ringR, ey - Math.sin(ang) * ringR, Math.min(small ? 2 : 2.6, ringR * 0.18), 0, TAU);
+        ctx.fill();
+        ctx.stroke();
+      }
+      drawBody(ctx, mx, my, moonR, phi, C['moon-dark'], C['moon-lit'], C.moon);
+      moonScale = ringR / (MOON_MEAN_KM / AU_KM * v.s);
+      labelDist = ringR + 8;
+    }
+    const [eux, euy] = radial(ex, ey);
+    ctx.font = `bold 13px ${FONT_UI}`;
+    ctx.fillStyle = C.trail;
+    placeText(ctx, t('earth'), ex, ey, eux, euy, labelDist);
+
+    // Scale bar
+    const L = [1, 0.5, 0.25, 0.2, 0.1, 0.05].find(c => c * v.s <= (small ? 110 : 160)) ?? 0.05;
+    const bx = 14, by = H - 16, bw = L * v.s;
+    ctx.strokeStyle = C.label;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(bx, by - 4);
+    ctx.lineTo(bx, by);
+    ctx.lineTo(bx + bw, by);
+    ctx.lineTo(bx + bw, by - 4);
+    ctx.stroke();
+    ctx.font = `11px ${FONT_UI}`;
+    ctx.fillStyle = C.label;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    haloText(ctx, `${nf(L, auDigits(L))} ${t('au')} = ${fmtKm(L * AU_KM)}`, bx, by - 6);
+    return moonScale;
+  }
+
+  // ---- Edge-on view of the orbital plane -------------------------------------
+  // The top view seen edge-on, looking along the orbital plane from its lower edge (the side where
+  // Earth is at the June solstice).
+  // Same horizontal axis and scale as the top view (Earth is at the left end at the March equinox
+  // and at the right end at the September equinox); vertical = height above the ecliptic
+  function drawSide(o, mo, yd) {
+    const { W, H } = side;
+    if (!W || !H || !planView) return null;
+    const ctx = begin(side);
+    drawStars(ctx, W, H, 0.5);
+
+    const { s, ox, small, ringR, kMoon: k, sr, er } = planView;
+    const e = o.e, a = EL.a, w = o.w;
+    const X0 = ox, y0 = Math.round(H / 2) + 4;
+    // Viewer on the -y side (where Earth is at the June solstice). Screen right is +x: toward the
+    // March equinox point, which is where Earth is at the September equinox.
+    const D = { dx: 0, dy: -1, rx: 1, ry: 0 };
+    const hOf = (x, y) => x * D.rx + y * D.ry;   // horizontal component on screen
+    const dOf = (x, y) => x * D.dx + y * D.dy;   // depth (+ = toward the viewer)
+
+    ctx.font = `11px ${FONT_UI}`;
+    ctx.fillStyle = C.label;
+    if (!small) {
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      haloText(ctx, t('elevTitle'), 10, 7);
+    }
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    haloText(ctx, t('elevUpper'), W - 10, 7);
+    ctx.textBaseline = 'bottom';
+    haloText(ctx, t('elevLower'), W - 10, H - 6);
+
+    // Orbit (a line segment when seen edge-on)
+    const b = a * Math.sqrt(1 - e * e);
+    const ecx = -a * e * Math.cos(w);
+    const hx = Math.sqrt(a * a * Math.cos(w) ** 2 + b * b * Math.sin(w) ** 2);
+    ctx.strokeStyle = C.orbit;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(X0 + (ecx - hx) * s, y0);
+    ctx.lineTo(X0 + (ecx + hx) * s, y0);
+    ctx.stroke();
+
+    // Position on the 1st of each month. Labels go above when Earth is beyond the Sun and below
+    // when it is in front of the Sun
+    ctx.strokeStyle = C.label;
+    ctx.fillStyle = C.label;
+    ctx.lineWidth = 1;
+    ctx.font = `11px ${FONT_UI}`;
+    ctx.textAlign = 'center';
+    for (const m of yd.months) {
+      const p = orbitAt(m.t);
+      const X = X0 + hOf(p.x, p.y) * s;
+      const front = dOf(p.x, p.y) > 0;
+      ctx.beginPath();
+      ctx.moveTo(X, y0);
+      ctx.lineTo(X, front ? y0 + 5 : y0 - 5);
+      ctx.stroke();
+      ctx.textBaseline = front ? 'top' : 'bottom';
+      haloText(ctx, monthName(m.m), X, front ? y0 + 8 : y0 - 8);
+    }
+
+    // Equinoxes (turning points of the back-and-forth motion) and solstices (where Earth crosses in
+    // front of or behind the Sun)
+    const S4 = t('seasons4');
+    for (const sn of yd.seasons) {
+      const p = orbitAt(sn.t);
+      const X = X0 + hOf(p.x, p.y) * s;
+      const front = dOf(p.x, p.y) > 0;
+      const isEnd = sn.i % 2 === 0;
+      ctx.beginPath();
+      ctx.arc(X, y0, 3.5, 0, TAU);
+      ctx.fillStyle = C.space;
+      ctx.fill();
+      ctx.strokeStyle = C['label-strong'];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      const text = `${S4[sn.i]} ${dateShort(sn.t)}`;
+      ctx.font = `bold 12px ${FONT_UI}`;
+      ctx.fillStyle = C['label-strong'];
+      if (isEnd && !small) {
+        const dir = X > X0 ? 1 : -1;
+        ctx.textAlign = dir > 0 ? 'left' : 'right';
+        ctx.textBaseline = 'middle';
+        haloText(ctx, text, X + dir * 10, y0);
+      } else if (isEnd) {
+        ctx.textAlign = X > X0 ? 'right' : 'left';
+        ctx.textBaseline = 'top';
+        haloText(ctx, text, X, y0 + 24);
+      } else {
+        ctx.textAlign = 'center';
+        ctx.textBaseline = front ? 'top' : 'bottom';
+        haloText(ctx, text, X, front ? y0 + 24 : y0 - 24);
+      }
+    }
+
+    // Work out the phase seen by the viewer from the body → Sun direction
+    const litFrom = (hx2, hy2) => {
+      const l = Math.hypot(hx2, hy2), ux = hx2 / l, uy = hy2 / l;
+      return { cosA: ux * D.dx + uy * D.dy, dir: ux * D.rx + uy * D.ry >= 0 ? 0 : Math.PI };
+    };
+    const XE = X0 + hOf(o.x, o.y) * s;
+    const earthFront = dOf(o.x, o.y) > 0;
+    const mr = Math.min(small ? 3.5 : 4.5, Math.max(1.5, ringR * 0.28));
+    const kz = k * state.tilt;
+    const le = litFrom(-o.x, -o.y);
+    const lm = litFrom(-(o.x * AU_KM + mo.dx), -(o.y * AU_KM + mo.dy));
+
+    // Moon's orbit: the positions it passed through over the last sidereal month, drawn around
+    // Earth's current position
+    const ring = [];
+    for (let i = 0; i <= 120; i++) {
+      const mm = i === 0 ? mo : moonAt(o.t - 27.3217 * i / 120);
+      ring.push([XE + hOf(mm.dx, mm.dy) * k, y0 - mm.dz * kz, dOf(mm.dx, mm.dy) >= 0]);
+    }
+    const ringPath = wantFront => {
+      ctx.beginPath();
+      let pen = false, prev = null;
+      for (const [X, Y, f] of ring) {
+        if (f === wantFront || prev === wantFront) {
+          pen ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y);
+          pen = true;
+        } else pen = false;
+        prev = f;
+      }
+      ctx.stroke();
+    };
+    const MX = XE + hOf(mo.dx, mo.dy) * k, MY = y0 - mo.dz * kz;
+    const moonFront = dOf(mo.dx, mo.dy) >= 0;
+    const drawMoon = () => drawLitBody(ctx, MX, MY, mr, lm.cosA, lm.dir, C['moon-dark'], C['moon-lit'], C.moon);
+
+    // Projection lines from the top view
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 4]);
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = C.sun;
+    ctx.beginPath();
+    ctx.moveTo(X0, 0);
+    ctx.lineTo(X0, y0 - sr);
+    ctx.stroke();
+    ctx.globalAlpha = 0.45;
+    ctx.strokeStyle = C.trail;
+    ctx.beginPath();
+    ctx.moveTo(XE, 0);
+    ctx.lineTo(XE, y0 - er);
+    ctx.stroke();
+    if (state.show.moon) {
+      ctx.strokeStyle = C.moon;
+      ctx.beginPath();
+      ctx.moveTo(MX, 0);
+      ctx.lineTo(MX, MY - mr);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.setLineDash([]);
+
+    const drawSun = () => {
+      const g = ctx.createRadialGradient(X0, y0, sr * 0.4, X0, y0, sr * 3.6);
+      g.addColorStop(0, C['sun-glow']);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(X0, y0, sr * 3.6, 0, TAU);
+      ctx.fill();
+      ctx.fillStyle = C.sun;
+      ctx.beginPath();
+      ctx.arc(X0, y0, sr, 0, TAU);
+      ctx.fill();
+    };
+    const drawSystem = () => {
+      if (state.show.moon) {
+        ctx.strokeStyle = C.moon;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.3;
+        ringPath(false);
+        ctx.globalAlpha = 1;
+        if (!moonFront) drawMoon();
+      }
+      drawLitBody(ctx, XE, y0, er, le.cosA, le.dir, C['earth-night'], C['earth-day'], C.trail);
+      if (state.show.moon) {
+        ctx.strokeStyle = C.moon;
+        ctx.lineWidth = 1.4;
+        ctx.globalAlpha = 0.85;
+        ringPath(true);
+        ctx.globalAlpha = 1;
+        if (moonFront) drawMoon();
+      }
+    };
+    // Draw nearer objects last
+    if (earthFront) { drawSun(); drawSystem(); } else { drawSystem(); drawSun(); }
+
+    ctx.font = `bold 12px ${FONT_UI}`;
+    ctx.fillStyle = C.trail;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    const ringTop = state.show.moon ? ringR * state.tilt * 0.09 : 0;
+    haloText(ctx, t('earth'), XE, y0 - Math.max(er, ringTop) - 8);
+    if (state.show.moon) {
+      ctx.font = `bold 11px ${FONT_UI}`;
+      ctx.fillStyle = C.moon;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      haloText(ctx, t('moon'), MX + mr + 4, MY);
+    }
+    return {
+      front: earthFront,
+      vx: o.speed * (o.vdx * D.rx + o.vdy * D.ry),
+      n: ringR / (MOON_MEAN_KM / AU_KM * s),
+    };
+  }
+
+  // ---- Straightened-orbit view -----------------------------------------------
+  // Earth's orbit is straightened into a line; the Moon's position is split into components along
+  // Earth's direction of motion and toward the Sun
+  function drawStrip(o) {
+    const { W, H } = strip;
+    if (!W || !H) return 1;
+    const ctx = begin(strip);
+    drawStars(ctx, W, H, 0.5);
+    const glow = ctx.createLinearGradient(0, 0, 0, 34);
+    glow.addColorStop(0, C['sun-glow']);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, 34);
+
+    const padT = 38, padB = 48;
+    const y0 = (padT + H - padB) / 2;
+    const ampPx = (H - padT - padB) / 2;
+    const XE = Math.round(W * 0.66);
+    const mu = state.mu;
+    const kmPerDay = V_EARTH_MEAN * 86400 * mu;
+    const sx = Math.min(W / (state.stripDays * kmPerDay), ampPx / MOON_MAX_KM);   // horizontal scale [px/km]
+    const V = state.trueAspect ? 1 : Math.max(1, ampPx / (MOON_MAX_KM * sx));   // vertical exaggeration
+    const sy = sx * V;
+
+    // Step through time and compute the positions of Earth and the Moon (i = nP is now)
+    const margin = 1 + MOON_MAX_KM / kmPerDay;
+    const past = XE / (sx * kmPerDay) + margin, future = (W - XE) / (sx * kmPerDay) + margin;
+    const step = Math.min(0.1, (past + future) / 1800);
+    const nP = Math.ceil(past / step), n = nP + Math.ceil(future / step) + 1;
+    const T0 = o.t - nP * step;
+    const xe = new Float64Array(n), xm = new Float64Array(n), ym = new Float64Array(n), el = new Float64Array(n);
+    let S = 0, lx = 0, ly = 0, prevEl = 0;
+    for (let i = 0; i < n; i++) {
+      const tt = T0 + i * step;
+      const eo = i === nP ? o : orbitAt(tt);
+      const mo = moonAt(tt);
+      if (i > 0) S += Math.hypot(eo.x - lx, eo.y - ly);
+      lx = eo.x;
+      ly = eo.y;
+      xe[i] = S;
+      xm[i] = mo.dx * eo.vdx + mo.dy * eo.vdy;       // component along Earth's motion
+      ym[i] = -mo.dx * eo.vdy + mo.dy * eo.vdx;      // component toward the Sun
+      const e1 = elongOf(eo, mo);
+      el[i] = i === 0 ? e1 : el[i - 1] + mod(e1 - prevEl + 180, 360) - 180;
+      prevEl = e1;
+    }
+    const S0 = xe[nP];
+    for (let i = 0; i < n; i++) {
+      xe[i] = XE + sx * mu * (xe[i] - S0) * AU_KM;
+      xm[i] = xe[i] + sx * xm[i];
+      ym[i] = y0 - sy * ym[i];
+    }
+
+    // Direction of the Sun
+    ctx.font = `bold 11px ${FONT_UI}`;
+    ctx.fillStyle = C.sun;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    haloText(ctx, t('towardSun'), 8, 6);
+
+    // Earth's orbit (straightened) and date ticks
+    ctx.strokeStyle = C.trail;
+    ctx.globalAlpha = 0.55;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, y0);
+    ctx.lineTo(W, y0);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    const pxPerDay = sx * kmPerDay;
+    stripPxPerDay = pxPerDay;
+    // Time span from the left edge to the right edge of the canvas (shown as a band in the top
+    // view)
+    let iFrom = 0, iTo = n - 1;
+    while (iFrom < n - 1 && xe[iFrom] < 0) iFrom++;
+    while (iTo > 0 && xe[iTo] > W) iTo--;
+    stripRange = { from: T0 + iFrom * step, to: T0 + iTo * step };
+
+    // A tick at each local midnight at the observing location
+    const N = [1, 2, 5, 10, 15, 30].find(k => k * pxPerDay >= 64) ?? 30;
+    ctx.strokeStyle = C.label;
+    ctx.fillStyle = C.label;
+    ctx.lineWidth = 1;
+    ctx.font = `11px ${FONT_UI}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    const tLast = T0 + (n - 1) * step;
+    let day = local(T0);
+    for (let guard = 0; guard < 400; guard++) {
+      const tk = daysFromLocal(day.y, day.m, day.d, 0);
+      const next = new Date(Date.UTC(day.y, day.m - 1, day.d + 1));
+      const cur = day;
+      day = { y: next.getUTCFullYear(), m: next.getUTCMonth() + 1, d: next.getUTCDate() };
+      if (tk > tLast) break;
+      const f = (tk - T0) / step, i = Math.floor(f);
+      if (i < 0 || i >= n - 1) continue;
+      const X = xe[i] + (xe[i + 1] - xe[i]) * (f - i);
+      if (X < -30 || X > W + 30) continue;
+      const labelIt = N >= 30 ? cur.d === 1 : (cur.d - 1) % N === 0 && cur.d <= 31 - N / 2;
+      if (pxPerDay >= 5 || labelIt) {
+        const h = labelIt ? 5 : 3;
+        ctx.beginPath();
+        ctx.moveTo(X, y0 - h);
+        ctx.lineTo(X, y0 + h);
+        ctx.stroke();
+      }
+      if (labelIt) haloText(ctx, dateShort(tk + 0.01), X, H - 5);
+    }
+
+    // Moon's path: still to come (dotted)
+    ctx.strokeStyle = C.moon;
+    ctx.lineWidth = 1.6;
+    ctx.globalAlpha = 0.6;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(xm[nP], ym[nP]);
+    for (let i = nP + 1; i < n; i++) ctx.lineTo(xm[i], ym[i]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Moon's path: so far (solid; older parts fade out)
+    ctx.lineWidth = 2.6;
+    ctx.lineCap = 'butt';
+    const CH = 40;
+    for (let c = 0; c < CH; c++) {
+      const i0 = Math.floor(c * nP / CH), i1 = Math.floor((c + 1) * nP / CH);
+      if (i1 <= i0) continue;
+      ctx.globalAlpha = 0.15 + 0.85 * ((i0 + i1) / 2 / nP);
+      ctx.beginPath();
+      ctx.moveTo(xm[i0], ym[i0]);
+      for (let i = i0 + 1; i <= i1; i++) ctx.lineTo(xm[i], ym[i]);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.lineCap = 'round';
+
+    // New moon, first quarter, full moon, last quarter
+    const PH = t('phaseShort');
+    for (let i = 0; i < n - 1; i++) {
+      const qa = Math.floor(el[i] / 90), qb = Math.floor(el[i + 1] / 90);
+      if (qa === qb) continue;
+      const f = (qb * 90 - el[i]) / (el[i + 1] - el[i]);
+      const X = xm[i] + (xm[i + 1] - xm[i]) * f, Y = ym[i] + (ym[i + 1] - ym[i]) * f;
+      if (X < -40 || X > W + 40) continue;
+      const kind = mod(qb, 4);
+      const tt = T0 + (i + f) * step;
+      const r = kind % 2 ? 3.5 : 4.5;
+      if (kind === 0) drawBody(ctx, X, Y, r, 0, C['moon-dark'], C['moon-dark'], C.moon);
+      else if (kind === 2) drawBody(ctx, X, Y, r, 0, C['moon-lit'], C['moon-lit'], C.moon);
+      else drawBody(ctx, X, Y, r, -Math.PI / 2, C['moon-dark'], C['moon-lit'], C.moon);
+      if (kind % 2 && Math.abs(X - XE) < 48) continue;   // omit quarter-moon names that would overlap Earth's label
+      ctx.font = kind % 2 ? `11px ${FONT_UI}` : `bold 11px ${FONT_UI}`;
+      ctx.fillStyle = kind % 2 ? C.label : C['label-strong'];
+      ctx.textAlign = 'center';
+      ctx.textBaseline = kind === 2 ? 'top' : 'bottom';
+      haloText(ctx, `${PH[kind]} ${dateShort(tt)}`, X, kind === 2 ? Y + 8 : Y - 8);
+    }
+
+    // Earth and the Moon now
+    const mX = xm[nP], mY = ym[nP];
+    ctx.strokeStyle = C.moon;
+    ctx.globalAlpha = 0.5;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(XE, y0);
+    ctx.lineTo(mX, mY);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    drawBody(ctx, XE, y0, 7.5, -Math.PI / 2, C['earth-night'], C['earth-day']);
+    drawBody(ctx, mX, mY, 5.5, -Math.PI / 2, C['moon-dark'], C['moon-lit'], C.moon);
+    ctx.font = `bold 12px ${FONT_UI}`;
+    ctx.fillStyle = C.trail;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = mY < y0 ? 'top' : 'bottom';
+    haloText(ctx, t('earth'), XE + 11, mY < y0 ? y0 + 6 : y0 - 6);
+    ctx.fillStyle = C.moon;
+    ctx.textBaseline = 'middle';
+    haloText(ctx, t('moon'), mX + 10, mY);
+    return V;
+  }
+
+  // Drag the straightened-orbit view to move backward or forward in time
+  {
+    const cv = document.getElementById('strip-canvas');
+    let drag = null;
+    cv.addEventListener('pointerdown', e => {
+      drag = { x: e.clientX, t: state.t, wasPlaying: state.playing };
+      state.playing = false;
+      cv.setPointerCapture(e.pointerId);
+    });
+    cv.addEventListener('pointermove', e => {
+      if (!drag) return;
+      state.t = drag.t - (e.clientX - drag.x) / stripPxPerDay;
+      state.trailStart = Math.min(state.trailStart, state.t);
+      dirty = true;
+    });
+    const end = () => {
+      if (!drag) return;
+      state.playing = drag.wasPlaying;
+      drag = null;
+    };
+    cv.addEventListener('pointerup', end);
+    cv.addEventListener('pointercancel', end);
+  }
+
+  // ---- Close-up of Earth -----------------------------------------------------
+  const showRotation = () => state.speed <= 1;
+
+  function drawInset(o, mo) {
+    const { W, H } = inset;
+    if (!W || !H) return 0;
+    const ctx = begin(inset);
+    drawStars(ctx, W, H, 0.6);
+
+    const cx = W / 2, cy = H / 2, R = Math.min(W, H) * 0.34;
+    const sdx = -o.x / o.r, sdy = o.y / o.r;       // direction of the Sun on screen
+    const phi = Math.atan2(sdy, sdx);
+
+    // Direction of the Sun
+    const edge = Math.min(W, H) / 2 - 14;
+    const gx = cx + sdx * edge, gy = cy + sdy * edge;
+    const g = ctx.createRadialGradient(gx, gy, 2, gx, gy, 20);
+    g.addColorStop(0, C['sun-glow']);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(gx, gy, 20, 0, TAU);
+    ctx.fill();
+    ctx.fillStyle = C.sun;
+    ctx.beginPath();
+    ctx.arc(gx, gy, 7, 0, TAU);
+    ctx.fill();
+
+    // Direction of the Moon
+    if (state.show.moon) {
+      const md = Math.hypot(mo.dx, mo.dy);
+      const mdx = mo.dx / md, mdy = -mo.dy / md;
+      const d = R + (edge - R) * 0.5;
+      drawBody(ctx, cx + mdx * d, cy + mdy * d, 5, phi, C['moon-dark'], C['moon-lit'], C.moon);
+      ctx.font = `bold 11px ${FONT_UI}`;
+      ctx.fillStyle = C.moon;
+      placeText(ctx, t('moon'), cx + mdx * d, cy + mdy * d, mdx, mdy, 9);
+    }
+
+    // Earth (fill the night side, then paint the day side over it)
+    drawBody(ctx, cx, cy, R, phi, C['earth-night'], C['earth-day']);
+
+    // Rotate equatorial → ecliptic coordinates, then project from above
+    const ce = Math.cos(OBLIQUITY), se = Math.sin(OBLIQUITY);
+    const proj = (lat, ra) => {
+      const cl = Math.cos(lat);
+      const x = cl * Math.cos(ra), y = cl * Math.sin(ra), z = Math.sin(lat);
+      const ey = y * ce + z * se, ez = -y * se + z * ce;
+      return { x: cx + x * R, y: cy - ey * R, ex: x, ey, ez };
+    };
+    // Draw only the part on the near (northern) side; with showHidden, also draw the far side
+    // faintly
+    const latCircle = (lat, color, dash, width = 1, showHidden = false) => {
+      for (const pass of showHidden ? [true, false] : [true]) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.setLineDash(pass ? dash : [1, 3]);
+        const alpha = ctx.globalAlpha;
+        if (!pass) ctx.globalAlpha = alpha * 0.4;
+        ctx.beginPath();
+        let pen = false;
+        for (let i = 0; i <= 180; i++) {
+          const p = proj(lat, i / 180 * TAU);
+          if ((p.ez >= 0) === pass) { pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } else pen = false;
+        }
+        ctx.stroke();
+        ctx.globalAlpha = alpha;
+      }
+      ctx.setLineDash([]);
+    };
+    latCircle(0, C.grat, []);
+    latCircle(30 * DEG, C.grat, [2, 3]);
+    latCircle(60 * DEG, C.grat, [2, 3]);
+    const plat = place.lat * DEG;
+    ctx.globalAlpha = 0.7;
+    latCircle(plat, C.place, [3, 3], 1.2, true);
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = C.grat;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, TAU);
+    ctx.stroke();
+
+    // Earth's axis and the North Pole
+    const np = proj(Math.PI / 2, 0);
+    ctx.strokeStyle = C.pole;
+    ctx.fillStyle = C.pole;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.75;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(np.x, np.y);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.arc(np.x, np.y, 3, 0, TAU);
+    ctx.fill();
+
+    // Direction of rotation (counterclockwise)
+    const ar = Math.max(12, R * 0.2);
+    const a0 = 0.2 * Math.PI, a1 = -0.85 * Math.PI;
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    ctx.arc(np.x, np.y, ar, a0, a1, true);
+    ctx.stroke();
+    const hx = np.x + ar * Math.cos(a1), hy = np.y + ar * Math.sin(a1);
+    const tx = Math.sin(a1), ty = -Math.cos(a1);
+    ctx.beginPath();
+    ctx.moveTo(hx + tx * 5, hy + ty * 5);
+    ctx.lineTo(hx - tx * 2 - ty * 4, hy - ty * 2 + tx * 4);
+    ctx.lineTo(hx - tx * 2 + ty * 4, hy - ty * 2 - tx * 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.font = `bold 11px ${FONT_UI}`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = C['earth-night'];
+    ctx.strokeText(t('northPole'), np.x + ar + 5, np.y);
+    ctx.fillText(t('northPole'), np.x + ar + 5, np.y);
+
+    // Observing location
+    const lst = (gmstDeg(o.t) + place.lon) * DEG;
+    const tp = proj(plat, lst);
+    const sinAlt = tp.ex * (-o.x / o.r) + tp.ey * (-o.y / o.r);
+    if (showRotation()) {
+      const hidden = tp.ez < 0;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(tp.x, tp.y, 4.5, 0, TAU);
+      if (hidden) {
+        ctx.strokeStyle = C.place;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = C.place;
+        ctx.strokeStyle = C.pole;
+        ctx.fill();
+        ctx.stroke();
+      }
+      ctx.font = `bold 11px ${FONT_UI}`;
+      ctx.fillStyle = C.pole;
+      ctx.strokeStyle = C['earth-night'];
+      ctx.lineWidth = 3;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      const label = hidden ? `${place.short} ${t('farSide')}` : place.short;
+      ctx.strokeText(label, tp.x + 8, tp.y);
+      ctx.fillText(label, tp.x + 8, tp.y);
+    }
+    return Math.asin(Math.max(-1, Math.min(1, sinAlt))) / DEG;
+  }
+
+  // ---- The Moon's phase as seen from the observing location ------------------
+  function drawPhase(psi, limb, visible) {
+    const { W, H } = phase;
+    if (!W || !H) return;
+    const { ctx, dpr } = phase;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = visible ? 1 : 0.4;
+    drawLitBody(ctx, W / 2, H / 2, Math.min(W, H) / 2 - 2, -Math.cos(psi * DEG), limb, C['moon-dark'], C['moon-lit'], C.moon);
+    ctx.globalAlpha = 1;
+  }
+
+  // ---- Panels ----------------------------------------------------------------
+  const $ = id => document.getElementById(id);
+  const textCache = new Map();
+  function setText(id, text) {
+    if (textCache.get(id) === text) return;
+    textCache.set(id, text);
+    $(id).textContent = text;
+  }
+
+  const inDate = $('in-date');
+  function updateReadout(o, placeAlt) {
+    const j = local(o.t);
+    setText('ro-date', dateLong(o.t));
+    setText('ro-time', `${pad(j.h)}:${pad(j.mi)} ${tzLabel(j.off)}`);
+
+    // The season depends on the observer's hemisphere
+    const sl = mod(sunLonU(o), 360);
+    const k = Math.floor(sl / 90);
+    const si = place.lat >= 0 ? k : (k + 2) % 4;
+    setText('ro-season', t('seasonNames')[si]);
+    $('ro-season').dataset.season = ['spring', 'summer', 'autumn', 'winter'][si];
+    if (isCJK()) {
+      const s = Math.floor(sl / 15);
+      setText('ro-sekki', SEKKI[state.lang][s]);
+      setText('ro-sekki-range', t('sekkiRange', { a: s * 15, b: s * 15 + 15 }));
+    } else {
+      setText('ro-sekki', t(place.lat >= 0 ? 'hemiNorth' : 'hemiSouth'));
+      setText('ro-sekki-range', '');
+    }
+
+    setText('ro-r', nf(o.r, 4));
+    setText('ro-rkm', fmtKm(o.r * AU_KM));
+    setText('ro-v', nf(o.speed, 2));
+    setText('ro-vkmh', t('speedNote', { kmh: nf(Math.round(o.speed * 3600 / 100) * 100) }));
+    setText('ro-lon', nf(sl, 1));
+    setText('ro-peri', String(Math.floor(o.m / N_ANOM)));
+
+    setText('ro-place', showRotation()
+      ? t('placeLine', { place: place.name, time: `${pad(j.h)}:${pad(j.mi)}`, dn: t(placeAlt > 0 ? 'day' : 'night'), alt: signed(placeAlt, 1) })
+      : t('rotHint', { place: place.name }));
+
+    if (document.activeElement !== inDate && j.y >= 1 && j.y <= 9999) {
+      const val = `${String(j.y).padStart(4, '0')}-${pad(j.m)}-${pad(j.d)}`;
+      if (inDate.value !== val) inDate.value = val;
+    }
+  }
+
+  function updateMoon(o, mo) {
+    const psi = elongOf(o, mo);
+    let prevNew = phaseTimeNear(0, o.t - psi / ELONG_RATE);
+    if (prevNew > o.t + 1e-5) prevNew = phaseTimeNear(0, prevNew - SYNODIC);
+    const age = Math.max(0, o.t - prevNew);
+    const illum = (1 - Math.cos(psi * DEG)) / 2 * 100;
+    setText('mo-title', t('moonTitle', { place: place.name }));
+    setText('mo-name', t('phases')[phaseIndex(psi)]);
+    setText('mo-age', t('moonAge', { age: nf(age, 1), illum: Math.round(illum) }));
+
+    // During fast playback the orientation changes too quickly to follow, so show the Moon at
+    // meridian transit (its highest point) instead
+    const fast = !showRotation();
+    const sky = moonSky(o, mo, fast);
+    if (fast) {
+      setText('mo-sky', sky.alt > 0 ? t('moonTransit', { alt: nf(sky.alt, 0), dir: compassOf(sky.az) }) : t('moonNoRise'));
+    } else {
+      setText('mo-sky', sky.alt >= 0
+        ? t('moonAlt', { alt: signed(sky.alt, 1), dir: compassOf(sky.az) })
+        : t('moonBelow', { dir: compassOf(sky.az) }));
+    }
+    drawPhase(psi, sky.limb, sky.alt >= 0);
+
+    setText('mo-dist', nf(Math.round(mo.dist)));
+    setText('mo-dist-note', t('moonDistNote', { n: nf(mo.dist / EARTH_RADIUS_KM, 1) }));
+    setText('mo-elong', nf(psi, 1));
+    setText('mo-next-new', whenText(nextPhase(0, o.t, psi)));
+    setText('mo-next-full', whenText(nextPhase(180, o.t, psi)));
+  }
+
+  function updateSide(o, mo, info) {
+    if (!info) return;
+    setText('sd-where', t(info.front ? 'whereFront' : 'whereBehind', { dir: t(info.vx >= 0 ? 'dirRight' : 'dirLeft') }));
+    setText('sd-vx', nf(Math.abs(info.vx), 1));
+    setText('sd-beta', `${signed(mo.beta, 1)}°`);
+    setText('sd-beta-side', t(mo.beta >= 0 ? 'betaNorth' : 'betaSouth'));
+    const diff = mod(sunLonU(o) - moonNodeAt(o.t), 180);
+    const gap = Math.min(diff, 180 - diff);
+    setText('sd-node', nf(gap));
+    $('side-eclipse').hidden = gap >= ECLIPSE_LIMIT;
+    setText('side-scale', state.show.moon ? t('sideScale', { n: Math.round(info.n), m: state.tilt }) : t('moonHidden'));
+  }
+
+  const speedFromPos = p => SPEED_MIN * Math.pow(SPEED_MAX / SPEED_MIN, p / 1000);
+  const posFromSpeed = s => 1000 * Math.log(s / SPEED_MIN) / Math.log(SPEED_MAX / SPEED_MIN);
+  function updateSpeedUI() {
+    const s = state.speed;
+    const rate = s < 1 ? t('speedHours', { n: Math.max(1, Math.round(s * 24)) }) : t('speedDays', { n: nf(s, s < 10 ? 1 : 0) });
+    const yearSec = 365.25 / s;
+    const year = yearSec < 120 ? t('yearSec', { n: Math.round(yearSec) }) : t('yearMin', { n: Math.round(yearSec / 60) });
+    $('out-speed').textContent = `${rate} · ${year}`;
+  }
+
+  const eFromPos = p => E_MAX * (p / 1000) ** 2;
+  const posFromE = e => 1000 * Math.sqrt(e / E_MAX);
+  function updateEccUI() {
+    const e = eccAt(state.t);
+    const real = state.eOverride === null;
+    $('out-ecc').textContent = nf(e, 4);
+    $('ecc-meta').textContent = t('eccMeta', { q: nf(EL.a * (1 - e), 3), Q: nf(EL.a * (1 + e), 3), ba: nf(Math.sqrt(1 - e * e), 5) });
+    const badge = $('ecc-badge');
+    badge.textContent = t('eccBadge', { e: nf(e, 4), kind: t(real ? 'eccReal' : 'eccExag') });
+    badge.classList.toggle('is-exaggerated', !real);
+    $('btn-ecc-real').hidden = real;
+  }
+
+  const muFromPos = p => MU_MIN * Math.pow(1 / MU_MIN, p / 1000);
+  const posFromMu = mu => 1000 * Math.log(mu / MU_MIN) / Math.log(1 / MU_MIN);
+  function updateMuUI() {
+    const mu = state.mu;
+    const real = mu > 0.999;
+    const v = V_EARTH_MEAN * mu;
+    const muText = nf(mu, mu < 0.1 ? 3 : 2);
+    $('out-mu').textContent = real ? `${t('muReal')} · ${nf(V_EARTH_MEAN, 2)} ${t('kms')}` : `×${muText} · ${nf(v, v < 3 ? 2 : 1)} ${t('kms')}`;
+    const k = V_MOON_SYN / (V_EARTH_MEAN * mu);
+    const shape = t(k < 0.9 ? 'shapeWave' : k <= 1.1 ? 'shapeCusp' : 'shapeLoop');
+    $('strip-k').textContent = t('stripK', { k: nf(k, k < 0.1 ? 3 : 2), shape });
+    const badge = $('strip-mu');
+    badge.hidden = real;
+    badge.textContent = t('stripMu', { mu: muText });
+    for (const b of document.querySelectorAll('#mu-presets button')) {
+      const target = b.dataset.mu === 'cusp' ? MU_CUSP : +b.dataset.mu;
+      b.setAttribute('aria-pressed', String(Math.abs(Math.log(mu / target)) < 0.01));
+    }
+  }
+
+  const inTilt = $('in-tilt');
+  function updateTiltUI() {
+    $('out-tilt').textContent = state.tilt === 1 ? t('tiltReal') : `×${state.tilt}`;
+  }
+
+  const btnPlay = $('btn-play');
+  function setPlaying(p) {
+    state.playing = p;
+    btnPlay.textContent = t(p ? 'pause' : 'play');
+  }
+  function jumpTo(tt) {
+    state.t = tt;
+    state.trailStart = tt;
+    dirty = true;
+  }
+
+  // ---- Switching language and location ---------------------------------------
+  const selLang = $('sel-lang');
+  const selPlace = $('sel-place');
+  const selTz = $('sel-tz');
+  const customBox = $('custom-place');
+  const inLat = $('in-lat'), inLon = $('in-lon');
+  let tzTouched = false;
+
+  for (const code of LANGS) {
+    const opt = new Option(LANG_NAMES[code], code);
+    opt.lang = code;
+    selLang.add(opt);
+  }
+  for (const off of TZ_OFFSETS) selTz.add(new Option(tzLabel(off), String(off)));
+
+  function loadFonts(lang) {
+    const fam = LANG_FONTS[lang];
+    let link = document.getElementById('lang-fonts');
+    if (!fam) return;
+    const href = `https://fonts.googleapis.com/css2?family=${fam}&display=swap`;
+    if (!link) {
+      link = document.createElement('link');
+      link.id = 'lang-fonts';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+    if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+  }
+
+  function buildPlaceOptions() {
+    selPlace.textContent = '';
+    for (const p of PLACES) selPlace.add(new Option(placeName(p), p.id));
+    selPlace.add(new Option(t('customPlace'), 'custom'));
+    selPlace.value = customBox.hidden ? state.placeId : 'custom';
+  }
+
+  function setLang(lang) {
+    state.lang = DICT[lang] ? lang : 'en';
+    const root = document.documentElement;
+    root.lang = state.lang;
+    root.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+    loadFonts(state.lang);
+    buildFormatters();
+    textCache.clear();
+    for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
+    for (const el of document.querySelectorAll('[data-i18n-aria]')) el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    document.title = t('title');
+    selLang.value = state.lang;
+    $('toggle-sekki').hidden = !isCJK();
+    refreshPlace();
+    buildPlaceOptions();
+    readTheme();
+    setPlaying(state.playing);
+    updateSpeedUI();
+    updateEccUI();
+    updateMuUI();
+    updateTiltUI();
+    dirty = true;
+  }
+
+  function nearestOffset(min) {
+    return TZ_OFFSETS.reduce((best, o) => Math.abs(o - min) < Math.abs(best - min) ? o : best, 0);
+  }
+  function openCustom() {
+    customBox.hidden = false;
+    $('place-error').hidden = true;
+    const base = state.custom || { lat: place.lat, lon: place.lon, tz: tzOffsetMin(msFromDays(state.t)) };
+    inLat.value = base.lat;
+    inLon.value = base.lon;
+    selTz.value = String(nearestOffset(base.tz));
+    tzTouched = false;
+    inLat.focus();
+  }
+  function applyCustom() {
+    const lat = parseFloat(inLat.value), lon = parseFloat(inLon.value);
+    const ok = Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+    $('place-error').hidden = ok;
+    if (!ok) return;
+    state.custom = { lat, lon, tz: +selTz.value };
+    state.placeId = 'custom';
+    refreshPlace();
+    saveSettings();
+    dirty = true;
+  }
+
+  selLang.addEventListener('change', () => { setLang(selLang.value); saveSettings(); });
+  selPlace.addEventListener('change', () => {
+    if (selPlace.value === 'custom') { openCustom(); return; }
+    customBox.hidden = true;
+    state.placeId = selPlace.value;
+    refreshPlace();
+    saveSettings();
+    dirty = true;
+  });
+  inLon.addEventListener('input', () => {
+    const lon = parseFloat(inLon.value);
+    if (!tzTouched && Number.isFinite(lon)) selTz.value = String(nearestOffset(Math.round(lon / 15) * 60));
+  });
+  selTz.addEventListener('change', () => { tzTouched = true; });
+  $('btn-apply-place').addEventListener('click', applyCustom);
+  for (const el of [inLat, inLon]) el.addEventListener('keydown', e => { if (e.key === 'Enter') applyCustom(); });
+
+  // ---- Controls --------------------------------------------------------------
+  btnPlay.addEventListener('click', () => setPlaying(!state.playing));
+  $('btn-now').addEventListener('click', () => jumpTo(daysFromMs(Date.now())));
+  inDate.addEventListener('change', () => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(inDate.value);
+    if (m) jumpTo(daysFromLocal(+m[1], +m[2], +m[3], 12));
+  });
+
+  const inSpeed = $('in-speed');
+  inSpeed.value = String(Math.round(posFromSpeed(state.speed)));
+  inSpeed.addEventListener('input', () => {
+    state.speed = speedFromPos(+inSpeed.value);
+    updateSpeedUI();
+    dirty = true;
+  });
+
+  const inEcc = $('in-ecc');
+  inEcc.value = String(Math.round(posFromE(eccAt(state.t))));
+  inEcc.addEventListener('input', () => {
+    state.eOverride = eFromPos(+inEcc.value);
+    updateEccUI();
+    dirty = true;
+  });
+  $('btn-ecc-real').addEventListener('click', () => {
+    state.eOverride = null;
+    inEcc.value = String(Math.round(posFromE(eccAt(state.t))));
+    updateEccUI();
+    dirty = true;
+  });
+
+  const inMu = $('in-mu');
+  inMu.value = String(Math.round(posFromMu(state.mu)));
+  inMu.addEventListener('input', () => {
+    state.mu = muFromPos(+inMu.value);
+    updateMuUI();
+    dirty = true;
+  });
+  for (const b of document.querySelectorAll('#mu-presets button')) {
+    b.addEventListener('click', () => {
+      state.mu = b.dataset.mu === 'cusp' ? MU_CUSP : +b.dataset.mu;
+      inMu.value = String(Math.round(posFromMu(state.mu)));
+      updateMuUI();
+      dirty = true;
+    });
+  }
+
+  inTilt.value = String(state.tilt);
+  inTilt.addEventListener('input', () => {
+    state.tilt = +inTilt.value;
+    updateTiltUI();
+    dirty = true;
+  });
+
+  const tgAspect = $('tg-aspect');
+  tgAspect.checked = state.trueAspect;
+  tgAspect.addEventListener('change', () => { state.trueAspect = tgAspect.checked; dirty = true; });
+  $('sel-span').addEventListener('change', e => { state.stripDays = +e.target.value; dirty = true; });
+
+  for (const key of Object.keys(state.show)) {
+    const box = $('tg-' + key);
+    box.checked = state.show[key];
+    box.addEventListener('change', () => {
+      state.show[key] = box.checked;
+      if (key === 'sectors') $('sector-note').hidden = !box.checked;
+      if (key === 'moon') $('moon-note').hidden = !box.checked;
+      dirty = true;
+    });
+  }
+  $('sel-trail').addEventListener('change', e => { state.trailLen = +e.target.value; dirty = true; });
+  $('btn-clear').addEventListener('click', () => { state.trailStart = state.t; dirty = true; });
+
+  document.addEventListener('keydown', e => {
+    if (e.code !== 'Space') return;
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON' || tag === 'TEXTAREA') return;
+    e.preventDefault();
+    setPlaying(!state.playing);
+  });
+
+  // Follow theme changes and font loading
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
+  new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  if (document.fonts) {
+    document.fonts.ready.then(() => { dirty = true; });
+    document.fonts.addEventListener('loadingdone', () => { dirty = true; });
+  }
+
+  setLang(state.lang);
+
+  // ---- Main loop -------------------------------------------------------------
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (state.playing) {
+      state.t += state.speed * dt;
+      dirty = true;
+    }
+    if (dirty) {
+      dirty = false;
+      const o = orbitAt(state.t);
+      const mo = moonAt(state.t);
+      const yd = yearData(state.t);
+      const V = drawStrip(o);                  // first: sets the time span the top view marks
+      const moonScale = drawMain(o, yd, mo);
+      updateSide(o, mo, drawSide(o, mo, yd));
+      const alt = drawInset(o, mo);
+      updateReadout(o, alt);
+      updateMoon(o, mo);
+      if (moonScale) setText('moon-note', t('moonNote', { n: Math.round(moonScale) }));
+      setText('strip-scale', state.trueAspect ? t('stripTrue') : t('stripScale', { v: V < 10 ? nf(V, 1) : Math.round(V) }));
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

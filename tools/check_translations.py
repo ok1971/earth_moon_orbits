@@ -1,9 +1,9 @@
-"""earth-moon-orbits.html の各言語の訳文が、日本語の原文の意味を正しく伝えているかを Claude に確認させる。
+"""src/locales/ の各言語の訳文が、日本語の原文（ja.json）の意味を正しく伝えているかを Claude に確認させる。
 
 使い方:
-  .venv\\Scripts\\python check_translations.py             # すべての言語
-  .venv\\Scripts\\python check_translations.py ko fr       # 指定した言語だけ
-  .venv\\Scripts\\python check_translations.py --dry-run   # API を呼ばず、機械的なチェックだけ
+  .venv\\Scripts\\python tools\\check_translations.py             # すべての言語
+  .venv\\Scripts\\python tools\\check_translations.py ko fr       # 指定した言語だけ
+  .venv\\Scripts\\python tools\\check_translations.py --dry-run   # API を呼ばず、機械的なチェックだけ
 
 API キーは .env の ANTHROPIC_API_KEY から読み込む。結果は translation-report.md に書き出す。
 """
@@ -21,10 +21,10 @@ from typing import Literal
 import anthropic
 from pydantic import BaseModel, Field
 
-HERE = Path(__file__).resolve().parent
-HTML = HERE / 'earth-moon-orbits.html'
-REPORT = HERE / 'translation-report.md'
-BASE = 'ja'
+from build import BASE, load_locales
+
+ROOT = Path(__file__).resolve().parent.parent
+REPORT = ROOT / 'translation-report.md'
 MODEL = 'claude-opus-5'
 PRICE_PER_MTOK = (5.00, 25.00)   # claude-opus-5 の入力・出力 [USD / 100万トークン]
 
@@ -53,99 +53,19 @@ def load_dotenv(path):
         os.environ.setdefault(key, value.strip().strip('"').strip("'"))
 
 
-# ---- HTML から翻訳テーブルを取り出す -----------------------------------------------
-class JSLiteral:
-    """JS のリテラル（オブジェクト・配列・文字列・数値）だけを読む小さなパーサー。"""
-    SKIP = re.compile(r'(?:\s+|//[^\n]*|/\*.*?\*/)+', re.S)
-    STRING = re.compile(r'"((?:[^"\\\n]|\\.)*)"|\'((?:[^\'\\\n]|\\.)*)\'', re.S)
-    NUMBER = re.compile(r'-?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?')
-    IDENT = re.compile(r'[A-Za-z_$][\w$]*')
-    ESCAPE = re.compile(r'\\(u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|.)', re.S)
-    ESCAPES = {'n': '\n', 't': '\t', 'r': '\r', 'b': '\b', 'f': '\f', 'v': '\v', '0': '\0'}
-    CONSTANTS = {'true': True, 'false': False, 'null': None}
-
-    def __init__(self, src, pos):
-        self.src, self.pos = src, pos
-
-    def fail(self, what):
-        line = self.src.count('\n', 0, self.pos) + 1
-        raise ValueError(f'{what}（{line} 行目: {self.src[self.pos:self.pos + 30]!r}）')
-
-    def skip(self):
-        if m := self.SKIP.match(self.src, self.pos):
-            self.pos = m.end()
-
-    def peek(self):
-        self.skip()
-        return self.src[self.pos]
-
-    def value(self):
-        ch = self.peek()
-        if ch == '{':
-            return self.container('}', self.entry, {})
-        if ch == '[':
-            return self.container(']', self.value, [])
-        if ch in '"\'':
-            return self.string()
-        if m := self.NUMBER.match(self.src, self.pos):
-            self.pos = m.end()
-            return float(m.group())
-        if (m := self.IDENT.match(self.src, self.pos)) and m.group() in self.CONSTANTS:
-            self.pos = m.end()
-            return self.CONSTANTS[m.group()]
-        self.fail('リテラル以外の値は読めません')
-
-    def container(self, close, read, out):
-        self.pos += 1
-        while self.peek() != close:
-            item = read()
-            if isinstance(out, dict):
-                out[item[0]] = item[1]
-            else:
-                out.append(item)
-            if self.peek() == ',':
-                self.pos += 1
-            elif self.peek() != close:
-                self.fail(f"',' か '{close}' が必要です")
-        self.pos += 1
-        return out
-
-    def entry(self):
-        if self.peek() in '"\'':
-            key = self.string()
-        elif m := self.IDENT.match(self.src, self.pos):
-            key, self.pos = m.group(), m.end()
-        else:
-            self.fail('キーが読めません')
-        if self.peek() != ':':
-            self.fail("':' が必要です")
-        self.pos += 1
-        return key, self.value()
-
-    def string(self):
-        m = self.STRING.match(self.src, self.pos)
-        if not m:
-            self.fail('文字列が閉じていません')
-        self.pos = m.end()
-        body = m.group(1) if m.group(1) is not None else m.group(2)
-        return self.ESCAPE.sub(self.unescape, body)
-
-    @classmethod
-    def unescape(cls, m):
-        e = m.group(1)
-        if len(e) > 1:
-            return chr(int(e.strip('ux{}'), 16))
-        return cls.ESCAPES.get(e, e)
-
-
-def read_tables(src):
-    tables = {}
-    for name in ('LANGS', 'LOCALES', 'SEKKI', 'DICT', 'PLACES'):
-        m = re.search(rf'\bconst {name}\s*=\s*', src)
-        if not m:
-            sys.exit(f'{HTML.name} に const {name} が見つかりません')
-        tables[name] = JSLiteral(src, m.end()).value()
-    return tables
+# ---- 言語ファイルを読む ------------------------------------------------------------
+def read_tables():
+    """src/locales/*.json を、チェックで使う形にまとめる。"""
+    data = load_locales()
+    for code, d in data.items():
+        LANG_NAMES_JA.setdefault(code, d['meta']['name'])
+    return {
+        'LANGS': list(data),
+        'LOCALES': {c: d['meta']['locale'] for c, d in data.items()},
+        'SEKKI': {c: d['solarTerms'] for c, d in data.items() if 'solarTerms' in d},
+        'DICT': {c: d['strings'] for c, d in data.items()},
+        'PLACES': {c: d['places'] for c, d in data.items()},
+    }
 
 
 # ---- 機械的なチェック ----------------------------------------------------------
@@ -183,9 +103,8 @@ def build_items(tables, lang):
     items = [{'key': k, 'ja': base[k], 'target': target[k]} for k in used_keys(tables, lang) if k in target]
     if lang in tables['SEKKI']:
         items.append({'key': 'SEKKI', 'ja': tables['SEKKI'][BASE], 'target': tables['SEKKI'][lang]})
-    bi, li = tables['LANGS'].index(BASE), tables['LANGS'].index(lang)
-    for place in tables['PLACES']:
-        items.append({'key': f'PLACES.{place["id"]}', 'ja': place['names'][bi], 'target': place['names'][li]})
+    for pid, ja in tables['PLACES'][BASE].items():
+        items.append({'key': f'PLACES.{pid}', 'ja': ja, 'target': tables['PLACES'][lang].get(pid, '')})
     return items
 
 
@@ -266,7 +185,7 @@ def show(v):
 def write_report(langs, results, usage_total):
     lines = [
         '# 翻訳チェック結果', '',
-        f'- 対象: `{HTML.name}`（原文は日本語）',
+        '- 対象: `src/locales/*.json`（原文は日本語の ja.json）',
         f'- モデル: `{MODEL}`',
         f'- 実行日時: {datetime.now():%Y-%m-%d %H:%M}',
         f'- トークン: 入力 {usage_total[0]:,} ・ 出力 {usage_total[1]:,}（費用の目安 ${cost(usage_total):.2f}）', '',
@@ -311,7 +230,7 @@ def cost(usage_total):
 # ---- main ------------------------------------------------------------------
 def main():
     sys.stdout.reconfigure(errors='replace')
-    tables = read_tables(HTML.read_text(encoding='utf-8'))
+    tables = read_tables()
     all_langs = [l for l in tables['LANGS'] if l != BASE and l in tables['DICT']]
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -332,7 +251,7 @@ def main():
     if args.dry_run:
         return
 
-    load_dotenv(HERE / '.env')
+    load_dotenv(ROOT / '.env')
     key = os.environ.get('ANTHROPIC_API_KEY', '')
     if not key or not key.isascii():
         sys.exit('.env の ANTHROPIC_API_KEY にキーが設定されていません（仮の文字列のままかもしれません）')
