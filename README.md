@@ -1,5 +1,7 @@
 # Earth and Moon Orbits
 
+English | [日本語](README.ja.md)
+
 ![The Moon's path weaving across Earth's orbit near the Sun](images/preview.png)
 
 An interactive astronomy teaching page. The Moon seems to circle the Earth, but seen from far above the Sun it travels in a gentle wave across Earth's orbit, and never loops back.
@@ -15,98 +17,90 @@ An interactive astronomy teaching page. The Moon seems to circle the Earth, but 
 
 Positions are computed from JPL mean orbital elements and the main terms of Meeus's lunar theory. Released under the [MIT License](LICENSE).
 
-The rest of this README, in Japanese, explains how the page is built and how to add a language.
+The sections below explain how the page is built and how to add a language. A new language needs one language file and no changes to the program.
 
----
-
-# 地球と月の公転軌道
-
-太陽のまわりを回る地球と月を、北黄極の側から見下ろして示す理科（天文）教材です。
-完成品は 1 つの HTML ファイル（`earth-moon-orbits.html`）で、ダブルクリックで開けます。
-12 言語で表示でき、言語ファイルを 1 つ足せば新しい言語を追加できます。
-
-## フォルダ構成
+## Folder layout
 
 ```
 src/
-  app.html          ページ本体（HTML・CSS・JavaScript）。訳文は含まない
+  app.html          the page itself (HTML, CSS and JavaScript), without any translated text
   locales/
-    ja.json         基準の言語（原文）。訳者向けの注記（notes）もここに書く
-    en.json など     言語ごとに 1 ファイル
+    ja.json         the base language (the source text), which also holds the notes for translators
+    en.json, ...    one file per language
 tools/
-  build.py              src から earth-moon-orbits.html と index.html を組み立てる
-  check_translations.py 訳文のチェック（機械的なチェックと、Claude による内容の確認）
-  snapshot.py           全言語の画面を撮影して、変更の前後を比べる
+  build.py              assembles earth-moon-orbits.html and index.html from src
+  check_translations.py checks the translations (mechanical checks, and a review of the content by Claude)
+  snapshot.py           screenshots every language, to compare the page before and after a change
 images/
-  preview.png           リンクを共有したときのプレビュー画像（1200×630）
-earth-moon-orbits.html  組み立て後の完成品。公開するのはこのファイル
-index.html              GitHub Pages の入口。earth-moon-orbits.html へ移動する（#ja などの指定も引き継ぐ）
+  preview.png           the preview image shown when a link to the page is shared (1200 × 630)
+earth-moon-orbits.html  the assembled page; this is the file to publish
+index.html              the entry page of the GitHub Pages site; forwards to earth-moon-orbits.html (keeping #ja and the like)
 ```
 
-`earth-moon-orbits.html` と `index.html` は直接編集しないでください。組み立てるたびに上書きされます。
+Do not edit `earth-moon-orbits.html` or `index.html` directly: every build overwrites them.
 
-検索結果や、SNS・メッセージでリンクを送ったときのプレビューには、題名（`title`）と紹介文（`shareDescription`）とプレビュー画像が使われます。プレビューはページのプログラムを動かさずに読み取られるので、代替言語（英語）のものが使われます。公開先の URL は `tools/build.py` の `SITE_URL` です。
+Search results, and the previews shown when a link is shared on social media or in a message, use the title (`title`), the description (`shareDescription`) and the preview image. Previews are read without running the page's script, so they are in the fallback language (English). The address the site is published at is `SITE_URL` in `tools/build.py`.
 
-## ふだんの作業の流れ
+## Everyday workflow
 
-コマンドはプロジェクトのフォルダで実行します（Windows の例）。
+Run the commands in the project folder (the examples are for Windows).
 
-1. `src/app.html` や `src/locales/*.json` を編集する
-2. 組み立てる: `.venv\Scripts\python tools\build.py`
-3. 訳文を機械的にチェックする: `.venv\Scripts\python tools\check_translations.py --dry-run`
-4. 画面を確かめる（必要に応じて）: 下の「画面の比較」を参照
+1. Edit `src/app.html` or `src/locales/*.json`
+2. Build: `.venv\Scripts\python tools\build.py`
+3. Check the translations mechanically: `.venv\Scripts\python tools\check_translations.py --dry-run`
+4. Check the rendering (when needed): see [Comparing screenshots](#comparing-screenshots) below
 
-日本語（原文）を変えたときは、ほかの言語の訳も直し、3 のチェックで漏れがないか確かめます。
+When you change the Japanese (source) text, update the other languages as well, and use the check in step 3 to make sure nothing is missing.
 
-## 言語ファイルの書き方
+## Writing a language file
 
-言語ファイルは次の 4 つの部分からなります。
+A language file has four parts. For example, from `ja.json`:
 
 ```json
 {
-  "meta":       { … その言語の設定 … },
+  "meta":       { … settings for the language … },
   "strings":    { "title": "地球と月の公転軌道", … },
   "places":     { "tokyo": "東京", … },
   "solarTerms": [ "春分", "清明", … ]
 }
 ```
 
-### meta（言語の設定）
+### meta (settings for the language)
 
-| 項目 | 内容 | 例 |
+| Field | Meaning | Example |
 |---|---|---|
-| `name` | 言語メニューに出す、その言語自身での名前（必須） | `"日本語"` |
-| `locale` | 数や日付の書式に使うロケール（必須） | `"ja-JP"`、`"ar-u-nu-latn"` |
-| `order` | 言語メニューでの順番。無い言語は最後に並ぶ | `2` |
-| `dir` | 書く向き。右から左の言語だけ `"rtl"` | `"rtl"` |
-| `googleFonts` | 追加で読み込む Google Fonts の指定。ラテン文字・キリル文字は不要 | `"BIZ+UDPGothic:wght@400;700"` |
-| `fontUI`、`fontTitle` | 本文と題名の書体（CSS の font-family） | `"\"BIZ UDPGothic\", Meiryo, sans-serif"` |
-| `titleLetterSpacing` | 題名の字間 | `".06em"` |
-| `joinedScript` | 文字がつながる文字体系（アラビア文字など）なら `true`。字間を空けない | `true` |
-| `largeNumbers` | 大きな距離の書き方。`myriad` は万・億の単位、`indian` はラーク・クロール。無ければ百万単位（`strings.kmMillion`） | `{"style": "myriad", "units": ["億", "万"], "separator": ""}` |
-| `shortDate` | 図の中の短い日付。`"month/day"` なら 5/6 の形。無ければその言語の標準の短い形 | `"month/day"` |
+| `name` | The language's name in the language itself, shown in the language menu (required) | `"日本語"` |
+| `locale` | The locale used to format numbers and dates (required) | `"ja-JP"`, `"ar-u-nu-latn"` |
+| `order` | Position in the language menu. Languages without one come last | `2` |
+| `dir` | Writing direction. Only right-to-left languages need it, as `"rtl"` | `"rtl"` |
+| `googleFonts` | Extra Google Fonts to load. Not needed for the Latin or Cyrillic alphabets | `"BIZ+UDPGothic:wght@400;700"` |
+| `fontUI`, `fontTitle` | Typefaces for the text and for the title (a CSS font-family) | `"\"BIZ UDPGothic\", Meiryo, sans-serif"` |
+| `titleLetterSpacing` | Letter spacing of the title | `".06em"` |
+| `joinedScript` | `true` for scripts whose letters join, such as Arabic. Letters are then never spaced out | `true` |
+| `largeNumbers` | How to write large distances: `myriad` uses units of 10⁴ and 10⁸ (万 and 億), `indian` uses lakh and crore. Without it, distances are in millions (`strings.kmMillion`) | `{"style": "myriad", "units": ["億", "万"], "separator": ""}` |
+| `shortDate` | Short dates inside the diagrams. `"month/day"` gives the form 5/6. Without it, the language's standard short form is used | `"month/day"` |
 
-### strings（訳文）
+### strings (the translations)
 
-- キーは基準の `ja.json` と同じにします。値は訳文です。
-- `{n}`、`{place}` などの波かっこは、実行時に数や地名が入る場所です。そのまま残し、語順に合わせて位置は動かしてかまいません。
-- 数（`{n}`）によって語の形が変わる言語は、1 つの文字列の代わりに形ごとに書きます。
+- The keys are the same as in the base file `ja.json`; the values are the translations.
+- Placeholders in braces, such as `{n}` and `{place}`, are filled in with numbers or place names when the page runs. Keep them as they are; you may move them to suit the word order.
+- In languages where a word changes form with the number (`{n}`), write one text for each form instead of a single text.
 
   ```json
   "daysUnit": { "one": "day", "other": "days" }
   ```
 
-  使える形は `zero`・`one`・`two`・`few`・`many`・`other` で、`other` は必須です。どの数がどの形になるかは言語ごとに決まっていて（Unicode の CLDR の規則）、ブラウザが選びます。
-- 配列の値（月相の名前、方位など）は、要素の数と順番を日本語と同じにします。
+  The forms are `zero`, `one`, `two`, `few`, `many` and `other`, and `other` is required. Which numbers take which form is fixed for each language (by the Unicode CLDR rules), and the browser chooses the form.
+- Values that are lists (the names of the Moon's phases, the compass directions and so on) must have the same number of items, in the same order, as in Japanese.
 
-### places と solarTerms
+### places and solarTerms
 
-- `places` は観測地の名前です。キー（`tokyo` など）は変えずに、名前だけを訳します。
-- `solarTerms` は二十四節気の名前（春分から順に 24 個）です。二十四節気を使う言語だけに書きます。書いた言語では、二十四節気の表示が自動で有効になります。
+- `places` holds the names of the observing sites. Keep the keys (`tokyo` and so on) and translate only the names.
+- `solarTerms` holds the names of the 24 solar terms (二十四節気), starting from the vernal equinox. Write it only for languages that use the solar terms; the page then shows them automatically.
 
-### 注記（notes、ja.json だけ）
+### Notes for translators (notes, ja.json only)
 
-`ja.json` の `notes` には、訳者に伝えたいことをキーごとに書きます。ページには含まれません。
+In `ja.json`, `notes` holds what translators should know about each key. The notes are written in Japanese, like the source text, and are not included in the page.
 
 ```json
 "notes": {
@@ -114,63 +108,64 @@ index.html              GitHub Pages の入口。earth-moon-orbits.html へ移�
 }
 ```
 
-- `note`: 表示される場所や、訳すときの注意。Claude による確認にも一緒に渡されます。
-- `maxWidth`: 表示幅の上限（半角換算。全角文字は 2、結合文字は 0 と数える）。図の中の文字など、長すぎるとはみ出す文字に付けます。超えるとチェックで指摘されます。
-- `onlyWithSolarTerms`: 二十四節気を使う言語でだけ表示する文字なら `true`。
-- `fallbackOnly`: 代替言語（英語）のものだけが使われる文字なら `true`（リンクのプレビューの紹介文など）。ほかの言語には書かなくてよい。
+- `note`: where the text appears, and what to watch for when translating it. It is also given to Claude for the content review.
+- `maxWidth`: the maximum display width, counted in half-width characters (a full-width character counts as 2, a combining character as 0). Use it for text that would overflow if it were too long, such as text inside the diagrams. The check reports text that exceeds it.
+- `onlyWithSolarTerms`: `true` for text shown only in languages that use the solar terms.
+- `fallbackOnly`: `true` for text of which only the fallback language's (English) version is used, such as the description in link previews. Other languages need not include it.
 
-## 新しい言語を追加する
+## Adding a language
 
-ドイツ語（`de`）を例にします。
+German (`de`) as an example:
 
-1. `src/locales/en.json` をコピーして `src/locales/de.json` を作る
-2. `meta` を書き換える: `"name": "Deutsch"`、`"locale": "de-DE"`、`"order": 13`。英語用の設定が残っていれば消す
-3. `strings` と `places` を訳す（`ja.json` の `notes` も参照）
-4. 機械的にチェックする: `.venv\Scripts\python tools\check_translations.py --dry-run de`
-   - キーの漏れ、`{n}` などの食い違い、表示幅の超過が指摘されます
-5. 必要なら内容も確認する: `.venv\Scripts\python tools\check_translations.py de`
-   - Claude が日本語の原文と照らして確認し、結果を `translation-report.md` に書き出します
-   - `.env` に `ANTHROPIC_API_KEY` が必要です。1 言語あたり約 0.2 ドルかかります
-6. 組み立てる: `.venv\Scripts\python tools\build.py`
-7. 画面を確かめる: `.venv\Scripts\python tools\snapshot.py take shots --langs de` で `shots\de.png` を開く
+1. Copy `src/locales/en.json` to `src/locales/de.json`
+2. Change `meta`: `"name": "Deutsch"`, `"locale": "de-DE"`, `"order": 13`. Remove any settings left over that were meant for English
+3. Translate `strings` and `places` (see also the `notes` in `ja.json`)
+4. Check it mechanically: `.venv\Scripts\python tools\check_translations.py --dry-run de`
+   - This reports missing keys, placeholders such as `{n}` that do not match, and text that is too wide
+5. Optionally, have the content reviewed: `.venv\Scripts\python tools\check_translations.py de`
+   - This step is optional. The language can be built and published without it; skip it, for example, when a fluent speaker has already checked the translation
+   - Claude compares the translation with the Japanese source and writes the results to `translation-report.md`
+   - It needs `ANTHROPIC_API_KEY` in `.env`, and costs about US$0.20 per language
+6. Build: `.venv\Scripts\python tools\build.py`
+7. Check the rendering: run `.venv\Scripts\python tools\snapshot.py take shots --langs de` and open `shots\de.png`
 
-プログラムの変更は要りません。ページは、ブラウザの言語設定が一致すれば、初めて開いたときにその言語で表示されます。
+No changes to the program are needed. When the browser's language setting matches, the page opens in that language the first time it is opened.
 
-## 画面の比較
+## Comparing screenshots
 
-変更の前後で全言語の画面を撮影して比べられます（Microsoft Edge が必要です）。
+You can screenshot every language before and after a change and compare them (Microsoft Edge is required).
 
 ```
-.venv\Scripts\python tools\snapshot.py take before    # 変更前に撮影
-（変更して build.py を実行）
-.venv\Scripts\python tools\snapshot.py take after     # 変更後に撮影
+.venv\Scripts\python tools\snapshot.py take before    # before the change
+(make the change and run build.py)
+.venv\Scripts\python tools\snapshot.py take after     # after the change
 .venv\Scripts\python tools\snapshot.py compare before after
 ```
 
-- 2027 年 5 月 6 日 11:00（UTC）、東京で一時停止した状態を撮影します。
-- 撮影のたびに差が出ないよう、Web フォントは読み込まず、パソコンにある書体で表示します。
-- 差が 1 行（1 ピクセル）だけのときは、図の枠の端で起きる描画の揺らぎのことがあります。撮り直して確かめてください。
+- The screenshots show the page paused at 11:00 UTC on 6 May 2027, in Tokyo.
+- So that every screenshot comes out the same, web fonts are not loaded; the page uses the computer's own fonts.
+- A difference of only one row (one pixel) can be rendering noise at the edge of a diagram's frame. Take the screenshots again to make sure.
 
-## 準備（初回だけ）
+## Setup (first time only)
 
 ```
 python -m venv .venv
 .venv\Scripts\python -m pip install anthropic
 ```
 
-`build.py` と `snapshot.py` は Python の標準機能だけで動きます。`check_translations.py` は、`--dry-run` で使う場合も `anthropic` パッケージが必要です。
-翻訳チェックの結果（`translation-report.md`）は作業用の記録なので、git の記録の対象から外しています。
+`build.py` and `snapshot.py` need only Python's standard library. `check_translations.py` needs the `anthropic` package, even with `--dry-run`.
+The results of the translation review (`translation-report.md`) are a working record, so git does not track them.
 
-## ライセンス
+## License
 
-MIT License です（[LICENSE](LICENSE)）。Copyright (c) 2026 ok1971
+MIT License ([LICENSE](LICENSE)). Copyright (c) 2026 ok1971
 
-教材の利用・改変・再配布は、商用を含めて自由です。再配布するときは、著作権表示とライセンス文を残してください。
-組み立てた `earth-moon-orbits.html` の先頭にも同じ文が入っているので、HTML ファイルだけを配る場合も、そのままで条件を満たします。
+You may use, modify and redistribute the teaching page freely, including commercially. When you redistribute it, keep the copyright notice and the license text.
+The built `earth-moon-orbits.html` carries the same text at its top, so distributing the HTML file on its own already meets these conditions.
 
-## 出典
+## Sources
 
-- 地球の軌道: NASA/JPL（E. M. Standish）"Keplerian Elements for Approximate Positions of the Major Planets" の、地球と月の共通重心（EM Bary）の平均軌道要素 — https://ssd.jpl.nasa.gov/planets/approx_pos.html
-- 月の位置: Jean Meeus, *Astronomical Algorithms*（第 2 版, 1998）第 47 章の表 47.A・47.B の主要項（Chapront らの月理論 ELP-2000/82 に基づく係数）
-- 書体: IBM Plex、Noto Sans・Noto Serif、BIZ UDPGothic、Shippori Mincho B1 など。いずれも SIL Open Font License 1.1 の書体で、Google Fonts から読み込んでいます（このリポジトリには含みません）
-- 翻訳の確認: `tools/check_translations.py` は Anthropic の Claude API（Python パッケージ `anthropic`）を使います。教材そのものは Claude API を使いません
+- Earth's orbit: the mean orbital elements of the Earth–Moon barycentre (EM Bary) in NASA/JPL (E. M. Standish), "Keplerian Elements for Approximate Positions of the Major Planets" — https://ssd.jpl.nasa.gov/planets/approx_pos.html
+- The Moon's position: the main terms of Tables 47.A and 47.B in chapter 47 of Jean Meeus, *Astronomical Algorithms* (2nd edition, 1998), whose coefficients come from the lunar theory ELP-2000/82 of Chapront and others
+- Typefaces: IBM Plex, Noto Sans and Noto Serif, BIZ UDPGothic, Shippori Mincho B1 and others, all under the SIL Open Font License 1.1 and loaded from Google Fonts (they are not included in this repository)
+- Translation review: `tools/check_translations.py` uses Anthropic's Claude API (the Python package `anthropic`). The teaching page itself does not use the Claude API
