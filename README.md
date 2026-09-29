@@ -132,3 +132,18 @@ python -m venv .venv
 ```
 
 `build.py` と `snapshot.py` は Python の標準機能だけで動きます。`check_translations.py` は、`--dry-run` で使う場合も `anthropic` パッケージが必要です。
+翻訳チェックの結果（`translation-report.md`）は作業用の記録なので、git の記録の対象から外しています。
+
+## ライセンス
+
+MIT License です（[LICENSE](LICENSE)）。Copyright (c) 2026 ok1971
+
+教材の利用・改変・再配布は、商用を含めて自由です。再配布するときは、著作権表示とライセンス文を残してください。
+組み立てた `earth-moon-orbits.html` の先頭にも同じ文が入っているので、HTML ファイルだけを配る場合も、そのままで条件を満たします。
+
+## 出典
+
+- 地球の軌道: NASA/JPL（E. M. Standish）"Keplerian Elements for Approximate Positions of the Major Planets" の、地球と月の共通重心（EM Bary）の平均軌道要素 — https://ssd.jpl.nasa.gov/planets/approx_pos.html
+- 月の位置: Jean Meeus, *Astronomical Algorithms*（第 2 版, 1998）第 47 章の表 47.A・47.B の主要項（Chapront らの月理論 ELP-2000/82 に基づく係数）
+- 書体: IBM Plex、Noto Sans・Noto Serif、BIZ UDPGothic、Shippori Mincho B1 など。いずれも SIL Open Font License 1.1 の書体で、Google Fonts から読み込んでいます（このリポジトリには含みません）
+- 翻訳の確認: `tools/check_translations.py` は Anthropic の Claude API（Python パッケージ `anthropic`）を使います。教材そのものは Claude API を使いません
