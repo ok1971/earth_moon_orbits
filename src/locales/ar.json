@@ -197,20 +197,20 @@
     "kmMillion": "{n} مليون كم"
   },
   "places": {
-    "tokyo": "طوكيو",
-    "newyork": "نيويورك",
-    "london": "لندن",
-    "newdelhi": "نيودلهي",
-    "beijing": "بكين",
-    "paris": "باريس",
-    "brasilia": "برازيليا",
-    "dubai": "دبي",
-    "sydney": "سيدني",
-    "nairobi": "نيروبي",
     "reykjavik": "ريكيافيك",
-    "capetown": "كيب تاون",
+    "london": "لندن",
+    "paris": "باريس",
+    "newyork": "نيويورك",
+    "beijing": "بكين",
+    "tokyo": "طوكيو",
+    "newdelhi": "نيودلهي",
+    "dubai": "دبي",
     "mecca": "مكة المكرمة",
     "mexicocity": "مدينة مكسيكو",
-    "jakarta": "جاكرتا"
+    "nairobi": "نيروبي",
+    "jakarta": "جاكرتا",
+    "brasilia": "برازيليا",
+    "sydney": "سيدني",
+    "capetown": "كيب تاون"
   }
 }

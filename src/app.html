@@ -658,23 +658,24 @@
   const langData = () => LOCALE_DATA[state.lang];
   const hasSolarTerms = () => Boolean(langData().solarTerms);
 
-  // Preset observing locations; their names are in each locale file under "places"
+  // Preset observing locations, from north to south (at equal latitude, westward from longitude
+  // 0°). Their names are in each locale file under "places".
   const PLACES = [
-    { id: 'tokyo', lat: 35.6895, lon: 139.6917, tz: 'Asia/Tokyo' },
-    { id: 'newyork', lat: 40.7128, lon: -74.0060, tz: 'America/New_York' },
-    { id: 'london', lat: 51.5074, lon: -0.1278, tz: 'Europe/London' },
-    { id: 'newdelhi', lat: 28.6139, lon: 77.2090, tz: 'Asia/Kolkata' },
-    { id: 'beijing', lat: 39.9042, lon: 116.4074, tz: 'Asia/Shanghai' },
-    { id: 'paris', lat: 48.8566, lon: 2.3522, tz: 'Europe/Paris' },
-    { id: 'brasilia', lat: -15.7939, lon: -47.8828, tz: 'America/Sao_Paulo' },
-    { id: 'dubai', lat: 25.2048, lon: 55.2708, tz: 'Asia/Dubai' },
-    { id: 'sydney', lat: -33.8688, lon: 151.2093, tz: 'Australia/Sydney' },
-    { id: 'nairobi', lat: -1.2921, lon: 36.8219, tz: 'Africa/Nairobi' },
     { id: 'reykjavik', lat: 64.1466, lon: -21.9426, tz: 'Atlantic/Reykjavik' },
-    { id: 'capetown', lat: -33.9249, lon: 18.4241, tz: 'Africa/Johannesburg' },
+    { id: 'london', lat: 51.5074, lon: -0.1278, tz: 'Europe/London' },
+    { id: 'paris', lat: 48.8566, lon: 2.3522, tz: 'Europe/Paris' },
+    { id: 'newyork', lat: 40.7128, lon: -74.0060, tz: 'America/New_York' },
+    { id: 'beijing', lat: 39.9042, lon: 116.4074, tz: 'Asia/Shanghai' },
+    { id: 'tokyo', lat: 35.6895, lon: 139.6917, tz: 'Asia/Tokyo' },
+    { id: 'newdelhi', lat: 28.6139, lon: 77.2090, tz: 'Asia/Kolkata' },
+    { id: 'dubai', lat: 25.2048, lon: 55.2708, tz: 'Asia/Dubai' },
     { id: 'mecca', lat: 21.3891, lon: 39.8579, tz: 'Asia/Riyadh' },
     { id: 'mexicocity', lat: 19.4326, lon: -99.1332, tz: 'America/Mexico_City' },
+    { id: 'nairobi', lat: -1.2921, lon: 36.8219, tz: 'Africa/Nairobi' },
     { id: 'jakarta', lat: -6.2088, lon: 106.8456, tz: 'Asia/Jakarta' },
+    { id: 'brasilia', lat: -15.7939, lon: -47.8828, tz: 'America/Sao_Paulo' },
+    { id: 'sydney', lat: -33.8688, lon: 151.2093, tz: 'Australia/Sydney' },
+    { id: 'capetown', lat: -33.9249, lon: 18.4241, tz: 'Africa/Johannesburg' },
   ];
   const placeName = p => LOCALE_DATA[state.lang].places[p.id];
   // Time zones offered for a custom latitude/longitude (offset from UTC, in minutes)

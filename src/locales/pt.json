@@ -188,20 +188,20 @@
     "kmMillion": "{n} milhões de km"
   },
   "places": {
-    "tokyo": "Tóquio",
-    "newyork": "Nova York",
-    "london": "Londres",
-    "newdelhi": "Nova Délhi",
-    "beijing": "Pequim",
-    "paris": "Paris",
-    "brasilia": "Brasília",
-    "dubai": "Dubai",
-    "sydney": "Sydney",
-    "nairobi": "Nairóbi",
     "reykjavik": "Reykjavík",
-    "capetown": "Cidade do Cabo",
+    "london": "Londres",
+    "paris": "Paris",
+    "newyork": "Nova York",
+    "beijing": "Pequim",
+    "tokyo": "Tóquio",
+    "newdelhi": "Nova Délhi",
+    "dubai": "Dubai",
     "mecca": "Meca",
     "mexicocity": "Cidade do México",
-    "jakarta": "Jacarta"
+    "nairobi": "Nairóbi",
+    "jakarta": "Jacarta",
+    "brasilia": "Brasília",
+    "sydney": "Sydney",
+    "capetown": "Cidade do Cabo"
   }
 }

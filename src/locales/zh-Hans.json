@@ -198,21 +198,21 @@
     "au": "AU"
   },
   "places": {
-    "tokyo": "东京",
-    "newyork": "纽约",
-    "london": "伦敦",
-    "newdelhi": "新德里",
-    "beijing": "北京",
-    "paris": "巴黎",
-    "brasilia": "巴西利亚",
-    "dubai": "迪拜",
-    "sydney": "悉尼",
-    "nairobi": "内罗毕",
     "reykjavik": "雷克雅未克",
-    "capetown": "开普敦",
+    "london": "伦敦",
+    "paris": "巴黎",
+    "newyork": "纽约",
+    "beijing": "北京",
+    "tokyo": "东京",
+    "newdelhi": "新德里",
+    "dubai": "迪拜",
     "mecca": "麦加",
     "mexicocity": "墨西哥城",
-    "jakarta": "雅加达"
+    "nairobi": "内罗毕",
+    "jakarta": "雅加达",
+    "brasilia": "巴西利亚",
+    "sydney": "悉尼",
+    "capetown": "开普敦"
   },
   "solarTerms": [
     "春分",

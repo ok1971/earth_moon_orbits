@@ -193,20 +193,20 @@
     "kmLakh": "{n} लाख किमी"
   },
   "places": {
-    "tokyo": "टोक्यो",
-    "newyork": "न्यूयॉर्क",
-    "london": "लंदन",
-    "newdelhi": "नई दिल्ली",
-    "beijing": "बीजिंग",
-    "paris": "पेरिस",
-    "brasilia": "ब्रासीलिया",
-    "dubai": "दुबई",
-    "sydney": "सिडनी",
-    "nairobi": "नैरोबी",
     "reykjavik": "रेक्याविक",
-    "capetown": "केप टाउन",
+    "london": "लंदन",
+    "paris": "पेरिस",
+    "newyork": "न्यूयॉर्क",
+    "beijing": "बीजिंग",
+    "tokyo": "टोक्यो",
+    "newdelhi": "नई दिल्ली",
+    "dubai": "दुबई",
     "mecca": "मक्का",
     "mexicocity": "मेक्सिको सिटी",
-    "jakarta": "जकार्ता"
+    "nairobi": "नैरोबी",
+    "jakarta": "जकार्ता",
+    "brasilia": "ब्रासीलिया",
+    "sydney": "सिडनी",
+    "capetown": "केप टाउन"
   }
 }
